@@ -1,0 +1,18 @@
+{
+  "env": {
+    "es2021": true,
+    "browser": true
+  },
+  "parserOptions": {
+    "project": "./jsconfig.json"
+  },
+  "extends": ["next/core-web-vitals", "prettier", "airbnb"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "quotes": ["error", "double"],
+    "arrow-body-style": "off",
+    "linebreak-style": "off"
+  }
+}
