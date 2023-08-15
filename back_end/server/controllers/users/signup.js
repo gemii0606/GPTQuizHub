@@ -3,7 +3,7 @@ const {isValidEmail, hashPassword, generateToken} = require('../utils');
 require('dotenv').config({ path: __dirname + `/../../.env` });
 
 const url = process.env.MONGOURL;
-const dbName = 'users'; // 您的資料庫名稱
+const dbName = 'users';
 
 const signUp = async (req, res) => {
   const { name, email, password } = req.body;
