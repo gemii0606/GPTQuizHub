@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./private/combined.crt:/etc/nginx/combined.crt:ro
+      - ./private/private.key:/etc/nginx/private.key:ro
+    depends_on:
+      - gptquizhub
+    networks:
+      - gptquizhub_network
+
+  gptquizhub:
+    build: . 
+    container_name: gptquizhub
+    ports:
+      - "3000:3000"
+    networks:
+      - gptquizhub_network
+
+networks:
+  gptquizhub_network:
+
+# volumes:
+#   mysql_data:  # 定義 MySQL 資料持久化的卷
