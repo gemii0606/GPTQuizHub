@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 
 // MongoDB 连接 URL
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://host.docker.internal:27017';
 
 // 数据库名称
 const dbName = 'lighting_system';
