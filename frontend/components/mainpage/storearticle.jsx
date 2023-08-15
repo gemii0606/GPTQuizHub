@@ -6,10 +6,10 @@ function Storearticle() {
   const [medium, setMedium] = useState(""); // 初始中等題數
   const [hard, setHard] = useState("");
   function handleTotal() {
-    const totalQuestion = easy + medium + hard;
+    const totalQuestion = parseInt(easy, 10) + parseInt(medium, 10) + parseInt(hard, 10);
     if (total > 10) alert("錯誤:題目大於10題");
-    if (totalQuestion > total) alert("錯誤：簡易、中等和困難題目總數大於總題數");
-    if (totalQuestion < total) alert("錯誤：簡易、中等和困難題目總數少於總題數");
+    else if (totalQuestion > total) alert("錯誤：簡易、中等和困難題目總數大於總題數");
+    else if (totalQuestion < total) alert("錯誤：簡易、中等和困難題目總數少於總題數");
   }
   return (
     <div className="p-8 m-0">
