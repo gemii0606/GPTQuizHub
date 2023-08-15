@@ -16,6 +16,7 @@ services:
       - gptquizhub
     networks:
       - gptquizhub_network
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -23,11 +24,16 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - gptquizhub_network
+
   gptquizhub:
     build: . 
     container_name: gptquizhub
     ports:
       - "3000:3000"
+    depends_on:
+      - mongodb
     networks:
       - gptquizhub_network
 

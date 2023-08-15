@@ -6,8 +6,8 @@ WORKDIR /app
 # 複製 package.json 和 package-lock.json 到容器中
 COPY . /app/
 
-# 安裝相依項目
-RUN npm install
+EXPOSE 3000
 
-# 定義容器運行時指令
-CMD ["node", "app.js"]
+RUN npm install -qg pm2 && npm install --only=dev
+
+CMD pm2-runtime start app.js --name app
