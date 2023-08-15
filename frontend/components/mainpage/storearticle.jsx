@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
 function Storearticle() {
+  const [total, setTotal] = useState(""); // 初始總題數
+  const [easy, setEasy] = useState(""); // 初始簡易題數
+  const [medium, setMedium] = useState(""); // 初始中等題數
+  const [hard, setHard] = useState("");
+  function handleTotal() {
+    const totalQuestion = easy + medium + hard;
+    if (total > 10) alert("錯誤:題目大於10題");
+    if (totalQuestion > total) alert("錯誤：簡易、中等和困難題目總數大於總題數");
+    if (totalQuestion < total) alert("錯誤：簡易、中等和困難題目總數少於總題數");
+  }
   return (
     <div className="p-8 m-0">
       <p className="mb-2 text-base">文章標題</p>
@@ -17,16 +27,33 @@ function Storearticle() {
       <p className="mt-1 mb-2 text-base">題目設定</p>
       <div className="flex items-center w-full h-24 p-2 bg-white rounded">
         <p className="ml-6 text-base font-bold">總題數:</p>
-        <input placeholder="最多10題" className="px-3 py-2 ml-2 rounded-md w-24 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]" />
+        <input
+          placeholder="最多10題"
+          className="px-3 py-2 ml-2 rounded-md w-24 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]"
+          value={total}
+          onChange={(e) => setTotal(e.target.value)}
+        />
         <p className="ml-10 text-base font-bold">題目難易度</p>
         <p className="ml-6 text-base font-bold">簡易:</p>
-        <input className="px-3 py-2 ml-2 rounded-md w-16 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]" />
+        <input
+          className="px-3 py-2 ml-2 rounded-md w-16 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]"
+          value={easy}
+          onChange={(e) => setEasy(e.target.value)}
+        />
         <p className="ml-6 text-base font-bold">中等:</p>
-        <input className="px-3 py-2 ml-2 rounded-md w-16 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]" />
+        <input
+          className="px-3 py-2 ml-2 rounded-md w-16 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]"
+          value={medium}
+          onChange={(e) => setMedium(e.target.value)}
+        />
         <p className="ml-6 text-base font-bold">困難:</p>
-        <input className="px-3 py-2 ml-2 rounded-md w-16 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]" />
+        <input
+          className="px-3 py-2 ml-2 rounded-md w-16 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]"
+          value={hard}
+          onChange={(e) => setHard(e.target.value)}
+        />
       </div>
-      <button type="button" className="block bg-[#8198BF] text-white px-6 py-1 rounded-md mt-4 ml-auto">儲存文章</button>
+      <button type="button" className="block bg-[#8198BF] text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]" onClick={handleTotal}>儲存文章</button>
     </div>
   );
 }
