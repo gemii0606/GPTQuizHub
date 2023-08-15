@@ -13,13 +13,27 @@ const MockData = [
   },
 ];
 const questionsBankItems = MockData.map((questionsBank) => (
-  <Link
-    href={`/questionsbanks/${questionsBank.id}`}
+  <div
     key={questionsBank.id}
-    className="cursor-pointer flex items-center mb-2.5"
+    className="flex items-center justify-between px-4 py-2 mb-3 border rounded-lg"
   >
-    <p className="text-lg font-bold leading-6">{questionsBank.title}</p>
-  </Link>
+    <div>
+      <Link
+        href={`/questionsbanks/${questionsBank.id}`}
+        className="flex items-center cursor-pointer"
+      >
+        <p className="text-lg font-bold leading-6">{questionsBank.title}</p>
+      </Link>
+    </div>
+    <div>
+      <Link
+        href={`/quiz/${questionsBank.id}`}
+        className="block text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md hover:opacity-50"
+      >
+        測驗連結
+      </Link>
+    </div>
+  </div>
 ));
 function Page() {
   return (
