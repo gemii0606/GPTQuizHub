@@ -1,8 +1,6 @@
 const { MongoClient } = require('mongodb');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
-const {isValidEmail} = require('../utils');
-require('dotenv').config();
+const {isValidEmail, hashPassword, generateToken} = require('../utils');
+require('dotenv').config({ path: __dirname + `/../../.env` });
 
 const url = process.env.MONGOURL;
 const dbName = 'users'; // 您的資料庫名稱
@@ -32,10 +30,7 @@ const signUp = async (req, res) => {
     }
 
     // Encrypt the user password
-    const securePassword = crypto
-      .createHash('sha256')
-      .update(password + email)
-      .digest('base64');
+    const securePassword = hashPassword(password);
 
     // Create a new user
     const newUser = {
@@ -49,15 +44,15 @@ const signUp = async (req, res) => {
     console.log('New user inserted:', insertResult.insertedId);
 
     // Create the JWT Token Payload
-    const jwtSecret = process.env.SECRET; // 這裡應該是一個安全的秘密，用於 JWT 簽名
     const payload = {
       id: insertResult.insertedId,
+      provider: 'native',
       name: newUser.name,
       email: newUser.email
     };
 
     // Sign the Access Token using JWT
-    const accessToken = jwt.sign(payload, jwtSecret);
+    const accessToken = generateToken(payload.id);
 
     // Return the successful signup response
     res.status(200).json({
