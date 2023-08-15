@@ -16,7 +16,13 @@ services:
       - gptquizhub
     networks:
       - gptquizhub_network
-
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
   gptquizhub:
     build: . 
     container_name: gptquizhub
@@ -28,5 +34,5 @@ services:
 networks:
   gptquizhub_network:
 
-# volumes:
-#   mysql_data:  # 定義 MySQL 資料持久化的卷
+volumes:
+  mongodb_data:
