@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const {isValidEmail} = require('../utils');
 require('dotenv').config();
 
 const url = process.env.MONGOURL;
