@@ -4,9 +4,6 @@ require('dotenv').config({ path: __dirname + `/../../.env` });
 const salt = process.env.SALT;
 const secret = process.env.HIDDEN_SECRET;
 
-console.log(salt);
-console.log(secret);
-
 function isValidEmail(email) {
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!emailRegex.test(email))
@@ -43,6 +40,8 @@ function generateRandomString(length) {
 
     return result;
 }
+
+
 
 module.exports = {
     isValidEmail,
