@@ -69,19 +69,6 @@ const MockData = {
 const OptionsItems = MockData.questions[0].options.map((option) => (
   <p key={option.id} className="mt-3 font-bold">{`(${option.id}) ${option.content}`}</p>
 ));
-const OptionsEditItems = MockData.questions[0].options.map((option) => (
-  <div className="flex items-center mt-3">
-    <p key={option.id} className="mt-3 mr-3 font-bold">
-      ({option.id})
-    </p>
-    <input
-      type="text"
-      defaultValue={option.content}
-      required
-      className="border rounded-md focus:outline-none py-2 px-3.5 min-w-[30rem]"
-    />
-  </div>
-));
 
 function QuestonBankCard() {
   const [editQuestion, setEditQuestion] = useState(false);
@@ -89,6 +76,7 @@ function QuestonBankCard() {
   const [correctAnswer, setCorrectAnswer] = useState(MockData.questions[0].correct_answer);
   const [loading, setLoading] = useState(false);
   const explanationRef = useRef(null);
+  const optionsRefs = useRef([]);
   const router = useRouter();
   function editQuestionHandler() {
     setLoading(true);
@@ -127,6 +115,21 @@ function QuestonBankCard() {
       </div>
     </>
   );
+  const OptionsEditItems = MockData.questions[0].options.map((option) => (
+    <div className="flex items-center mt-3">
+      <p key={option.id} className="mt-3 mr-3 font-bold">
+        ({option.id})
+      </p>
+      <input
+        type="text"
+        defaultValue={option.content}
+        // eslint-disable-next-line no-return-assign, no-undef
+        ref={(el) => (optionsRefs.current[index] = el)}
+        required
+        className="border rounded-md focus:outline-none py-2 px-3.5 min-w-[30rem]"
+      />
+    </div>
+  ));
   const QuestionEditArea = (
     <form method="post" onSubmit={editQuestionHandler}>
       <div className="flex items-center">
