@@ -16,8 +16,7 @@ function hashPassword(password) {
 }
 
 function generateToken(user) {
-    const SECRET = secret;
-    return jwt.sign(user, SECRET);
+    return jwt.sign(user, secret);
 }
 
 function verifyToken(token) {

@@ -1,36 +1,37 @@
 const { MongoClient } = require('mongodb');
 const { hashPassword, isValidEmail, generateToken } = require('../../utils/utils');
 
-const url = 'mongodb://localhost:27017';
-const dbName = 'Canchu';
+const url = process.env.MONGOURL;
+const dbName = 'GPTQuizHub';
 
 const signIn = async (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         await client.connect();
-        const {name, email, password} = req.body;
-        console.log(req.body)
-        if(!name || !email || !password)
-            res.status(400).json({ error: 'The input can\'t be null' });
+        const {provider, email, password} = req.body;
+        if(!provider || !email || !password)
+            return res.status(400).json({ error: 'The input can\'t be null' });
         else if (!isValidEmail(email))
-            res.status(400).json({ error: 'Email invalid' });  
+            return res.status(400).json({ error: 'Email invalid' });  
         else if (!(await isSignUp(email))) 
-            res.status(403).json({ error: 'Please sign up first' });
+            return res.status(403).json({ error: 'Please sign up first' });
         else {
             const hash = hashPassword(password);
             const user = await isSignUp(email);
             if(hash !== user.password)
-                res.status(403).json({ error: 'Wrong Password' });
+                return res.status(403).json({ error: 'Wrong Password' });
             else {
                 const payload = {
                     id:user._id
                 }
                 const token = generateToken(payload)
-                res.status(200).json({ data:{
+                return res.status(200).json({ data:{
                     access_token: token,
                     user:{
-                        id: _id,
-                        email: user.email
+                        id: user._id,
+                        email: user.email,
+                        name: user.name,
+                        provider: user.provider
                     }
                 }});
             }
