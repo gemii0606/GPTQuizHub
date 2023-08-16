@@ -40,7 +40,7 @@ But it also kept the island nation closed off internationally and became increas
 `;
 
 const template = {
-   "question": {
+   "questions": [{
     "difficulty": "easy, medium, difficult",
     "type": "multiple questions",
     "question": "小梅當選班花的原因是什麼？",
@@ -51,7 +51,7 @@ const template = {
       "她讓其他女生感到自信" ],
     "correct_answer": 1,
     "explanation": "小梅的演說讓其他女生覺得因為有她，她們變得更優秀，所以她被選為班花。"
-    }
+    }]
 }
 
 
