@@ -1,5 +1,5 @@
 const { Configuration, OpenAIApi } = require("openai");
-require('dotenv').config({ path: __dirname + `/.env` });
+require('dotenv').config({ path: __dirname + `/../.env` });
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -12,8 +12,6 @@ async function main () {
     max_tokens: 128,
     messages: [{"role": "system", "content": "You are a helpful assistant."}, {role: "user", content: "Hello world"}],
   });
-  console.log(completion);
-  console.log("======================================================");
   console.log(completion.data.choices[0].message);
 }
 main();
