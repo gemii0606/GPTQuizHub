@@ -34,8 +34,8 @@ const template = {
 const quizCreate = async (req, res) => {
     const user_id = req.signInId;
     const article = req.body.article;
+    const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
-        const client = new MongoClient(url, { useUnifiedTopology: true });
         await client.connect();
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
