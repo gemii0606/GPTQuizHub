@@ -36,8 +36,6 @@ services:
       - mongodb
     networks:
       - gptquizhub_network
-    depends_on:
-      - mongodb
 
 networks:
   gptquizhub_network:
