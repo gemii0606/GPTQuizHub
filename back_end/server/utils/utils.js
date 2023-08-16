@@ -40,12 +40,20 @@ function generateRandomString(length) {
     return result;
 }
 
+function getCurrentTime() {
+    // Get the current date object
+    const currentDate = new Date();
 
+    // Format the date object to the desired format
+    const formattedTime = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+    return formattedTime;
+}
 
 module.exports = {
     isValidEmail,
     hashPassword,
     generateToken,
     verifyToken,
-    generateRandomString
+    generateRandomString,
+    getCurrentTime
 };
