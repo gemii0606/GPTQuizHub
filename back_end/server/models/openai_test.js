@@ -22,7 +22,7 @@ require('dotenv').config({ path: __dirname + `/../../.env` });
 
 const requestJson = (prompt, jsonStructure) => `${prompt}
   Do not include any explanations, only provide a RFC8259 compliant JSON response following this format without deviation.
-  ${JSON.stringify(jsonStructure, null, 2)}`;
+  ${JSON.stringify(jsonStructure, null, 2)}, do not generate id for each question`;
 
 const text = `
 New Zealand scrapped the last of its Covid restrictions Tuesday, bringing the final curtain down on one of the world’s strictest pandemic policies as the government said the country suffered a far lower mortality rate than many other nations.
