@@ -36,7 +36,7 @@ json格式包含id,created_at而每一個question和option都有獨特的id
 async function main () {
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
-    max_tokens: 128,
+    // max_tokens: 128,
     messages: [{"role": "system", "content": "你現在是一個厲害的出題老師"}, {role: "user", content: content}],
   });
   console.log(completion.data.choices[0].message);
