@@ -16,18 +16,18 @@ const requestJson = (prompt, jsonStructure) => `${prompt}
   Do not include any explanations, only provide a RFC8259 compliant JSON response following this format without deviation.
   ${JSON.stringify(jsonStructure, null, 2)}, do not generate id for each question`;
 
-const template = {
+  const template = {
     "questions": [{
      "difficulty": "easy, medium, difficult",
      "type": "multiple questions",
-     "question": "小梅當選班花的原因是什麼？",
+     "question": "question",
      "options":
-       [ "她比其他女生漂亮",
-       "她發表了精彩的演說",
-       "她比其他女生更有才華",
-       "她讓其他女生感到自信" ],
+       [ "option",
+       "option",
+       "option",
+       "option" ],
      "correct_answer": 1,
-     "explanation": "小梅的演說讓其他女生覺得因為有她，她們變得更優秀，所以她被選為班花。"
+     "explanation": "explanation"
      }]
  }
 
