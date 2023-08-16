@@ -62,11 +62,11 @@ const signUp = async (req, res) => {
         user: payload,
       },
     });
-
-    client.close();
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'An error occurred while signing up.' });
+      console.error('Error:', error);
+      res.status(500).json({ error: 'An error occurred while signing up.' });
+  } finally {
+      await client.close();
   }
 };
 
