@@ -11,3 +11,4 @@ EXPOSE 3000
 RUN npm install -qg pm2 && npm install --only=dev
 
 CMD pm2-runtime start app.js --name app
+
