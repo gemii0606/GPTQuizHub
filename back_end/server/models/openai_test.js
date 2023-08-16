@@ -29,10 +29,10 @@ async function main() {
     model: "gpt-3.5-turbo",
     messages: [
       {"role": "system", "content": "You are a helpful assistant."},
-      {role: "user", content: "Hello world"}
+      {role: "user", content: "I don't want to go to school"}
     ],
   });
-
+  
   console.log(completion.data.choices[0].message);
 }
 
