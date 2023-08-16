@@ -10,7 +10,6 @@ const MockData = {
   id: 1,
   created_at: "2023-08-13",
   title: "React中的Key概念",
-  is_liked: false,
   questions: [
     {
       id: 1,
