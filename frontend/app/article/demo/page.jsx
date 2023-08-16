@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../../components/navbar";
-import Article from "../../../components/article";
+import Article from "../../../components/articles/article";
 
 function page() {
   return (

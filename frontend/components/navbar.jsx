@@ -13,7 +13,7 @@ const navbar = () => {
         <Link href="/questionsbanks" passHref>
           <p className="ml-2 mr-2 border-[#8198BF] hover:border-b-4">題庫</p>
         </Link>
-        <Link href="/" passHref>
+        <Link href="/test-histories" passHref>
           <p className="ml-2 mr-2 border-[#8198BF] hover:border-b-4">測驗紀錄</p>
         </Link>
       </div>

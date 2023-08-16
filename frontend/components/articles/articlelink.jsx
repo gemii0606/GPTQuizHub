@@ -12,7 +12,7 @@ function Articlelink({ title, createdAt }) {
       <div className="flex mt-2">
         <p className="ml-6 text-slate-400">{createdAt}</p>
         <Link href="/" passHref className="ml-auto ">
-          <div className="block bg-[#8198BF] text-white px-4 py-1 rounded-md hover:bg-[#638ace]">題庫傳送門</div>
+          <div className="block bg-[#8198BF] text-white px-4 py-1 rounded-md hover:bg-[#638ace]">測驗傳送門</div>
         </Link>
       </div>
     </div>
