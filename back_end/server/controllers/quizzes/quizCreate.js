@@ -94,7 +94,7 @@ const quizCreate = async (req, res) => {
         const insertQuestion = await questionsCollection.insertMany(questionsList);
 
         const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
-
+        console.log('1')
         return res.status(200).json({
             // data: {
             //     quiz: {id: insertQuiz.insertedId}
@@ -105,6 +105,7 @@ const quizCreate = async (req, res) => {
         console.log(error);
         res.status(500).json({ error: "Internal server error." })
     } finally {
+        console.log('2')
         await client.close();
     }
 }
