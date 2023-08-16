@@ -27,15 +27,25 @@ function Storearticle() {
       "error",
     );
   }
-  function handleTotal() {
+  function handleSubmit() {
     const totalQuestion = parseInt(easy, 10) + parseInt(medium, 10) + parseInt(hard, 10);
-    if (total > 10) error1();
-    else if (totalQuestion > total) error2(totalQuestion);
-    else if (totalQuestion < total) error3(totalQuestion);
+    if (total > 10) {
+      error1();
+      return;
+    }
+    if (totalQuestion > total) {
+      error2(totalQuestion);
+      return;
+    }
+    if (totalQuestion < total) {
+      error3(totalQuestion);
+      return;
+    }
+    console.log("submit!");
   }
   return (
     <div className="p-8 m-0">
-      <form action="" method="">
+      <form action="" method="post" onSubmit={handleSubmit}>
         <p className="mb-2 text-base">文章標題</p>
         <input required className="px-3 py-2 mb-2 rounded-md w-80 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]" />
         <p className="mt-1 mb-2 text-base">文章類別</p>
@@ -80,7 +90,7 @@ function Storearticle() {
             onChange={(e) => setHard(e.target.value)}
           />
         </div>
-        <button type="button" className="block bg-[#8198BF] text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]" onClick={handleTotal}>生成題目</button>
+        <button type="submit" className="block bg-[#8198BF] text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]">生成題目</button>
       </form>
     </div>
   );
