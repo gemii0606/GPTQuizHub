@@ -95,12 +95,13 @@ const quizCreate = async (req, res) => {
 
         const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
         console.log('1')
-        return res.status(200).json({
+        res.status(200).json({
             // data: {
             //     quiz: {id: insertQuiz.insertedId}
                 ok: "ok"
             // }
         });
+        return
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Internal server error." })
