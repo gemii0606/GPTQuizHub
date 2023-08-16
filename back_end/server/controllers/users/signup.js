@@ -15,8 +15,8 @@ const signUp = async (req, res) => {
     return res.status(400).json({ error: 'Please fill the correct email address!' });
   }
 
+  const client = new MongoClient(url, { useUnifiedTopology: true });
   try {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
     await client.connect();
     console.log('Connected to MongoDB');
 

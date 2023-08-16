@@ -96,9 +96,10 @@ const quizCreate = async (req, res) => {
         const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
 
         return res.status(200).json({
-            data: {
-            quiz: {id: insertQuiz.insertedId},
-            },
+            // data: {
+            //     quiz: {id: insertQuiz.insertedId}
+                ok: "ok"
+            // }
         });
     } catch (error) {
         console.log(error);
