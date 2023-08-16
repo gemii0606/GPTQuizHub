@@ -15,7 +15,7 @@ const { quizGenerate } = require('../controllers/quizzes/quizGenerate_test');
 router.post('/users/signup', signUp)
 router.post('/users/signin', signIn);
 
-router.post('/quiz/test', quizGenerate)
+router.post('/quizzes/test', quizGenerate)
 
 module.exports = router;
 
