@@ -11,8 +11,12 @@ const { authAccessToken } = require('../middleware/authAccessToken');
 const { signIn } = require('../controllers/users/signIn');
 const { signUp } = require('../controllers/users/signup');
 
+const { quizCreate } = require('../controllers/quizzes/quizCreate');
+
 router.post('/users/signup', signUp)
 router.post('/users/signin', signIn);
+
+router.post('/quizzes/create', authAccessToken, quizCreate)
 
 module.exports = router;
 
