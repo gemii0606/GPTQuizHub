@@ -36,73 +36,72 @@ const gptquizgenerator = async (req, res) => {
     const total = req.body.total;
     const insertQuiz = req.body.insertQuiz;
 
-    console.log(user_id);
-    console.log(insertQuiz);
-    // const client = new MongoClient(url, { useUnifiedTopology: true });
-    // try {
-    // const completion = await openai.createChatCompletion({
-    //     model: "gpt-3.5-turbo",
-    //     // max_tokens: 128,
-    //     messages: [
-    //         {role: "system", content: "你是位專業的出題老師"},
-    //         {
-    //         role: "user", 
-    //         content: requestJson(
-    //             `
-    //             ${article.content}
-    //             :::
-    //             幫我針對這篇文章的內容出一份測驗，總共${total}題選擇題，一題4個選項。${article.hard}題困難，${article.easy}題簡單，${article.normal}題普通，每一題要標註題目難易度和題型和正確答案和答案解釋。回答語言請與輸入的語言相同。不要其他多餘的回答。
-    //             請用JSON的格式回覆我，並且有id、difficulty、type、question、options、correct_answer、explanation
-    //         `, template)
-    //         }
-    //     ],
-    // });
+    console.log('here is gpt');
 
-    // if (completion.status !== 200) {
-    //     res.status(500).json({ error: `ChatGPT got ${completion.status} error.` });
-    //     return 
-    // }
+    const client = new MongoClient(url, { useUnifiedTopology: true });
+    try {
+        const completion = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            // max_tokens: 128,
+            messages: [
+                {role: "system", content: "你是位專業的出題老師"},
+                {
+                role: "user", 
+                content: requestJson(
+                    `
+                    ${article.content}
+                    :::
+                    幫我針對這篇文章的內容出一份測驗，總共${total}題選擇題，一題4個選項。${article.hard}題困難，${article.easy}題簡單，${article.normal}題普通，每一題要標註題目難易度和題型和正確答案和答案解釋。回答語言請與輸入的語言相同。不要其他多餘的回答。
+                    請用JSON的格式回覆我，並且有id、difficulty、type、question、options、correct_answer、explanation
+                `, template)
+                }
+            ],
+        });
 
-    // const gptResult = JSON.parse(completion.data.choices[0].message?.content);
-    // if (!gptResult) {
-    //     const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'failed' } });
-    //     res.status(500).json({ error: 'The json strucure generated from gpt is not a valid one, please try again' });
-    //     return 
-    // }
+        const gptResult = JSON.parse(completion.data.choices[0].message?.content);
+        if (!gptResult) {
+            const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'failed' } });
+            res.status(500).json({ error: 'The json strucure generated from gpt is not a valid one, please try again' });
+            return 
+        }
 
-    // const usersCollection = db.collection('users');
-    // const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
+        await client.connect();
+        console.log('Connected to MongoDB');
+        const db = client.db(dbName);
+        
+        const usersCollection = db.collection('users');
+        const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
 
-    // const questionsList = gptResult.questions.map(obj => {
-    //     const result = {
-    //         user_id: user_id,
-    //         quiz_id: insertQuiz.insertedId, 
-    //         question: obj.question,
-    //         type: obj.type,
-    //         difficulty: obj.difficulty,
-    //         options: obj.options,
-    //         correct_answer: obj.correct_answer,
-    //         explanation: obj.explanation,
-    //         created_at: getCurrentTime()
-    //     };
-    //     return result;
-    // });
+        const questionsList = gptResult.questions.map(obj => {
+            const result = {
+                user_id: user_id,
+                quiz_id: insertQuiz.insertedId, 
+                question: obj.question,
+                type: obj.type,
+                difficulty: obj.difficulty,
+                options: obj.options,
+                correct_answer: obj.correct_answer,
+                explanation: obj.explanation,
+                created_at: getCurrentTime()
+            };
+            return result;
+        });
 
-    // const questionsCollection = db.collection('questions');
-    // const insertQuestion = await questionsCollection.insertMany(questionsList);
-    // console.log('question ok')
+        const questionsCollection = db.collection('questions');
+        const insertQuestion = await questionsCollection.insertMany(questionsList);
+        console.log('question ok')
 
-    // const quizzesCollection = db.collection('questions');
-    // const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
-    // console.log('quiz ok')
+        const quizzesCollection = db.collection('questions');
+        const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
+        console.log('quiz ok')
 
-    // } catch (error) {
-    //     console.log(error);
-    //     res.status(500).json({ error: "gpt failed." })
-    // } finally {
-    //     console.log('client close')
-    //     await client.close();
-    // }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "gpt failed." })
+    } finally {
+        console.log('gpt client close')
+        await client.close();
+    }
 }
 
 module.exports = {
