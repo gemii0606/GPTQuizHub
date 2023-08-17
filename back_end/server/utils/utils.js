@@ -40,6 +40,17 @@ function generateRandomString(length) {
     return result;
 }
 
+function decodejsonBase64(token) {
+    const decodedObj = JSON.parse(atob(token));
+    // console.log(decodedObj);
+    return decodedObj;
+}
+
+function encodejsonBase64(obj) {
+    const encodedObj = btoa(JSON.stringify(obj));
+    return encodedObj;
+}
+
 function getCurrentTime() {
     // Get the current date object
     const currentDate = new Date();
@@ -55,5 +66,7 @@ module.exports = {
     generateToken,
     verifyToken,
     generateRandomString,
+    decodejsonBase64,
+    encodejsonBase64,
     getCurrentTime
 };
