@@ -18,20 +18,25 @@ const questionsBankItems = MockData.map((questionsBank) => (
     className="flex items-center justify-between px-4 py-2 mb-3 border rounded-lg"
   >
     <div>
-      <Link
-        href={`/questionsbanks/${questionsBank.id}`}
-        className="flex items-center cursor-pointer"
-      >
-        <p className="text-lg font-bold leading-6">{questionsBank.title}</p>
-      </Link>
+      <p className="text-lg font-bold leading-6">{questionsBank.title}</p>
     </div>
-    <div>
-      <Link
-        href={`/quiz/${questionsBank.id}`}
-        className="block text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md hover:opacity-50"
-      >
-        測驗連結
-      </Link>
+    <div className="flex items-center">
+      <div className="block text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md hover:opacity-50 mr-5">
+        <Link
+          href={`/questionsbanks/${questionsBank.id}`}
+          className="flex items-center cursor-pointer"
+        >
+          複習
+        </Link>
+      </div>
+      <div>
+        <Link
+          href={`/quiz/${questionsBank.id}`}
+          className="block text-base font-bold text-white bg-[#25B857] py-2.5 px-4 rounded-md hover:opacity-50"
+        >
+          測驗連結
+        </Link>
+      </div>
     </div>
   </div>
 ));
