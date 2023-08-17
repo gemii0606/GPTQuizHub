@@ -36,7 +36,7 @@ const quizCreate = async (req, res) => {
             insertQuiz
         }
 
-        const gptResponse = await axios.post('http://13.210.26.62/api/1.0/gptquizgenerator', data);
+        const gptResponse = await axios.post('https://13.210.26.62/api/1.0/gptquizgenerator', data);
 
         console.log('gptres')
         res.status(200).json({
