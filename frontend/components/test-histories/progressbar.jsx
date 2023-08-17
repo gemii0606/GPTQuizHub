@@ -12,7 +12,7 @@ const StyledAnimatedProgress = styled.div`
   height: 30px;
   border-radius: 5px;
   margin: 20px 10px;
-  border: 1px solid rgb(189, 113, 113);
+  border: 2px solid black;
   overflow: hidden;
   position: relative;
 `;
