@@ -19,12 +19,7 @@ const articleDetail = async (req, res) => {
         const db = client.db(dbName);
 
         const articlesCollection = db.collection('articles');
-        const findArticle = await articlesCollection.findOne({
-            $and: [
-              { user_id: user_id },
-              { article_id: article_id }
-            ]
-          });
+        const findArticle = await articlesCollection.findOne({ _id: article_id });
 
         console.log(findArticle)
         console.log("1")
