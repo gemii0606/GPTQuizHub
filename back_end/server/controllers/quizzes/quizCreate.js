@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const { getCurrentTime } = require('../../utils/utils');
 require('dotenv').config({ path: __dirname + `/../../.env` });
 
@@ -32,8 +32,10 @@ const requestJson = (prompt, jsonStructure) => `${prompt}
  }
 
 const quizCreate = async (req, res) => {
-    const user_id = req.signInId;
+    const user_id = new ObjectId(req.signInId);
     const article = req.body.article;
+    const total = ['easy', 'normal', 'hard'].reduce((sum, key) => sum + parseInt(article[key]), 0);
+
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         await client.connect();
@@ -43,17 +45,18 @@ const quizCreate = async (req, res) => {
         const quizzesCollection = db.collection('quizzes');
         const insertQuiz = await quizzesCollection.insertOne({ 
             user_id: user_id,
+            title: article.title,
+            tag: article.tag,
+            content: article.content,
+            is_deleted: "false",
             status: "pending",
             created_at: getCurrentTime()
         });
 
-        const articlesCollection = db.collection('articles');
-        const insertArticle = await articlesCollection.insertOne({ 
-            user_id: user_id,
-            quiz_id: insertQuiz.insertedId,
-            title: article.title, 
-            content: article.content, 
-            created_at: getCurrentTime()
+        res.status(200).json({
+            data: {
+                quiz: {id: insertQuiz.insertedId}
+            }
         });
 
         const completion = await openai.createChatCompletion({
@@ -65,15 +68,29 @@ const quizCreate = async (req, res) => {
                 role: "user", 
                 content: requestJson(
                     `
-                    ${article}
+                    ${article.content}
                     :::
-                    幫我針對這篇文章的內容出一份測驗，總共5題選擇題，一題4個選項。2題困難，1題簡單，2題普通，每一題要標註題目難易度和題型和正確答案和答案解釋。回答語言請與輸入的語言相同。不要其他多餘的回答。
+                    幫我針對這篇文章的內容出一份測驗，總共${total}題選擇題，一題4個選項。${article.hard}題困難，${article.easy}題簡單，${article.normal}題普通，每一題要標註題目難易度和題型和正確答案和答案解釋。回答語言請與輸入的語言相同。不要其他多餘的回答。
                     請用JSON的格式回覆我，並且有id、difficulty、type、question、options、correct_answer、explanation
                 `, template)
                 }
             ],
         });
+
+        if (completion.status !== 200) {
+            res.status(500).json({ error: `ChatGPT got ${completion.status} error.` });
+            return 
+        }
+
         const gptResult = JSON.parse(completion.data.choices[0].message?.content);
+        if (!gptResult) {
+            const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'failed' } });
+            res.status(500).json({ error: 'The json strucure generated from gpt is not a valid one, please try again' });
+            return 
+        }
+
+        const usersCollection = db.collection('users');
+        const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
 
         const questionsList = gptResult.questions.map(obj => {
             const result = {
@@ -92,20 +109,16 @@ const quizCreate = async (req, res) => {
 
         const questionsCollection = db.collection('questions');
         const insertQuestion = await questionsCollection.insertMany(questionsList);
+        console.log('question ok')
 
         const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
-        console.log('1')
-        return res.status(200).json({
-            // data: {
-            //     quiz: {id: insertQuiz.insertedId}
-                ok: "ok"
-            // }
-        });
+        console.log('quiz ok')
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Internal server error." })
     } finally {
-        console.log('2')
+        console.log('client close')
         await client.close();
     }
 }
