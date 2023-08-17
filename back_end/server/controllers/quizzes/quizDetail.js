@@ -25,7 +25,7 @@ const quizDetail = async (req, res) => {
               $lookup: {
                 from: 'quizzes', // 另一個集合名稱
                 localField: 'quiz_id', // 本集合的關聯欄位
-                foreignField: 'quiz_id', // 另一個集合的關聯欄位
+                foreignField: '_id', // 另一個集合的關聯欄位
                 as: 'combinedData' // 聯結後的欄位名稱
               }
             }
