@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const { encodejsonBase64, decodejsonBase64 } = require('../../utils/utils');
 
 const url = process.env.MONGOURL;
@@ -8,7 +8,7 @@ const limit = 10;
 
 const articlesList = async (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
-    const signInId = req.signInId;
+    const signInId = new ObjectId(req.signInId);
     console.log(signInId)
     try {
         await client.connect();
