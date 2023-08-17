@@ -36,7 +36,7 @@ const quizCreate = async (req, res) => {
             insertQuiz
         }
         
-        const ans = await quizzesCollection.findOne({_id:insertQuiz.insertedId});
+        const ans = await quizzesCollection.findOne({_id:data.insertQuiz.insertedId});
         console.log(ans)
         console.log(data)
         // axios.post('https://13.210.26.62/api/1.0/gptquizgenerator', data, { timeout: 120000 });
