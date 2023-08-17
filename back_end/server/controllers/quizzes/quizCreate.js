@@ -18,7 +18,7 @@ const requestJson = (prompt, jsonStructure) => `${prompt}
 
   const template = {
     "questions": [{
-     "difficulty": "easy, medium, difficult",
+     "difficulty": "easy, normal, hard",
      "type": "multiple questions",
      "question": "question",
      "options":
