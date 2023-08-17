@@ -40,12 +40,23 @@ function generateRandomString(length) {
     return result;
 }
 
+function decodejsonBase64(token) {
+    const decodedObj = JSON.parse(atob(token));
+    // console.log(decodedObj);
+    return decodedObj;
+}
 
+function encodejsonBase64(obj) {
+    const encodedObj = btoa(JSON.stringify(obj));
+    return encodedObj;
+}
 
 module.exports = {
     isValidEmail,
     hashPassword,
     generateToken,
     verifyToken,
-    generateRandomString
+    generateRandomString,
+    decodejsonBase64,
+    encodejsonBase64
 };
