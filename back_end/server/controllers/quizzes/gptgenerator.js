@@ -34,7 +34,7 @@ const gptquizgenerator = async (req, res) => {
     const user_id = new ObjectId(req.body.user_id);
     const article = req.body.article;
     const total = req.body.total;
-    const insertQuiz = req.body.insertQuiz;
+    const insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
 
     console.log('here is gpt');
     console.log(user_id)
@@ -64,7 +64,7 @@ const gptquizgenerator = async (req, res) => {
 
         const gptResult = JSON.parse(completion.data.choices[0].message?.content);
         if (!gptResult) {
-            const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'failed' } });
+            const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuizId }, { $set: { status: 'failed' } });
             res.status(500).json({ error: 'The json strucure generated from gpt is not a valid one, please try again' });
             return 
         }
@@ -79,7 +79,7 @@ const gptquizgenerator = async (req, res) => {
         const questionsList = gptResult.questions.map(obj => {
             const result = {
                 user_id: user_id,
-                quiz_id: insertQuiz.insertedId, 
+                quiz_id: insertQuizId, 
                 question: obj.question,
                 type: obj.type,
                 difficulty: obj.difficulty,
@@ -97,7 +97,7 @@ const gptquizgenerator = async (req, res) => {
         console.log('question ok')
 
         const quizzesCollection = db.collection('questions');
-        const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
+        const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuizId }, { $set: { status: 'ok' } });
         console.log(updateQuiz)
         console.log('quiz ok')
         res.status(200).json({ message: "gptquizgenerator completed successfully." });

@@ -43,7 +43,7 @@ const quizCreate = async (req, res) => {
         console.log(ans2)
 
 
-        // axios.post('https://13.210.26.62/api/1.0/gptquizgenerator', data, { timeout: 120000 });
+        axios.post('https://13.210.26.62/api/1.0/gptquizgenerator', data, { timeout: 120000 });
 
         console.log('gptres')
         res.status(200).json({
