@@ -1,10 +1,10 @@
 "use client";
 
-// import axios from "axios";
+import axios from "axios";
 import { useState, useRef } from "react";
 import Swal from "sweetalert2";
-// import { useRouter } from "next/navigation";
-// import nookies from "nookies";
+import { useRouter } from "next/navigation";
+import nookies from "nookies";
 
 function Page() {
   const loginEmailRef = useRef(null);
@@ -15,7 +15,7 @@ function Page() {
   const signupConfirmPasswordRef = useRef(null);
   const [showLogin, setShowLogin] = useState(true);
   const [loading, setLoading] = useState(false);
-  //   const router = useRouter();
+  const router = useRouter();
   const inputRefs = [
     loginEmailRef,
     loginPasswordRef,
@@ -38,28 +38,26 @@ function Page() {
   async function loginHandler(e) {
     e.preventDefault();
     setLoading(true);
-    // try {
-    //   const loginEmail = loginEmailRef.current?.value.trim();
-    //   const loginPassword = loginPasswordRef.current?.value.trim();
-    //   const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/signin`, {
-    //     provider: "native",
-    //     email: loginEmail,
-    //     password: loginPassword,
-    //   });
-    //   const userData = response.data.data;
-    //   const maxAge = { maxAge: 3600 }; // 1hr
-    //   nookies.set(null, "access_token", userData.access_token, maxAge);
-    //   nookies.set(null, "user_id", userData.user.id.toString(), maxAge);
-    //   nookies.set(null, "user_name", userData.user.name, maxAge);
-    //   nookies.set(null, "user_email", userData.user.email, maxAge);
-    //   router.push("/");
-    // } catch (error) {
-    //   if (error?.response?.status >= 500 && error?.response?.status < 600) {
-    //     Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
-    //   } else {
-    //     Swal.fire("登入失敗", `${error}`, "error");
-    //   }
-    // }
+    try {
+      const loginEmail = loginEmailRef.current?.value.trim();
+      const loginPassword = loginPasswordRef.current?.value.trim();
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/signin`, {
+        provider: "native",
+        email: loginEmail,
+        password: loginPassword,
+      });
+      const userData = response.data.data;
+      const maxAge = { maxAge: 3600 }; // 1hr
+      nookies.set(null, "access_token", userData.access_token, maxAge);
+      nookies.set(null, "user_id", userData.user.id.toString(), maxAge);
+      router.push("/");
+    } catch (error) {
+      if (error?.response?.status >= 500 && error?.response?.status < 600) {
+        Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
+      } else {
+        Swal.fire("登入失敗", `${error}`, "error");
+      }
+    }
     clearInputRefs();
     setLoading(false);
   }
@@ -78,27 +76,24 @@ function Page() {
       setLoading(false);
       return;
     }
-    // try {
-    //   const signupName = signupNameRef.current?.value.trim();
-    //   const signupemail = signupEmailRef.current?.value.trim();
-    //   const signupPassword = signupPasswordRef.current?.value.trim();
-    //   const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/signup`, {
-    //     name: signupName,
-    //     email: signupemail,
-    //     password: signupPassword,
-    //   });
-    //   console.log(response);
-    //   Swal.fire("註冊成功", "歡迎使用CanChu", "success");
-    //   Swal.fire("註冊失敗", "你好像是機器人", "error");
-    //   setLoading(false);
-    //   return;
-    // } catch (error) {
-    //   if (error?.response?.status >= 500 && error?.response?.status < 600) {
-    //     Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
-    //   } else {
-    //     Swal.fire("註冊失敗", `${error}`, "error");
-    //   }
-    // }
+    try {
+      const signupName = signupNameRef.current?.value.trim();
+      const signupemail = signupEmailRef.current?.value.trim();
+      const signupPassword = signupPasswordRef.current?.value.trim();
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/signup`, {
+        name: signupName,
+        email: signupemail,
+        password: signupPassword,
+      });
+      console.log(response);
+      Swal.fire("註冊成功", "歡迎使用GPTQuizHub", "success");
+    } catch (error) {
+      if (error?.response?.status >= 500 && error?.response?.status < 600) {
+        Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
+      } else {
+        Swal.fire("註冊失敗", `${error}`, "error");
+      }
+    }
     clearInputRefs();
     setLoading(false);
     setShowLogin(!showLogin);

@@ -1,5 +1,4 @@
-import React from "react";
-import QuestonBankCard from "../../../components/QuestonBankCard";
+import QuestonBankCard from "../../../components/QuestionCard";
 
 function Page() {
   return (
