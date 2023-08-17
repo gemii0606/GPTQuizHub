@@ -9,6 +9,9 @@ const articleDetail = async (req, res) => {
     const user_id = new ObjectId(req.signInId);
     const article_id = new ObjectId(req.params.id);
 
+    console.log(user_id)
+    console.log(article_id)
+
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         await client.connect();
@@ -23,6 +26,8 @@ const articleDetail = async (req, res) => {
             ]
           });
 
+        console.log(findArticle)
+        console.log("1")
         res.status(200).json({
             data: {
                 article: {
