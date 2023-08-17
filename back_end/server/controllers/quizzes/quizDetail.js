@@ -18,7 +18,7 @@ const quizDetail = async (req, res) => {
         const aggregation = [
             {
               $lookup: {
-                from: 'questions', // 另一個集合名稱
+                from: 'quizzes', // 另一個集合名稱
                 localField: 'quiz_id', // 本集合的關聯欄位
                 foreignField: 'quiz_id', // 另一個集合的關聯欄位
                 as: 'combinedData' // 聯結後的欄位名稱
@@ -26,8 +26,8 @@ const quizDetail = async (req, res) => {
             }
           ];
 
-        const quizzesCollection = db.collection('quizzes');
-        const combinedResult = await quizzesCollection.aggregate(aggregation).toArray();
+        const questionsCollection = db.collection('questions');
+        const combinedResult = await questionsCollection.aggregate(aggregation).toArray();
         console.log(combinedResult)
 
         res.status(200).json({
