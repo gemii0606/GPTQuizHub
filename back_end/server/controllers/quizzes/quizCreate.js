@@ -38,7 +38,7 @@ const quizCreate = async (req, res) => {
         
         const ans = await quizzesCollection.findOne({_id:data.insertQuiz.insertedId});
         console.log(ans)
-        const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
+        const updateQuiz = await quizzesCollection.updateOne({ _id: data.insertQuiz.insertedId }, { $set: { status: 'ok' } });
         const ans2 = await quizzesCollection.findOne({_id:data.insertQuiz.insertedId});
         console.log(ans2)
 
