@@ -92,6 +92,7 @@ function QuestonBankCard() {
           setQuestionIndex(questionIndex + 1);
         }
       }
+      setEditQuestion(false);
       setLoading(false);
     });
   }
@@ -100,6 +101,9 @@ function QuestonBankCard() {
   ));
   const QuestionContent = (
     <>
+      <h1 className="mb-5 text-2xl font-bold rounded-lg">
+        {MockData.questions[questionIndex].content}
+      </h1>
       <div className="flex items-center">
         <p className="mr-3">難度 :</p>
         <p>{MockData.questions[questionIndex].difficulty}</p>
@@ -115,7 +119,7 @@ function QuestonBankCard() {
           onClick={() => {
             setShowAnswer(!showAnswer);
           }}
-          className="ml-8"
+          className="text-base font-bold ml-8 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
         >
           {showAnswer ? "隱藏" : "顯示"}
         </button>
@@ -130,19 +134,24 @@ function QuestonBankCard() {
   );
   const OptionsEditItems = MockData.questions[questionIndex].options.map((option) => (
     <div className="flex items-center mt-3" key={option.id}>
-      <p key={option.id} className="mt-3 mr-3 font-bold">
+      <p key={option.id} className="mt-3 mr-3 text-2xl font-bold">
         ({option.id})
       </p>
       <input
         type="text"
         defaultValue={option.content}
         required
-        className="border rounded-md focus:outline-none py-2 px-3.5 min-w-[30rem]"
+        className="border rounded-md focus:outline-none py-2 px-3.5 min-w-[30rem] text-2xl font-bold"
       />
     </div>
   ));
   const QuestionEditArea = (
     <form method="post" onSubmit={editQuestionHandler}>
+      <input
+        type="text"
+        defaultValue={MockData.questions[questionIndex].content}
+        className="min-w-[30rem] border px-4 py-3 text-2xl font-bold rounded-lg mb-5"
+      />
       <div className="flex items-center">
         <p className="mr-3">難度 :</p>
         <select
@@ -150,13 +159,13 @@ function QuestonBankCard() {
           required
           className="px-2 py-1 border rounded-lg"
         >
-          <option value="簡單" className="rounded-lg">
+          <option value="easy" className="rounded-lg">
             簡單
           </option>
-          <option value="普通" className="rounded-lg">
+          <option value="normal" className="rounded-lg">
             普通
           </option>
-          <option value="困難" className="rounded-lg">
+          <option value="hard" className="rounded-lg">
             困難
           </option>
         </select>
@@ -219,7 +228,6 @@ function QuestonBankCard() {
     <div className="bg-white border p-5 min-w-[80rem] rounded-lg relative" key={1}>
       <div className="flex mb-4">
         <p className="mr-3">{`第${questionIndex + 1}題`}</p>
-        <h1>{MockData.questions[questionIndex].content}</h1>
         <button
           type="button"
           onClick={() => {
@@ -251,6 +259,7 @@ function QuestonBankCard() {
           onClick={() => {
             setQuestionIndex(questionIndex - 1);
           }}
+          hidden={editQuestion}
           className="text-base font-bold mr-6 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
         >
           上一題
@@ -261,6 +270,7 @@ function QuestonBankCard() {
           onClick={() => {
             setQuestionIndex(questionIndex + 1);
           }}
+          hidden={editQuestion}
           className="text-base font-bold mr-6 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
         >
           下一題
@@ -268,6 +278,7 @@ function QuestonBankCard() {
         {questionIndex === MockData.questions.length - 1 && (
           <Link
             href="/questionsbanks"
+            hidden={editQuestion}
             className="text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
           >
             回到題庫

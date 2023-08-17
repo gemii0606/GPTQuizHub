@@ -1,4 +1,3 @@
-import React from "react";
 import QuestonBankCard from "../../../components/QuestonBankCard";
 
 function Page() {
