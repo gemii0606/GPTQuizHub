@@ -19,7 +19,14 @@ const articlesList = async (req, res) => {
 
         const articles = await quizzesCollection.find({
             user_id: signInId,
-            created_at: cursor ? { $lt: cursor } : { $exists: true }
+            created_at: cursor ? { $lt: cursor } : { $exists: true },
+            is_delete: false
+        }).project({
+            _id: 1,     
+            tags: 1,
+            created_at: 1,
+            title:1
+            // user_id: -1
         }).sort({ created_at: -1 }).limit(limit).toArray();
 
         // console.log(quizzes[li])
