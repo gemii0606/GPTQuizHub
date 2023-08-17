@@ -4,6 +4,9 @@ require('dotenv').config({ path: __dirname + `/../../.env` });
 const axios = require('axios');
 
 
+const url = process.env.MONGOURL;
+const dbName = 'GPTQuizHub';
+
 const quizCreate = async (req, res) => {
     const user_id = new ObjectId(req.signInId);
     const article = req.body.article;
