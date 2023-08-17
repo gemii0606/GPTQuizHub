@@ -15,8 +15,10 @@
     "next": "13.4.13",
     "nookies": "^2.5.2",
     "prettier": "^3.0.1",
+    "qrcode.react": "^3.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "socket.io-client": "^4.7.2",
     "styled-components": "^6.0.7",
     "sweetalert2": "^11.7.22",
     "zustand": "^4.4.1"
