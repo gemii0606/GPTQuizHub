@@ -43,6 +43,7 @@ const signUp = async (req, res) => {
     // Insert the new user
     const insertResult = await usersCollection.insertOne(newUser);
     console.log('New user inserted:', insertResult.insertedId);
+    console.log(insertResult);
 
     // Create the JWT Token Payload
     const payload = {
