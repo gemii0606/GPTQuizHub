@@ -59,7 +59,7 @@ const quizDetail = async (req, res) => {
 				    title: combinedResult.title,
 				    tag: combinedResult.tag,
 				    created_at : combinedResult.created_at,
-			        question : questions
+			        questions : questions
                 }
             }
         });
