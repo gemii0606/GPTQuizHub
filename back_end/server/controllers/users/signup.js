@@ -37,7 +37,8 @@ const signUp = async (req, res) => {
       name,
       email,
       password: securePassword,
-      provider: 'native'
+      provider: 'native',
+      tags:[]
     };
 
     // Insert the new user
