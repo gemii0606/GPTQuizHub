@@ -7,7 +7,7 @@ const dbName = 'GPTQuizHub';
 
 const articleDetail = async (req, res) => {
     const user_id = new ObjectId(req.signInId);
-    const article_id = req.params.id;
+    const article_id = new ObjectId(req.params.id);
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
