@@ -32,9 +32,9 @@ function Storearticle() {
   }
   function handleSubmit() {
     Swal.fire(
-      "Succesfully submit!",
-      "Let create the questions~",
-      "error",
+      "Succesfully submit",
+      "Let create the questions!",
+      "success",
     );
   }
   return (
