@@ -1,7 +1,7 @@
 "use client";
 
-import QuestionBankSideBar from "../../components/QuestionBankSideBar";
-import QuestionsBanksCard from "../../components/QuestionBankCard";
+import QuestionBankSideBar from "../../components/questionbanks/QuestionBankSideBar";
+import QuestionsBanksCard from "../../components/questionbanks/QuestionBankCard";
 
 const MockData = [
   {

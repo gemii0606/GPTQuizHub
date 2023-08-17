@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import Swal from "sweetalert2";
-import Modal from "./Modal";
+import Modal from "./layout/Modal";
 
 function QuizSetting({
   modalToggleHandler,

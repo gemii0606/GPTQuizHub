@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import Link from "next/link";
-import Edit from "../public/edit.png";
+import Edit from "../../public/edit.png";
 
 const MockData = {
   id: 1,
