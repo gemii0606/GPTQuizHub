@@ -37,10 +37,6 @@ const gptquizgenerator = async (req, res) => {
     const insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
 
     console.log('here is gpt');
-    console.log(user_id)
-    console.log(article)
-    console.log(total)
-    console.log(insertQuiz)
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
