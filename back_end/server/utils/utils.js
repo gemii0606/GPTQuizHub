@@ -51,6 +51,15 @@ function encodejsonBase64(obj) {
     return encodedObj;
 }
 
+function getCurrentTime() {
+    // Get the current date object
+    const currentDate = new Date();
+
+    // Format the date object to the desired format
+    const formattedTime = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+    return formattedTime;
+}
+
 module.exports = {
     isValidEmail,
     hashPassword,
@@ -58,5 +67,6 @@ module.exports = {
     verifyToken,
     generateRandomString,
     decodejsonBase64,
-    encodejsonBase64
+    encodejsonBase64,
+    getCurrentTime
 };

@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
 const { hashPassword, isValidEmail, generateToken } = require('../../utils/utils');
+require('dotenv').config({ path: __dirname + `/../../.env` });
 
 const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';

@@ -15,8 +15,8 @@ const signUp = async (req, res) => {
     return res.status(400).json({ error: 'Please fill the correct email address!' });
   }
 
+  const client = new MongoClient(url, { useUnifiedTopology: true });
   try {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
     await client.connect();
     console.log('Connected to MongoDB');
 
@@ -37,7 +37,8 @@ const signUp = async (req, res) => {
       name,
       email,
       password: securePassword,
-      provider: 'native'
+      provider: 'native',
+      tags:[]
     };
 
     // Insert the new user
@@ -62,11 +63,11 @@ const signUp = async (req, res) => {
         user: payload,
       },
     });
-
-    client.close();
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'An error occurred while signing up.' });
+      console.error('Error:', error);
+      res.status(500).json({ error: 'An error occurred while signing up.' });
+  } finally {
+      await client.close();
   }
 };
 
