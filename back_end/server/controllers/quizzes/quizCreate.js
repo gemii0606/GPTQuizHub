@@ -45,6 +45,7 @@ const quizCreate = async (req, res) => {
         const quizzesCollection = db.collection('quizzes');
         const insertQuiz = await quizzesCollection.insertOne({ 
             user_id: user_id,
+            title: article.title,
             status: "pending",
             created_at: getCurrentTime()
         });
