@@ -32,7 +32,7 @@ const requestJson = (prompt, jsonStructure) => `${prompt}
  }
 
 const quizCreate = async (req, res) => {
-    const user_id = ObjectId(req.signInId);
+    const user_id = new ObjectId(req.signInId);
     const article = req.body.article;
     const total = ['easy', 'normal', 'hard'].reduce((sum, key) => sum + parseInt(article[key]), 0);
 
