@@ -37,6 +37,10 @@ const gptquizgenerator = async (req, res) => {
     const insertQuiz = req.body.insertQuiz;
 
     console.log('here is gpt');
+    console.log(user_id)
+    console.log(article)
+    console.log(total)
+    console.log(insertQuiz)
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
@@ -89,10 +93,12 @@ const gptquizgenerator = async (req, res) => {
 
         const questionsCollection = db.collection('questions');
         const insertQuestion = await questionsCollection.insertMany(questionsList);
+        console.log(insertQuestion)
         console.log('question ok')
 
         const quizzesCollection = db.collection('questions');
         const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
+        console.log(updateQuiz)
         console.log('quiz ok')
         res.status(200).json({ message: "gptquizgenerator completed successfully." });
 
