@@ -15,15 +15,13 @@ const quizList = async (req, res) => {
         const quizzesCollection = db.collection('quizzes');
         const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
 
-        console.log(cursor)
-
         const quizzes = await quizzesCollection.find({
             user_id: signInId,
             created_at: cursor ? { $lt: cursor } : { $exists: true }
         }).project({
             _id: 1,     
-            status: 1, 
             created_at: 1,
+            tag: 1,
             title:1
             // user_id: -1
         }).sort({ created_at: -1 }).limit(limit).toArray();
