@@ -31,7 +31,7 @@ const template = {
  }
 
 const gptquizgenerator = async (req, res) => {
-    const user_id = ObjectId(req.body.user_id);
+    const user_id = new ObjectId(req.body.user_id);
     const article = req.body.article;
     const total = req.body.total;
     const insertQuiz = req.body.insertQuiz;
