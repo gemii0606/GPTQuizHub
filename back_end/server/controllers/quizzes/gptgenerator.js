@@ -89,12 +89,10 @@ const gptquizgenerator = async (req, res) => {
 
         const questionsCollection = db.collection('questions');
         const insertQuestion = await questionsCollection.insertMany(questionsList);
-        console.log(insertQuestion)
         console.log('question ok')
 
         const quizzesCollection = db.collection('questions');
         const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuizId }, { $set: { status: 'ok' } });
-        console.log(updateQuiz)
         console.log('quiz ok')
         res.status(200).json({ message: "gptquizgenerator completed successfully." });
 
