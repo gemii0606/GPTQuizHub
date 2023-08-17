@@ -6,9 +6,7 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const signIn = async (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
-        await client.connect();
         const {provider, email, password} = req.body;
         if(!provider || !email || !password)
             return res.status(400).json({ error: 'The input can\'t be null' });
@@ -40,8 +38,6 @@ const signIn = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Internal server error." })
-    } finally {
-        await client.close();
     }
 }
 
