@@ -32,7 +32,7 @@ const requestJson = (prompt, jsonStructure) => `${prompt}
  }
 
 const quizCreate = async (req, res) => {
-    const user_id = req.signInId;
+    const user_id = ObjectId(req.signInId);
     const article = req.body.article;
     const total = ['easy', 'normal', 'hard'].reduce((sum, key) => sum + parseInt(article[key]), 0);
 
@@ -72,7 +72,7 @@ const quizCreate = async (req, res) => {
             res.status(500).json({ error: `ChatGPT got ${completion.status} error.` });
             return 
         }
-        
+
         const gptResult = JSON.parse(completion.data.choices[0].message?.content);
         if (!gptResult) {
             const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'failed' } });
@@ -107,9 +107,10 @@ const quizCreate = async (req, res) => {
 
         const questionsCollection = db.collection('questions');
         const insertQuestion = await questionsCollection.insertMany(questionsList);
+        console.log('question ok')
 
         const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
-        console.log('1')
+        console.log('quiz ok')
         res.status(200).json({
             data: {
                 quiz: {id: insertQuiz.insertedId}
