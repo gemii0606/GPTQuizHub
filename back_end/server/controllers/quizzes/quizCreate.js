@@ -50,6 +50,12 @@ const quizCreate = async (req, res) => {
             created_at: getCurrentTime()
         });
 
+        res.status(200).json({
+            data: {
+                quiz: {id: insertQuiz.insertedId}
+            }
+        });
+
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             // max_tokens: 128,
@@ -111,12 +117,7 @@ const quizCreate = async (req, res) => {
 
         const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'ok' } });
         console.log('quiz ok')
-        res.status(200).json({
-            data: {
-                quiz: {id: insertQuiz.insertedId}
-            }
-        });
-        return
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Internal server error." })
