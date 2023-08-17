@@ -1,8 +1,13 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const navbar = () => {
+function Navbar() {
+  const router = useRouter();
+  function handleLogout() {
+    router.push("/login");
+  }
   return (
     <div className="bg-white w-full h-auto p-2.5 border-b-2 flex items-center">
       <Link href="/" passHref className="text-5xl text-[#8198BF] inter">GPTQuizHub</Link>
@@ -17,9 +22,14 @@ const navbar = () => {
           <p className="ml-2 mr-2 border-[#8198BF] hover:border-b-4">測驗紀錄</p>
         </Link>
       </div>
-      <Image src="/user.png" alt="User" width={40} height={40} className="ml-auto" />
+      <div className="flex mx-6 ml-auto">
+        <button type="button" className="mx-4 hover:-translate-y-2" onClick={handleLogout}>
+          <Image src="/logout.png" alt="logoutbtn" width={30} height={30} />
+        </button>
+        <Image src="/user.png" alt="User" width={40} height={40} className="" />
+      </div>
     </div>
   );
-};
+}
 
-export default navbar;
+export default Navbar;
