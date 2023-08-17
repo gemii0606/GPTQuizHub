@@ -32,7 +32,7 @@ const quizDetail = async (req, res) => {
           ];
 
         const quizzesCollection = db.collection('quizzes');
-        const combinedResult = await quizzesCollection.aggregate(aggregation).toArray();
+        const [combinedResult] = await quizzesCollection.aggregate(aggregation).toArray();
         console.log(combinedResult)
         console.log(combinedResult.combinedData[0])
 
