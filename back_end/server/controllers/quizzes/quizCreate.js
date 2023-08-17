@@ -50,16 +50,6 @@ const quizCreate = async (req, res) => {
             created_at: getCurrentTime()
         });
 
-        const articlesCollection = db.collection('articles');
-        const insertArticle = await articlesCollection.insertOne({ 
-            user_id: user_id,
-            quiz_id: insertQuiz.insertedId,
-            title: article.title, 
-            category: article.category,
-            content: article.content, 
-            created_at: getCurrentTime()
-        });
-
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             // max_tokens: 128,
@@ -77,7 +67,28 @@ const quizCreate = async (req, res) => {
                 }
             ],
         });
+
+        if (completion.status !== 200) {
+            res.status(500).json({ error: `ChatGPT got ${completion.status} error.` });
+            return 
+        }
+        
         const gptResult = JSON.parse(completion.data.choices[0].message?.content);
+        if (!gptResult) {
+            const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuiz.insertedId }, { $set: { status: 'failed' } });
+            res.status(500).json({ error: 'The json strucure generated from gpt is not a valid one, please try again' });
+            return 
+        }
+
+        const articlesCollection = db.collection('articles');
+        const insertArticle = await articlesCollection.insertOne({ 
+            user_id: user_id,
+            quiz_id: insertQuiz.insertedId,
+            title: article.title, 
+            category: article.category,
+            content: article.content, 
+            created_at: getCurrentTime()
+        });
 
         const questionsList = gptResult.questions.map(obj => {
             const result = {
