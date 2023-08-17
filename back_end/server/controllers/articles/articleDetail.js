@@ -7,7 +7,7 @@ const dbName = 'GPTQuizHub';
 
 const articleDetail = async (req, res) => {
     const user_id = new ObjectId(req.signInId);
-    const article_id = new ObjectId(req.params.id);
+    const quiz_id = new ObjectId(req.params.id);
 
     console.log(user_id)
     console.log(article_id)
@@ -18,8 +18,8 @@ const articleDetail = async (req, res) => {
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
 
-        const articlesCollection = db.collection('articles');
-        const findArticle = await articlesCollection.findOne({ _id: article_id });
+        const quizzesCollection = db.collection('quizzes');
+        const findArticle = await quizzesCollection.findOne({ _id: quiz_id });
 
         console.log(findArticle)
         console.log("1")

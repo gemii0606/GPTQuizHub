@@ -47,6 +47,8 @@ const quizCreate = async (req, res) => {
             user_id: user_id,
             title: article.title,
             tag: article.tag,
+            content: article.content,
+            is_deleted: "false",
             status: "pending",
             created_at: getCurrentTime()
         });
@@ -86,16 +88,6 @@ const quizCreate = async (req, res) => {
             res.status(500).json({ error: 'The json strucure generated from gpt is not a valid one, please try again' });
             return 
         }
-
-        const articlesCollection = db.collection('articles');
-        const insertArticle = await articlesCollection.insertOne({ 
-            user_id: user_id,
-            quiz_id: insertQuiz.insertedId,
-            title: article.title, 
-            tag: article.tag,
-            content: article.content, 
-            created_at: getCurrentTime()
-        });
 
         const usersCollection = db.collection('users');
         const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
