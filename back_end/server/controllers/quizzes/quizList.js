@@ -20,6 +20,12 @@ const quizList = async (req, res) => {
         const quizzes = await quizzesCollection.find({
             user_id: signInId,
             created_at: cursor ? { $lt: cursor } : { $exists: true }
+        }).project({
+            _id: 1,     
+            status: 1, 
+            created_at: 1,
+            title:1
+            // user_id: -1
         }).sort({ created_at: -1 }).limit(limit).toArray();
 
         // console.log(quizzes[li])
