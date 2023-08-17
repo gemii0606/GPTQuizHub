@@ -36,18 +36,30 @@ const quizDetail = async (req, res) => {
         console.log(combinedResult)
         console.log(combinedResult.combinedData[0])
 
-        // const questions = combinedResult.map(obj => {
-
-        // })
+        const questions = combinedResult.combinedData.map(obj => {
+            const result = {
+                id: obj._id,
+                question: obj.question,
+                type: obj.type,
+                difficulty: obj.difficulty,
+                options: [
+                    {id: 1, content: obj.options[0]},
+                    {id: 2, content: obj.options[1]},
+                    {id: 3, content: obj.options[2]},
+                    {id: 4, content: obj.options[3]},
+                ]
+            };
+            return result;
+        })
 
         res.status(200).json({
             data: {
                 quiz: {
-                    id: 1,
-				    title: 1,
-				    tag: 1,
-				    created_at : 1,
-			        question : []
+                    id: combinedResult._id,
+				    title: combinedResult.title,
+				    tag: combinedResult.tag,
+				    created_at : combinedResult.created_at,
+			        question : questions
                 }
             }
         });
