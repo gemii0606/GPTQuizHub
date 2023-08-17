@@ -20,6 +20,7 @@ const { articlesList } = require('../controllers/articles/articlesList');
 const { articleDetail } = require('../controllers/articles/articleDetail');
 
 const { quizCreate } = require('../controllers/quizzes/quizCreate');
+const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
 const { quizDetail } = require('../controllers/quizzes/quizDetail');
 
 router.post('/users/signup', signUp)
@@ -32,6 +33,8 @@ router.get('/quizzes/:id', authAccessToken, quizDetail)
 
 router.get('/articles/search', authAccessToken, articlesList)
 router.get('/articles/:id', authAccessToken, articleDetail)
+
+router.post('/gptquizgenerator', gptquizgenerator )
 
 
 module.exports = router;
