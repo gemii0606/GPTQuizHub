@@ -46,6 +46,7 @@ const quizCreate = async (req, res) => {
         const insertQuiz = await quizzesCollection.insertOne({ 
             user_id: user_id,
             title: article.title,
+            tag: article.tag,
             status: "pending",
             created_at: getCurrentTime()
         });
@@ -91,10 +92,13 @@ const quizCreate = async (req, res) => {
             user_id: user_id,
             quiz_id: insertQuiz.insertedId,
             title: article.title, 
-            category: article.category,
+            tag: article.tag,
             content: article.content, 
             created_at: getCurrentTime()
         });
+
+        const usersCollection = db.collection('users');
+        const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
 
         const questionsList = gptResult.questions.map(obj => {
             const result = {
@@ -122,7 +126,7 @@ const quizCreate = async (req, res) => {
         console.log(error);
         res.status(500).json({ error: "Internal server error." })
     } finally {
-        console.log('2')
+        console.log('client close')
         await client.close();
     }
 }
