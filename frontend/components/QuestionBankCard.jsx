@@ -39,13 +39,13 @@ function QuestionsBanksCard({ questionsBank }) {
                 單人測驗
               </Link>
               <Link
-                href={`/one-on-one/${questionsBank.id}`}
+                href={`/two-player/${questionsBank.id}`}
                 className="block text-base font-bold py-2.5 px-4 rounded-md hover:opacity-50 border-b"
               >
                 雙人測驗
               </Link>
               <Link
-                href={`/battle/${questionsBank.id}`}
+                href={`/multiplayer/${questionsBank.id}`}
                 className="block text-base font-bol py-2.5 px-4 rounded-md hover:opacity-50"
               >
                 多人測驗
