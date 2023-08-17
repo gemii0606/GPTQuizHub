@@ -3,6 +3,7 @@ const { encodejsonBase64, decodejsonBase64 } = require('../../utils/utils');
 
 const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
+const limit = 10;
 
 
 const articlesList = async (req, res) => {
@@ -12,15 +13,15 @@ const articlesList = async (req, res) => {
     try {
         await client.connect();
         const db = client.db(dbName);
-        const articlesCollection = db.collection('articles');
+        const articlesCollection = db.collection('quizzes');
         const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
 
         console.log(cursor)
 
-        const articles = await quizzesCollection.find({
+        const articles = await articlesCollection.find({
             user_id: signInId,
             created_at: cursor ? { $lt: cursor } : { $exists: true },
-            is_delete: false
+            is_deleted: false
         }).project({
             _id: 1,     
             tags: 1,

@@ -3,7 +3,7 @@ const { encodejsonBase64, decodejsonBase64 } = require('../../utils/utils');
 
 const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
-const limit = 5;
+const limit = 10;
 
 const quizList = async (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
