@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import DeleteIcon from "../public/delete.png";
+import DeleteIcon from "../../public/delete.png";
 
 function QuestionsBanksCard({ questionsBank }) {
   const [showQuizType, setShowQuizType] = useState(false);
@@ -10,7 +10,7 @@ function QuestionsBanksCard({ questionsBank }) {
   const handleOutsideClick = (e) => {
     const clickedElement = e.target;
     if (showTypeButtonRef.current && !showTypeButtonRef.current.contains(clickedElement)) {
-      setShowQuizType(false);
+      setShowQuizType(!showQuizType);
     }
   };
   useEffect(() => {
@@ -41,7 +41,7 @@ function QuestionsBanksCard({ questionsBank }) {
       </div>
       <div className="flex items-center">
         <div className="block text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md hover:opacity-50 mr-5">
-          <Link href={`/questionsbanks/${questionsBank.id}`} className="flex items-center cursor-pointer">
+          <Link href={`/questionbanks/${questionsBank.id}`} className="flex items-center cursor-pointer">
             複習
           </Link>
         </div>
@@ -50,6 +50,7 @@ function QuestionsBanksCard({ questionsBank }) {
             type="button"
             className="relative text-base font-bold text-white bg-[#25B857] py-2.5 px-4 rounded-md hover:opacity-50 mr-5"
             onClick={() => setShowQuizType(!showQuizType)}
+            ref={showTypeButtonRef}
           >
             測驗形式
           </button>
@@ -62,7 +63,7 @@ function QuestionsBanksCard({ questionsBank }) {
                 單人測驗
               </Link>
               <Link
-                href={`/two-player/${questionsBank.id}`}
+                href={`/twoplayer/${questionsBank.id}`}
                 className="block text-base font-bold py-2.5 px-4 rounded-md hover:opacity-50 border-b"
               >
                 雙人測驗
@@ -76,7 +77,7 @@ function QuestionsBanksCard({ questionsBank }) {
             </div>
           )}
         </div>
-        <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
+        <button type="button" onClick={deleteQuestionBankHandler}>
           <Image src={DeleteIcon} alt="delete-icon" width={30} height={30} />
         </button>
       </div>
