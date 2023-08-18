@@ -105,8 +105,8 @@ function Page() {
   const [randomOrder, setRandomOrder] = useState(false);
   const [questionNumber, setQuestionNumber] = useState(MockData.questions.length);
   const [shuffledOptions, setShuffledOptions] = useState([]);
-  // const [useCorrectRatio, setUseCorrectRatio] = useState(false);
-  // const [correctRatio, setCorrectRatio] = useState(1.05);
+  const [useCorrectRatio, setUseCorrectRatio] = useState(false);
+  const [correctRatio, setCorrectRatio] = useState(1.05);
   const [score, setScore] = useState(0);
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const router = useRouter();
@@ -201,6 +201,10 @@ function Page() {
               setRandomOptions={setRandomOptions}
               randomOrder={randomOrder}
               setRandomOrder={setRandomOrder}
+              useCorrectRatio={useCorrectRatio}
+              setUseCorrectRatio={setUseCorrectRatio}
+              correctRatio={correctRatio}
+              setCorrectRatio={setCorrectRatio}
             />
           )}
           <button
@@ -254,14 +258,14 @@ function Page() {
         moveToNextQuestion();
       });
     }
-    if (chooseCorrectAnswer && consecutiveCorrectAnswers) {
+    if (chooseCorrectAnswer && consecutiveCorrectAnswers && useCorrectRatio) {
       Swal.fire({
         icon: "success",
-        title: "連續答對，分數乘1.05",
+        title: `連續答對，分數乘${correctRatio}`,
         showConfirmButton: false,
         timer: 1000,
       }).then(() => {
-        setScore((prevScore) => prevScore + Math.round(questionScore * 1.05));
+        setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
         moveToNextQuestion();
       });
     }
@@ -339,7 +343,7 @@ function Page() {
             disabled={loading}
             onClick={() => {
               setLoading(true);
-              router.push("/questionsbanks");
+              router.push("/questionbanks");
               setLoading(false);
             }}
             className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
