@@ -1,8 +1,26 @@
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import Swal from "sweetalert2";
+import DeleteIcon from "../public/delete.png";
 
 function QuestionsBanksCard({ questionsBank }) {
   const [showQuizType, setShowQuizType] = useState(false);
+  function deleteQuestionBankHandler() {
+    Swal.fire({
+      title: "確定刪除?",
+      text: "你無法找回此題庫",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "確定刪除",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("成功", "題庫已刪除", "success");
+      }
+    });
+  }
   return (
     <div key={questionsBank.id} className="flex items-center justify-between px-4 py-2 mb-3 border rounded-lg">
       <div>
@@ -17,7 +35,7 @@ function QuestionsBanksCard({ questionsBank }) {
         <div>
           <button
             type="button"
-            className="relative text-base font-bold text-white bg-[#25B857] py-2.5 px-4 rounded-md hover:opacity-50"
+            className="relative text-base font-bold text-white bg-[#25B857] py-2.5 px-4 rounded-md hover:opacity-50 mr-5"
             onClick={() => setShowQuizType(!showQuizType)}
           >
             測驗形式
@@ -45,6 +63,9 @@ function QuestionsBanksCard({ questionsBank }) {
             </div>
           )}
         </div>
+        <button type="button" onClick={deleteQuestionBankHandler}>
+          <Image src={DeleteIcon} alt="delete-icon" width={30} height={30} />
+        </button>
       </div>
     </div>
   );

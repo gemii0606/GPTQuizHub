@@ -35,8 +35,7 @@ const MockData = {
         },
       ],
       correct_answer: 1,
-      explanation:
-        "key用於協助React辨識元件的位置，從而確定元件的新增、移除或修改，以避免可能出現的錯誤。",
+      explanation: "key用於協助React辨識元件的位置，從而確定元件的新增、移除或修改，以避免可能出現的錯誤。",
     },
     {
       id: 2,
@@ -61,8 +60,7 @@ const MockData = {
         },
       ],
       correct_answer: 3,
-      explanation:
-        "正確的key需求是獨特唯一且穩定可預測的，不應使用index作為key，因為可能會導致渲染錯誤。",
+      explanation: "正確的key需求是獨特唯一且穩定可預測的，不應使用index作為key，因為可能會導致渲染錯誤。",
     },
   ],
 };
@@ -102,9 +100,7 @@ function QuestonBankCard() {
   ));
   const QuestionContent = (
     <>
-      <h1 className="mb-5 text-2xl font-bold rounded-lg">
-        {MockData.questions[questionIndex].content}
-      </h1>
+      <h1 className="mb-5 text-2xl font-bold rounded-lg">{MockData.questions[questionIndex].content}</h1>
       <div className="flex items-center">
         <p className="mr-3">難度 :</p>
         <p>{MockData.questions[questionIndex].difficulty}</p>
@@ -112,9 +108,7 @@ function QuestonBankCard() {
       {OptionsItems}
       <div className="flex items-center mt-4 mb-4">
         <p className="mr-3 font-bold">正確答案 :</p>
-        {showAnswer && (
-          <p className="font-bold">({MockData.questions[questionIndex].correct_answer})</p>
-        )}
+        {showAnswer && <p className="font-bold">({MockData.questions[questionIndex].correct_answer})</p>}
         <button
           type="button"
           onClick={() => {
@@ -127,9 +121,7 @@ function QuestonBankCard() {
       </div>
       <div className="mb-4">
         <p className="mb-2">說明 :</p>
-        <div className="break-words whitespace-pre-wrap">
-          {MockData.questions[questionIndex].explanation}
-        </div>
+        <div className="break-words whitespace-pre-wrap">{MockData.questions[questionIndex].explanation}</div>
       </div>
     </>
   );
@@ -235,13 +227,7 @@ function QuestonBankCard() {
             setEditQuestion(() => !editQuestion);
           }}
         >
-          <Image
-            src={Edit}
-            alt="edit-icon"
-            width={20}
-            height={20}
-            className="absolute cursor-pointer top-3 right-3"
-          />
+          <Image src={Edit} alt="edit-icon" width={20} height={20} className="absolute cursor-pointer top-3 right-3" />
         </button>
       </div>
       {editQuestion ? QuestionEditArea : QuestionContent}
