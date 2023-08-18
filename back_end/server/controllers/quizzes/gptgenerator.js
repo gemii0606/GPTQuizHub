@@ -37,7 +37,7 @@ const gptquizgenerator = async (req, res) => {
     const insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
 
     console.log('here is gpt');
-
+    console.log(article)
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         const completion = await openai.createChatCompletion({
