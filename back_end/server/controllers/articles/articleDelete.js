@@ -22,7 +22,7 @@ const articleDelete = async (req, res) => {
         res.status(200).json({
             data: {
                 article: {
-                    id: req.params.id,
+                    id: quiz_id
                 }
             }
         });

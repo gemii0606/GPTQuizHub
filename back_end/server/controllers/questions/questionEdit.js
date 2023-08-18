@@ -20,13 +20,12 @@ const questionEdit = async (req, res) => {
         const updateQuestion = await questionsCollection.updateOne(
             {_id: question_id }, 
             { $set: {...userEdit} }
-            
         );
 
         res.status(200).json({
             data: {
                 question: {
-                    id: req.params.id
+                    id: question_id
                 }
             }
         });
