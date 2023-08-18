@@ -278,7 +278,7 @@ function QuestonBankCard() {
         </button>
         {questionIndex === MockData.questions.length - 1 && (
           <Link
-            href="/questionsbanks"
+            href="/questionbanks"
             hidden={editQuestion}
             className="text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
           >

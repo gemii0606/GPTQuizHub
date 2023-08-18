@@ -92,6 +92,7 @@ const MockData = {
 };
 // TODO:隨機題目排序
 // TODO:根據題目數量選擇相對應的題數
+// TODO:把SWAL2加入THEN
 function Page() {
   const [quizStatus, setQuizStatus] = useState("start");
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -193,7 +194,7 @@ function Page() {
           <button
             type="button"
             onClick={() => {
-              router.push("/questionsbanks");
+              router.push("/questionbanks");
             }}
             className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
           >
@@ -296,7 +297,7 @@ function Page() {
             disabled={loading}
             onClick={() => {
               setLoading(true);
-              router.push("/questionsbanks");
+              router.push("/questionbanks");
               setLoading(false);
             }}
             className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"

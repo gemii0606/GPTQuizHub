@@ -1,6 +1,6 @@
 "use client";
 
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
@@ -92,7 +92,7 @@ const MockData = {
     },
   ],
 };
-const socket = io(`ws://localhost:3000/twoplayer/${id}`);
+// const socket = io(`ws://localhost:3000/twoplayer/${id}`);
 function Page() {
   const [quizStatus, setQuizStatus] = useState("start");
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -105,7 +105,23 @@ function Page() {
   const [randomOrder, setRandomOrder] = useState(false);
   const [questionNumber, setQuestionNumber] = useState(MockData.questions.length);
   const [shuffledOptions, setShuffledOptions] = useState([]);
+  // const [useCorrectRatio, setUseCorrectRatio] = useState(false);
+  // const [correctRatio, setCorrectRatio] = useState(1.05);
+  const [score, setScore] = useState(0);
+  const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const router = useRouter();
+  // useEffect(() => {
+  //   // 發送訊息
+  //   socket.emit("join_game", { playerId: "player1" });
+  //   // 接收確認訊息
+  //   socket.on("joined", (data) => {
+  //     console.log(data.message);
+  //   });
+  //   // 清除 WebSocket 連接
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
   useEffect(() => {
     setShuffledOptions(
       randomOptions
@@ -133,16 +149,13 @@ function Page() {
       setSeconds(questionSeconds);
     }
   };
-  const handleTimeUp = () => {
-    moveToNextQuestion();
-  };
   useEffect(() => {
     if (quizStatus === "process") {
       const interval = setInterval(() => {
         if (seconds > 0) {
           setSeconds((prevSeconds) => prevSeconds - 1);
         } else {
-          handleTimeUp();
+          moveToNextQuestion();
         }
       }, 1000);
       return () => clearInterval(interval);
@@ -182,8 +195,8 @@ function Page() {
               modalToggleHandler={ModalToggleHandler}
               questionNumber={questionNumber}
               setQuestionNumber={setQuestionNumber}
-              setQuestionSeconds={setQuestionSeconds}
               questionSeconds={questionSeconds}
+              setQuestionSeconds={setQuestionSeconds}
               randomOptions={randomOptions}
               setRandomOptions={setRandomOptions}
               randomOrder={randomOrder}
@@ -203,7 +216,7 @@ function Page() {
           <button
             type="button"
             onClick={() => {
-              router.push("/questionsbanks");
+              router.push("/questionbanks");
             }}
             className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
           >
@@ -215,27 +228,42 @@ function Page() {
   );
   const handleOptionClick = (optionId) => {
     const selectedOption = shuffledOptions.find((option) => option.id === optionId);
-    if (selectedOption && selectedOption.id === MockData.questions[questionIndex].correct_answer) {
+    const chooseCorrectAnswer =
+      selectedOption && selectedOption.id === MockData.questions[questionIndex].correct_answer;
+    const elapsedTime = questionSeconds - seconds + 0.5;
+    const questionScore = Math.max(Math.round(100 - (100 * elapsedTime) / questionSeconds), 5);
+    if (chooseCorrectAnswer) {
       Swal.fire({
         icon: "success",
         title: "答對了",
         showConfirmButton: false,
         timer: 1000,
+      }).then(() => {
+        setScore((prevScore) => prevScore + questionScore);
+        setConsecutiveCorrectAnswers(true);
+        moveToNextQuestion();
       });
     } else {
-      setWrongAnswer((prevWrongAnswer) => [...prevWrongAnswer, questionIndex]);
       Swal.fire({
         icon: "error",
         title: "答錯了",
         showConfirmButton: false,
         timer: 1000,
+      }).then(() => {
+        setConsecutiveCorrectAnswers(false);
+        moveToNextQuestion();
       });
     }
-    if (questionIndex === MockData.questions.length - 1) {
-      setQuizStatus("end");
-    } else {
-      setQuestionIndex((prevIndex) => prevIndex + 1);
-      setSeconds(questionSeconds);
+    if (chooseCorrectAnswer && consecutiveCorrectAnswers) {
+      Swal.fire({
+        icon: "success",
+        title: "連續答對，分數乘1.05",
+        showConfirmButton: false,
+        timer: 1000,
+      }).then(() => {
+        setScore((prevScore) => prevScore + Math.round(questionScore * 1.05));
+        moveToNextQuestion();
+      });
     }
   };
   const OptionsItems = shuffledOptions.map((option) => (
@@ -259,9 +287,10 @@ function Page() {
               <div className="flex my-4">
                 <p className="mr-3 text-3xl">難度 :</p>
                 <p className="mr-6 text-3xl">{MockData.questions[questionIndex].difficulty}</p>
-                <p className="text-3xl">
+                <p className="mr-6 text-3xl">
                   {questionIndex + 1} / {MockData.questions.length}
                 </p>
+                <p className="text-3xl">目前分數: {score}</p>
               </div>
             </div>
             <div className="flex flex-col items-center mb-10">{OptionsItems}</div>
@@ -270,10 +299,26 @@ function Page() {
       </div>
     </div>
   );
+  // let gameResult;
+  // if (yourFinalScore > opponentFinalScore) {
+  //   gameResult = "你赢了！";
+  // } else if (yourFinalScore < opponentFinalScore) {
+  //   gameResult = "你輸了！";
+  // } else {
+  //   gameResult = "平局！";
+  // }
   const EndPage = (
     <div className="flex justify-center mt-[10rem]">
       <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
         <div>
+          <p className="text-4xl">你的得分: {score}</p>
+          {/* <div>
+            <p className="text-4xl">你的分数: {yourScore}</p>
+            <p className="text-4xl">對方的分数: {opponentScore}</p>
+            <p className="text-4xl">你的得分: {yourFinalScore}</p>
+            <p className="text-4xl">對方的得分: {opponentFinalScore}</p>
+            <p className="text-4xl">结果: {gameResult}</p>
+          </div> */}
           <button
             type="button"
             onClick={() => {
@@ -281,6 +326,8 @@ function Page() {
               setQuizStatus("start");
               setSeconds(10);
               setQuestionIndex(0);
+              setScore(0);
+              setConsecutiveCorrectAnswers(false);
               setLoading(false);
             }}
             className="block px-24 py-4 text-4xl mr-8 bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"

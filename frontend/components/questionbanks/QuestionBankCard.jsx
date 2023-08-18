@@ -16,7 +16,7 @@ function QuestionsBanksCard({ questionsBank }) {
       <div className="flex items-center">
         <div className="block text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md hover:opacity-50 mr-5">
           <Link
-            href={`/questionsbanks/${questionsBank.id}`}
+            href={`/questionsbank/${questionsBank.id}`}
             className="flex items-center cursor-pointer"
           >
             複習
