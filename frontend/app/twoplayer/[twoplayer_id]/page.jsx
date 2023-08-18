@@ -107,18 +107,31 @@ function Page() {
   const [score, setScore] = useState(0);
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const router = useRouter();
+  // TODO:websocket雙人對戰
+  // const [participants, setParticipants] = useState([]);
+  // const [opponentScore, setOpponentScore] = useState(0);
   // useEffect(() => {
-  //   // 發送訊息
-  //   socket.emit("join_game", { playerId: "player1" });
-  //   // 接收確認訊息
-  //   socket.on("joined", (data) => {
-  //     console.log(data.message);
+  //   socket.on("participantConnected", (participantId) => {
+  //     setParticipants((prevParticipants) => [...prevParticipants, participantId]);
+  //     if (participants.length === 2) {
+  //       // Both participants are connected, start the game here
+  //       setQuizStatus("process");
+  //       setSeconds(questionSeconds);
+  //     }
   //   });
-  //   // 清除 WebSocket 連接
   //   return () => {
-  //     socket.disconnect();
+  //     socket.off("participantConnected");
   //   };
-  // }, []);
+  // }, [participants]);
+  // useEffect(() => {
+  //   socket.on("scoreUpdate", (updatedScores) => {
+  //     setScore(updatedScores[participantId]);
+  //     setOpponentScore(updatedScores[opponentParticipantId]);
+  //   });
+  //   return () => {
+  //     socket.off("scoreUpdate");
+  //   };
+  // }, [participantId, opponentParticipantId]);
   useEffect(() => {
     setShuffledOptions(
       randomOptions
@@ -167,6 +180,15 @@ function Page() {
     setShowShareLink((prev) => !prev);
     document.body.classList.toggle("modal-open");
   };
+  // TODO:websocket雙人對戰
+  // const startGameHandler = () => {
+  //   if (participants.length === 2) {
+  //     setQuizStatus("process");
+  //     setSeconds(questionSeconds);
+  //   } else {
+  //     Swal.fire("必須人數到齊才能開始遊戲", "", "warning");
+  //   }
+  // };
   const StartPage = (
     <div className="flex justify-center mt-[10rem] ">
       <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
@@ -210,6 +232,8 @@ function Page() {
               setQuizStatus("process");
               setSeconds(questionSeconds);
             }}
+            // TODO:websocket雙人對戰
+            // onClick={startGameHandler}
             className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mb-20"
           >
             開始測驗
@@ -242,6 +266,11 @@ function Page() {
       }).then(() => {
         setScore((prevScore) => prevScore + questionScore);
         setConsecutiveCorrectAnswers(true);
+        // TODO:websocket雙人對戰
+        // socket.emit("updateScore", {
+        //   participantId,
+        //   score,
+        // });
         moveToNextQuestion();
       });
     } else {
@@ -263,6 +292,11 @@ function Page() {
         timer: 1000,
       }).then(() => {
         setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
+        // TODO:websocket雙人對戰
+        // socket.emit("updateScore", {
+        //   participantId,
+        //   score,
+        // });
         moveToNextQuestion();
       });
     }
@@ -282,43 +316,45 @@ function Page() {
       <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
         {MockData.questions.length > 0 && (
           <div>
-            <div className="flex flex-col items-center mt-10">
-              <h1 className="mb-4 text-4xl">剩餘時間 : {seconds}</h1>
-              <p className="text-4xl">{MockData.questions[questionIndex].content}</p>
-              <div className="flex my-4">
-                <p className="mr-3 text-3xl">難度 :</p>
-                <p className="mr-6 text-3xl">{MockData.questions[questionIndex].difficulty}</p>
-                <p className="mr-6 text-3xl">
-                  {questionIndex + 1} / {MockData.questions.length}
-                </p>
+            <div className="flex items-center justify-center">
+              <div className="flex flex-col items-center p-4 mr-4 border rounded-lg">
+                <p>你</p>
                 <p className="text-3xl">目前分數: {score}</p>
               </div>
+              <div className="flex flex-col items-center mt-10">
+                <h1 className="mb-4 text-4xl">剩餘時間 : {seconds}</h1>
+                <p className="text-4xl">{MockData.questions[questionIndex].content}</p>
+                <div className="flex my-4">
+                  <p className="mr-3 text-3xl">難度 :</p>
+                  <p className="mr-6 text-3xl">{MockData.questions[questionIndex].difficulty}</p>
+                  <p className="mr-6 text-3xl">
+                    {questionIndex + 1} / {MockData.questions.length}
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center p-4 ml-4 border rounded-lg">
+                <p>對手</p>
+                {/* <p className="text-3xl">目前分數: {opponentScore}</p> */}
+              </div>
             </div>
+
             <div className="flex flex-col items-center mb-10">{OptionsItems}</div>
           </div>
         )}
       </div>
     </div>
   );
-  // let gameResult;
-  // if (yourFinalScore > opponentFinalScore) {
-  //   gameResult = "你赢了！";
-  // } else if (yourFinalScore < opponentFinalScore) {
-  //   gameResult = "你輸了！";
-  // } else {
-  //   gameResult = "平局！";
-  // }
   const EndPage = (
     <div className="flex justify-center mt-[10rem]">
       <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
         <div>
           <p className="text-4xl">你的得分: {score}</p>
           {/* <div>
-            <p className="text-4xl">你的分数: {yourScore}</p>
-            <p className="text-4xl">對方的分数: {opponentScore}</p>
-            <p className="text-4xl">你的得分: {yourFinalScore}</p>
-            <p className="text-4xl">對方的得分: {opponentFinalScore}</p>
-            <p className="text-4xl">结果: {gameResult}</p>
+            <p className="text-4xl">你的分數: {score}</p>
+            <p className="text-4xl">對方的分數: {opponentScore}</p>
+            <p className="text-4xl">结果: {score >opponentScore && "你贏了!"}</p>
+            <p className="text-4xl">结果: {score <opponentScore && "你輸了!"}</p>
+            <p className="text-4xl">结果: {score ===opponentScore && "平局"}</p>
           </div> */}
           <button
             type="button"
