@@ -13,10 +13,10 @@ function Storearticle() {
   const [showMenu, setShowMenu] = useState(false);
   const [tag, setTag] = useState("");
   const tagRef = useRef(null);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    // setLoading(true);
     console.log(nookies.get().access_token);
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/create`, {
@@ -47,7 +47,7 @@ function Storearticle() {
         Swal.fire("生成失敗", `${error}`, "error");
       }
     }
-    setLoading(false);
+    // setLoading(false);
   };
   const fakeData = {
     data: {
