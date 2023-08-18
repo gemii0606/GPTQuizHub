@@ -69,6 +69,7 @@ function QuestonBankCard() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [editQuestion, setEditQuestion] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
   const [loading, setLoading] = useState(false);
   const explanationRef = useRef(null);
   function editQuestionHandler() {
@@ -81,8 +82,12 @@ function QuestonBankCard() {
     setLoading(true);
     Swal.fire({
       title: "確定刪除?",
+      text: "你無法找回此題目",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "確定",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "確定刪除",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("題目已刪除", "", "success");
@@ -91,9 +96,9 @@ function QuestonBankCard() {
           setQuestionIndex(questionIndex + 1);
         }
       }
-      setEditQuestion(false);
-      setLoading(false);
     });
+    setEditQuestion(false);
+    setLoading(false);
   }
   const OptionsItems = MockData.questions[questionIndex].options.map((option) => (
     <p key={option.id} className="mt-3 text-2xl font-bold">{`(${option.id}) ${option.content}`}</p>
@@ -107,21 +112,34 @@ function QuestonBankCard() {
       </div>
       {OptionsItems}
       <div className="flex items-center mt-4 mb-4">
-        <p className="mr-3 font-bold">正確答案 :</p>
+        <p className="relative mr-3 font-bold">正確答案 :</p>
         {showAnswer && <p className="font-bold">({MockData.questions[questionIndex].correct_answer})</p>}
         <button
           type="button"
           onClick={() => {
             setShowAnswer(!showAnswer);
           }}
-          className="text-base font-bold ml-8 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+          className="absolute left-36 text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
         >
           {showAnswer ? "隱藏" : "顯示"}
         </button>
       </div>
       <div className="mb-4">
-        <p className="mb-2">說明 :</p>
-        <div className="break-words whitespace-pre-wrap">{MockData.questions[questionIndex].explanation}</div>
+        <div className="flex items-center">
+          <p className="mb-2 mr-4">說明 :</p>
+          <button
+            type="button"
+            onClick={() => {
+              setShowExplanation(!showExplanation);
+            }}
+            className="text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+          >
+            {showExplanation ? "隱藏" : "顯示"}
+          </button>
+        </div>
+        {showExplanation && (
+          <p className="mt-3 break-words whitespace-pre-wrap">{MockData.questions[questionIndex].explanation}</p>
+        )}
       </div>
     </>
   );
@@ -218,13 +236,14 @@ function QuestonBankCard() {
   );
   // TODO:到時候key要設定
   return (
-    <div className="bg-white border p-5 min-w-[80rem] rounded-lg relative" key={1}>
+    <div className="bg-white border p-5 min-w-[80rem] rounded-lg relative" key={MockData.id}>
       <div className="flex mb-4">
         <p className="mr-3">{`第${questionIndex + 1}題`}</p>
         <button
           type="button"
+          hidden={editQuestion === true}
           onClick={() => {
-            setEditQuestion(() => !editQuestion);
+            setEditQuestion(true);
           }}
         >
           <Image src={Edit} alt="edit-icon" width={20} height={20} className="absolute cursor-pointer top-3 right-3" />

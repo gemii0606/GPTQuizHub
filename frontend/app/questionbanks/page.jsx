@@ -2,6 +2,7 @@
 
 import QuestionBankSideBar from "../../components/QuestionBankSideBar";
 import QuestionsBanksCard from "../../components/QuestionBankCard";
+// import useQuizList from "@/hooks/useQuizList";
 
 const MockData = [
   {
@@ -22,6 +23,9 @@ const questionsBankItems = MockData.map((questionsBank) => (
   <QuestionsBanksCard questionsBank={questionsBank} key={questionsBank.id} />
 ));
 function Page() {
+  // const [quizzesData, setQuizzesData] = useState([]);
+  // const [cursor, setCursor] = useState(null);
+  // const fetchQuizzesData = useQuizList(null, cursor);
   return (
     <div className="flex justify-center mt-20">
       <div className="mr-10">
