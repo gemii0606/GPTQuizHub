@@ -2,6 +2,7 @@
 
 import QuestionBankSideBar from "../../components/questionbanks/QuestionBankSideBar";
 import QuestionsBanksCard from "../../components/questionbanks/QuestionBankCard";
+import Navbar from "../../components/navbar";
 
 const MockData = [
   {
@@ -23,13 +24,16 @@ const questionsBankItems = MockData.map((questionsBank) => (
 ));
 function Page() {
   return (
-    <div className="flex justify-center mt-20">
-      <div className="mr-10">
-        <QuestionBankSideBar />
-      </div>
-      <div className="flex flex-col min-w-[60rem] rounded-lg bg-white border p-4 mr-6">
-        <h1 className="mb-5 text-2xl font-bold leading-6">題庫</h1>
-        {questionsBankItems}
+    <div>
+      <Navbar />
+      <div className="flex justify-center mt-20">
+        <div className="mr-10">
+          <QuestionBankSideBar />
+        </div>
+        <div className="flex flex-col min-w-[60rem] rounded-lg bg-white border p-4 mr-6">
+          <h1 className="mb-5 text-2xl font-bold leading-6">題庫</h1>
+          {questionsBankItems}
+        </div>
       </div>
     </div>
   );
