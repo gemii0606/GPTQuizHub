@@ -11,3 +11,6 @@
       scrollbar-width: none;
     }
 }
+body.modal-open {
+  overflow: hidden;
+}
