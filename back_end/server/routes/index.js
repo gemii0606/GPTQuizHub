@@ -24,6 +24,7 @@ const { quizCreate } = require('../controllers/quizzes/quizCreate');
 const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
 const { quizDetail } = require('../controllers/quizzes/quizDetail');
 const { quizStatusCheck } = require('../controllers/quizzes/quizStatusCheck');
+const { quizDelete } = require('../controllers/quizzes/quizDelete');
 
 const { questionEdit } = require('../controllers/questions/questionEdit');
 const { questionDelete } = require('../controllers/questions/questionDelete');
@@ -37,6 +38,7 @@ router.get('/quizzes/search', authAccessToken, quizList)
 router.post('/quizzes/create', authAccessToken, quizCreate)
 router.get('/quizzes/:id/check', authAccessToken, quizStatusCheck)
 router.get('/quizzes/:id', authAccessToken, quizDetail)
+router.delete('/quizzes/:id', authAccessToken, quizDelete)
 
 router.get('/articles/search', authAccessToken, articlesList)
 router.get('/articles/:id', authAccessToken, articleDetail)
