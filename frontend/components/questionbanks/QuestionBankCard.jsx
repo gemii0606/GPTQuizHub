@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import DeleteIcon from "../public/delete.png";
+import DeleteIcon from "../../public/delete.png";
 
 function QuestionsBanksCard({ questionsBank }) {
   const [showQuizType, setShowQuizType] = useState(false);
