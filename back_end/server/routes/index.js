@@ -18,6 +18,7 @@ const { quizCreate } = require('../controllers/quizzes/quizCreate');
 const { quizDetail } = require('../controllers/quizzes/quizDetail');
 
 const { quizHistoryCreate } = require('../controllers/quizzes/quizHistoryCreate');
+const { quizHistoryList } = require('../controllers/quizzes/quizHistoryList');
 
 //articles
 const { articlesList } = require('../controllers/articles/articlesList');
@@ -29,9 +30,11 @@ router.post('/users/signin', signIn);
 router.post('/quizzes/test', quizGenerate)
 router.get('/quizzes/search', authAccessToken, quizList)
 router.post('/quizzes/create', authAccessToken, quizCreate)
-router.get('/quizzes/:id', authAccessToken, quizDetail)
 
 router.post('/quizzes/history', authAccessToken, quizHistoryCreate)
+router.get('/quizzes/history', authAccessToken, quizHistoryList)
+
+router.get('/quizzes/:id', authAccessToken, quizDetail)
 
 router.get('/articles/search', authAccessToken, articlesList)
 router.get('/articles/:id', authAccessToken, articleDetail)
