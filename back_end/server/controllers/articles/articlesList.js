@@ -7,10 +7,10 @@ const limit = 10;
 
 
 const articlesList = async (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
-    const signInId = new ObjectId(req.signInId);
-    console.log(signInId)
+    const client = new MongoClient(url, { useUnifiedTopology: true });  
     try {
+        const signInId = new ObjectId(req.signInId);
+        console.log(signInId)
         await client.connect();
         const db = client.db(dbName);
         const articlesCollection = db.collection('quizzes');

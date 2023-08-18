@@ -31,15 +31,14 @@ const template = {
  }
 
 const gptquizgenerator = async (req, res) => {
-    const user_id = new ObjectId(req.body.user_id);
-    const article = req.body.article;
-    const total = req.body.total;
-    const insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
-
     console.log('here is gpt');
-    console.log(article)
+
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
+        const user_id = new ObjectId(req.body.user_id);
+        const article = req.body.article;
+        const total = req.body.total;
+        const insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             // max_tokens: 128,
