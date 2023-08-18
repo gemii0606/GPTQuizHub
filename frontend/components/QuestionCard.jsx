@@ -4,6 +4,9 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import nookies from "nookies";
 import Edit from "../public/edit.png";
 
 const MockData = {
@@ -15,7 +18,7 @@ const MockData = {
     {
       id: 1,
       difficulty: "簡單",
-      content: "React中的key的作用是什麼？",
+      question: "React中的key的作用是什麼？",
       options: [
         {
           id: 1,
@@ -66,19 +69,41 @@ const MockData = {
 };
 
 function QuestonBankCard() {
+  const router = useRouter();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [editQuestion, setEditQuestion] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   const [loading, setLoading] = useState(false);
-  const explanationRef = useRef(null);
-  function editQuestionHandler() {
+  const questionRef = useRef();
+  const difficultyRef = useRef();
+  const optionsRefs = useRef([]);
+  const correctAnswerRef = useRef();
+  const explanationRef = useRef();
+  async function editQuestionHandler(e) {
+    e.preventDefault();
     setLoading(true);
+    try {
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/questions/`, {
+        headers: { Authorization: `Bearer ${nookies.get().access_token}` },
+      });
+      console.log(response);
+    } catch (error) {
+      if (error?.response?.status === 403) {
+        Swal.fire("帳號已過期", "請重新登入", "error");
+        router.push("/login");
+      }
+      if (error?.response?.status >= 500 && error?.response?.status < 600) {
+        Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
+      } else {
+        Swal.fire("上傳失敗", `${error}`, "error");
+      }
+    }
     Swal.fire("題目已修改", "", "success");
     setLoading(false);
     setEditQuestion(false);
   }
-  function deleteQuestionHandler() {
+  async function deleteQuestionHandler() {
     setLoading(true);
     Swal.fire({
       title: "確定刪除?",
@@ -105,7 +130,7 @@ function QuestonBankCard() {
   ));
   const QuestionContent = (
     <>
-      <h1 className="mb-5 text-2xl font-bold rounded-lg">{MockData.questions[questionIndex].content}</h1>
+      <h1 className="mb-5 text-2xl font-bold rounded-lg">{MockData.questions[questionIndex].question}</h1>
       <div className="flex items-center">
         <p className="mr-3">難度 :</p>
         <p>{MockData.questions[questionIndex].difficulty}</p>
@@ -143,7 +168,7 @@ function QuestonBankCard() {
       </div>
     </>
   );
-  const OptionsEditItems = MockData.questions[questionIndex].options.map((option) => (
+  const OptionsEditItems = MockData.questions[questionIndex].options.map((option, index) => (
     <div className="flex items-center mt-3" key={option.id}>
       <p key={option.id} className="mt-3 mr-3 text-2xl font-bold">
         ({option.id})
@@ -152,6 +177,7 @@ function QuestonBankCard() {
         type="text"
         defaultValue={option.content}
         required
+        ref={(ref) => (optionsRefs.current[index] = ref)}
         className="border rounded-md focus:outline-none py-2 px-3.5 min-w-[30rem] text-2xl font-bold"
       />
     </div>
@@ -160,13 +186,16 @@ function QuestonBankCard() {
     <form method="post" onSubmit={editQuestionHandler}>
       <input
         type="text"
-        defaultValue={MockData.questions[questionIndex].content}
+        ref={questionRef}
+        required
+        defaultValue={MockData.questions[questionIndex].question}
         className="min-w-[30rem] border px-4 py-3 text-2xl font-bold rounded-lg mb-5"
       />
       <div className="flex items-center">
         <p className="mr-3">難度 :</p>
         <select
           defaultValue={MockData.questions[questionIndex].difficulty}
+          ref={difficultyRef}
           required
           className="px-2 py-1 border rounded-lg"
         >
@@ -186,6 +215,7 @@ function QuestonBankCard() {
         <p className="mr-3 font-bold">正確答案 :</p>
         <select
           defaultValue={MockData.questions[questionIndex].correct_answer}
+          ref={correctAnswerRef}
           required
           className="px-2 py-1 border rounded-lg"
         >
