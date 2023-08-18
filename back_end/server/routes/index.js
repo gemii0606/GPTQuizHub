@@ -14,13 +14,14 @@ const { signUp } = require('../controllers/users/signup');
 //quizzes
 const { quizGenerate } = require('../controllers/quizzes/quizGenerate_test');
 const { quizList } = require('../controllers/quizzes/quizList');
+const { quizCreate } = require('../controllers/quizzes/quizCreate');
+const { quizDetail } = require('../controllers/quizzes/quizDetail');
+
+const { quizHistoryCreate } = require('../controllers/quizzes/quizHistoryCreate');
 
 //articles
 const { articlesList } = require('../controllers/articles/articlesList');
 const { articleDetail } = require('../controllers/articles/articleDetail');
-
-const { quizCreate } = require('../controllers/quizzes/quizCreate');
-const { quizDetail } = require('../controllers/quizzes/quizDetail');
 
 router.post('/users/signup', signUp)
 router.post('/users/signin', signIn);
@@ -30,9 +31,10 @@ router.get('/quizzes/search', authAccessToken, quizList)
 router.post('/quizzes/create', authAccessToken, quizCreate)
 router.get('/quizzes/:id', authAccessToken, quizDetail)
 
+router.post('/quizzes/history', authAccessToken, quizHistoryCreate)
+
 router.get('/articles/search', authAccessToken, articlesList)
 router.get('/articles/:id', authAccessToken, articleDetail)
-
 
 module.exports = router;
 
