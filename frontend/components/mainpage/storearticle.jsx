@@ -1,14 +1,54 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
+import axios from "axios";
+import nookies from "nookies";
 
 function Storearticle() {
   const [easy, setEasy] = useState("");
-  const [medium, setMedium] = useState("");
+  const [normal, setNormal] = useState("");
   const [hard, setHard] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // State to hold error message
   const [showMenu, setShowMenu] = useState(false);
   const [tag, setTag] = useState("");
   const tagRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    console.log(nookies.get().access_token);
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/create`, {
+        article: {
+          title,
+          tag,
+          easy,
+          normal,
+          hard,
+          content,
+        }
+      }, {
+        headers: {
+          Authorization: `Bearer ${nookies.get().access_token}`,
+        }
+      });
+      console.log("Completed!", response);
+      Swal.fire(
+        "Succesfully submit",
+        "Let's create the questions!",
+        "success"
+      );
+    } catch (error) {
+      console.log(error);
+      if (error?.response?.status >= 500 && error?.response?.status < 600) {
+        Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
+      } else {
+        Swal.fire("生成失敗", `${error}`, "error");
+      }
+    }
+    setLoading(false);
+  };
   const fakeData = {
     data: {
       quizzes: [
@@ -58,8 +98,8 @@ function Storearticle() {
       case "easy":
         setEasy(newValue);
         break;
-      case "medium":
-        setMedium(newValue);
+      case "normal":
+        setNormal(newValue);
         break;
       case "hard":
         setHard(newValue);
@@ -68,7 +108,7 @@ function Storearticle() {
         break;
     }
     // eslint-disable-next-line max-len
-    const totalQuestion = parseInt(easy || 0, 10) + parseInt(medium || 0, 10) + parseInt(hard || 0, 10);
+    const totalQuestion = parseInt(easy || 0, 10) + parseInt(normal || 0, 10) + parseInt(hard || 0, 10);
     if (totalQuestion > 10) {
       setErrorMessage("題數不可超過10題");
     } else {
@@ -87,14 +127,6 @@ function Storearticle() {
       document.removeEventListener("click", handleOutsideClick);
     };
   });
-
-  function handleSubmit() {
-    Swal.fire(
-      "Succesfully submit",
-      "Let create the questions!",
-      "success",
-    );
-  }
   function handleShowMenu() {
     setShowMenu(true);
   }
@@ -106,7 +138,7 @@ function Storearticle() {
     <div className="p-8 m-0">
       <form action="" method="post" onSubmit={handleSubmit}>
         <p className="mb-2 text-base">文章標題</p>
-        <input required className="px-3 py-2 mb-2 rounded-md w-80 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]" />
+        <input required onChange={(e) => setTitle(e.target.value)} className="px-3 py-2 mb-2 rounded-md w-80 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]" />
         <p className="mt-1 mb-2 text-base">文章類別</p>
         <div className="relative h-auto w-60">
           <input required placeholder="未分類" id="123" value={tag} onChange={(e) => setTag(e.target.value)} ref={tagRef} className=" mb-2 w-60 block px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-slate-200 ring-1 ring-[#8198BF] focus:border-[#8198BF]" onClick={handleShowMenu} />
@@ -125,7 +157,7 @@ function Storearticle() {
 
         </div>
         <p className="mb-2 text-base ">文章內容</p>
-        <textarea required className="w-full px-3 py-2 mb-2 rounded-md bg-slate-200 h-[50vh] ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF] resize-none" placeholder="Relation between Java and Javascript is like dog and hotdog." />
+        <textarea required onChange={(e) => setContent(e.target.value)} className="w-full px-3 py-2 mb-2 rounded-md bg-slate-200 h-[50vh] ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF] resize-none" placeholder="Relation between Java and Javascript is like dog and hotdog." />
         <p className="mt-1 mb-2 text-base">題目設定</p>
         <div className="flex items-center w-full h-24 p-2 bg-white rounded">
           <p className="justify-center mt-4 ml-10 text-base font-bold">
@@ -150,7 +182,7 @@ function Storearticle() {
             name="middle"
             min="0"
             max="10"
-            onChange={(e) => handleInputChange(e, "medium")}
+            onChange={(e) => handleInputChange(e, "normal")}
             className="px-3 py-2 ml-2 rounded-md w-16 bg-slate-200 ring-1 ring-[#8198BF] hover:ring-2 hover:ring-[#8198BF]"
           />
           <p className="ml-6 text-base font-bold">困難:</p>
@@ -165,7 +197,7 @@ function Storearticle() {
           />
           {errorMessage && <p className="ml-2 text-red-500">{errorMessage}</p>}
         </div>
-        <button type="submit" className="block bg-[#8198BF] text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]">生成題目</button>
+        <button id="submitBtn" type="submit" className="block bg-[#8198BF] text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]">生成題目</button>
       </form>
     </div>
   );
