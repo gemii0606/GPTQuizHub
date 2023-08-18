@@ -34,7 +34,7 @@ const quizDelete = async (req, res) => {
         res.status(200).json({
             data: {
                 question: {
-                    id: question_id
+                    id: quiz_id
                 }
             }
         });
