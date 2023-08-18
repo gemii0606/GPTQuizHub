@@ -21,7 +21,7 @@ const quizStatusCheck = async (req, res) => {
         res.status(200).json({
             data: {
                 quiz: {
-                    id: req.params.id,
+                    id: quiz_id,
 				    status: findQuiz.status
                 }
             }
