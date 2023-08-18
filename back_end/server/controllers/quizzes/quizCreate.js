@@ -8,12 +8,11 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const quizCreate = async (req, res) => {
-    const user_id = new ObjectId(req.signInId);
-    const article = req.body.article;
-    const total = ['easy', 'normal', 'hard'].reduce((sum, key) => sum + parseInt(article[key]), 0);
-
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
+        const user_id = new ObjectId(req.signInId);
+        const article = req.body.article;
+        const total = ['easy', 'normal', 'hard'].reduce((sum, key) => sum + parseInt(article[key]), 0);
         await client.connect();
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
@@ -35,13 +34,6 @@ const quizCreate = async (req, res) => {
             total,
             insertQuiz
         }
-        
-        const ans = await quizzesCollection.findOne({_id:data.insertQuiz.insertedId});
-        console.log(ans)
-        const updateQuiz = await quizzesCollection.updateOne({ _id: data.insertQuiz.insertedId }, { $set: { status: 'ok' } });
-        const ans2 = await quizzesCollection.findOne({_id:data.insertQuiz.insertedId});
-        console.log(ans2)
-
 
         axios.post(process.env.GPTURL, data, { timeout: 120000 });
 

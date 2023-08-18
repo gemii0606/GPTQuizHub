@@ -5,7 +5,7 @@ require('dotenv').config({ path: __dirname + `/../../.env` });
 const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
-const articleDetail = async (req, res) => {
+const quizDelete = async (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         const user_id = new ObjectId(req.signInId);
@@ -15,16 +15,25 @@ const articleDetail = async (req, res) => {
         const db = client.db(dbName);
 
         const quizzesCollection = db.collection('quizzes');
-        const findArticle = await quizzesCollection.findOne({ _id: quiz_id });
+        const deleteQuiz = await quizzesCollection.deleteOne( {_id: quiz_id } );
+        if (deleteQuiz.deletedCount === 1) {
+            console.log('Quiz document deleted successfully.');
+        } else {
+            console.log('Quiz document not found or not deleted.');
+        }
+
+        const questionsCollection = db.collection('questions');
+        const deleteQuestions = await questionsCollection.deleteMany({ quiz_id: quiz_id });
+        if (deleteQuestions.deletedCount > 0) {
+            console.log(`${deleteQuestions.deletedCount} question documents deleted successfully.`);
+        } else {
+            console.log('No question documents found or not deleted.');
+        }
 
         res.status(200).json({
             data: {
-                article: {
-                    id: findArticle._id,
-				    title: findArticle.title,
-				    tag: findArticle.tag,
-				    created_at : findArticle.created_at,
-			        content : findArticle.content,
+                question: {
+                    id: quiz_id
                 }
             }
         });
@@ -39,5 +48,5 @@ const articleDetail = async (req, res) => {
 }
 
 module.exports = {
-    articleDetail
+    quizDelete
   };

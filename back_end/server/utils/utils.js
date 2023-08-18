@@ -56,7 +56,9 @@ function getCurrentTime() {
     const currentDate = new Date();
 
     // Format the date object to the desired format
-    const formattedTime = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Taipei' };
+    const formattedTime = currentDate.toLocaleString('en-US', options).replace(',', '');
+    // const formattedTime = currentDate.toISOString().slice(0, 19).replace('T', ' ');
     return formattedTime;
 }
 
