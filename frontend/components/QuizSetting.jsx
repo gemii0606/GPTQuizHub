@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import Swal from "sweetalert2";
+import { usePathname } from "next/navigation";
 import Modal from "./layout/Modal";
 
 function QuizSetting({
@@ -12,9 +13,14 @@ function QuizSetting({
   setRandomOrder,
   questionNumber,
   setQuestionNumber,
+  correctRatio,
+  setCorrectRatio,
+  setUseCorrectRatio,
+  useCorrectRatio,
 }) {
   const questionNumberRef = useRef(null);
   const questionSecondRef = useRef(null);
+  const correctRatioRef = useRef(null);
   return (
     <Modal>
       <div className="flex flex-col items-center">
@@ -51,6 +57,43 @@ function QuizSetting({
             </button>
             <p className="ml-3">此功能尚未開放</p>
           </div>
+          {usePathname().includes("/twoplayer") && (
+            <div className="flex items-center mt-5">
+              <p className="mr-5 text-3xl">得分倍率</p>
+              <button
+                type="button"
+                className="px-[2.125rem] py-4 mr-5 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
+                onClick={() => {
+                  setUseCorrectRatio((prev) => !prev);
+                }}
+              >
+                {useCorrectRatio ? "啟用" : "未啟用"}
+              </button>
+              {useCorrectRatio && (
+                <>
+                  <input
+                    type="number"
+                    min="1.01"
+                    max="2"
+                    step="0.01"
+                    defaultValue={correctRatio}
+                    ref={correctRatioRef}
+                    className="px-2 mr-5 text-3xl border rounded-xl"
+                  />
+                  <button
+                    onClick={() => {
+                      setCorrectRatio(correctRatioRef.current.value);
+                      Swal.fire("得分倍率修改成功", "", "success");
+                    }}
+                    type="button"
+                    className="px-[2.125rem] py-4 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
+                  >
+                    更改得分倍率
+                  </button>
+                </>
+              )}
+            </div>
+          )}
           <div className="flex items-center mt-5">
             <p className="mr-5 text-3xl">題目秒數</p>
             <input
