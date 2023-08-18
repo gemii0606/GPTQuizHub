@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,7 +26,7 @@ function Navbar() {
       </div>
       <div className="flex mx-6 ml-auto">
         <button type="button" className="mx-4 hover:-translate-y-2" onClick={handleLogout}>
-          <Image src="/logout.png" alt="logoutbtn" width={30} height={30} />
+          <Image src="/logout2.png" alt="logoutbtn" width={40} height={40} />
         </button>
         <Image src="/user.png" alt="User" width={40} height={40} className="" />
       </div>

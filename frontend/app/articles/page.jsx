@@ -28,7 +28,7 @@ const page = () => {
     },
   };
   return (
-    <div className="bg-[#F9F9F9] h-screen w-full  m-0">
+    <div className="bg-[#F9F9F9] h-full w-full  m-0">
       <Navbar />
       <div className="flex justify-center p-8">
         <ArticleSidebar />
