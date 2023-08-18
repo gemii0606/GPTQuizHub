@@ -5,26 +5,24 @@ require('dotenv').config({ path: __dirname + `/../../.env` });
 const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
-const articleDetail = async (req, res) => {
+const quizStatusCheck = async (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         const user_id = new ObjectId(req.signInId);
         const quiz_id = new ObjectId(req.params.id);
+ 
         await client.connect();
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
 
         const quizzesCollection = db.collection('quizzes');
-        const findArticle = await quizzesCollection.findOne({ _id: quiz_id });
+        const findQuiz = await quizzesCollection.findOne({ _id: quiz_id });
 
         res.status(200).json({
             data: {
-                article: {
-                    id: findArticle._id,
-				    title: findArticle.title,
-				    tag: findArticle.tag,
-				    created_at : findArticle.created_at,
-			        content : findArticle.content,
+                quiz: {
+                    id: quiz_id,
+				    status: findQuiz.status
                 }
             }
         });
@@ -39,5 +37,5 @@ const articleDetail = async (req, res) => {
 }
 
 module.exports = {
-    articleDetail
+    quizStatusCheck
   };

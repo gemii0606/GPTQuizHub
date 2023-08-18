@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const { encodejsonBase64, decodejsonBase64 } = require('../../utils/utils');
 
 const url = process.env.MONGOURL;
@@ -7,9 +7,10 @@ const limit = 10;
 
 const quizList = async (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
-    const signInId = req.signInId;
-    console.log(signInId)
-    try {
+    try {       
+        const signInId = new ObjectId(req.signInId);
+        console.log(signInId)
+    
         await client.connect();
         const db = client.db(dbName);
         const quizzesCollection = db.collection('quizzes');

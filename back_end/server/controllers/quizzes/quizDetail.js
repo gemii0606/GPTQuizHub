@@ -6,11 +6,10 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const quizDetail = async (req, res) => {
-    const user_id = new ObjectId(req.signInId);
-    const quiz_id = new ObjectId(req.params.id);
-
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
+        const user_id = new ObjectId(req.signInId);
+        const quiz_id = new ObjectId(req.params.id);
         await client.connect();
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
@@ -56,10 +55,10 @@ const quizDetail = async (req, res) => {
             data: {
                 quiz: {
                     id: combinedResult._id,
-				    title: combinedResult.title,
-				    tag: combinedResult.tag,
-				    created_at : combinedResult.created_at,
-			        questions : questions
+                    title: combinedResult.title,
+                    tag: combinedResult.tag,
+                    created_at : combinedResult.created_at,
+			              questions : questions
                 }
             }
         });
