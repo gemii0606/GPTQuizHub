@@ -18,8 +18,6 @@ const articleDetail = async (req, res) => {
         const quizzesCollection = db.collection('quizzes');
         const findArticle = await quizzesCollection.findOne({ _id: quiz_id });
 
-        console.log(findArticle)
-        console.log("1")
         res.status(200).json({
             data: {
                 article: {
