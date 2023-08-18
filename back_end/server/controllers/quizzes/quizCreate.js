@@ -8,13 +8,11 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const quizCreate = async (req, res) => {
-    const user_id = new ObjectId(req.signInId);
-    const article = req.body.article;
-    const total = ['easy', 'normal', 'hard'].reduce((sum, key) => sum + parseInt(article[key]), 0);
-    console.log(article)
-
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
+        const user_id = new ObjectId(req.signInId);
+        const article = req.body.article;
+        const total = ['easy', 'normal', 'hard'].reduce((sum, key) => sum + parseInt(article[key]), 0);
         await client.connect();
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
