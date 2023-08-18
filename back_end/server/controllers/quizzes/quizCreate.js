@@ -24,7 +24,7 @@ const quizCreate = async (req, res) => {
             title: article.title,
             tag: article.tag,
             content: article.content,
-            is_deleted: "false",
+            is_deleted: false,
             status: "pending",
             created_at: getCurrentTime()
         });
