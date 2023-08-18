@@ -18,21 +18,30 @@ const { quizList } = require('../controllers/quizzes/quizList');
 //articles
 const { articlesList } = require('../controllers/articles/articlesList');
 const { articleDetail } = require('../controllers/articles/articleDetail');
+const { articleDelete } = require('../controllers/articles/articleDelete');
 
 const { quizCreate } = require('../controllers/quizzes/quizCreate');
 const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
 const { quizDetail } = require('../controllers/quizzes/quizDetail');
+const { quizStatusCheck } = require('../controllers/quizzes/quizStatusCheck');
+
+const { questionEdit } = require('../controllers/questions/questionEdit');
 
 router.post('/users/signup', signUp)
 router.post('/users/signin', signIn);
 
+
 router.post('/quizzes/test', quizGenerate)
 router.get('/quizzes/search', authAccessToken, quizList)
 router.post('/quizzes/create', authAccessToken, quizCreate)
+router.get('/quizzes/:id/check', authAccessToken, quizStatusCheck)
 router.get('/quizzes/:id', authAccessToken, quizDetail)
 
 router.get('/articles/search', authAccessToken, articlesList)
 router.get('/articles/:id', authAccessToken, articleDetail)
+router.delete('/articles/:id', authAccessToken, articleDelete)
+
+router.put('/questions/:id', authAccessToken, questionEdit)
 
 router.post('/gptquizgenerator', gptquizgenerator )
 
