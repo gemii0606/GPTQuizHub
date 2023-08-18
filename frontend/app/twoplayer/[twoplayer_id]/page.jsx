@@ -35,8 +35,7 @@ const MockData = {
         },
       ],
       correct_answer: 1,
-      explanation:
-        "key用於協助React辨識元件的位置，從而確定元件的新增、移除或修改，以避免可能出現的錯誤。",
+      explanation: "key用於協助React辨識元件的位置，從而確定元件的新增、移除或修改，以避免可能出現的錯誤。",
     },
     {
       id: 2,
@@ -61,8 +60,7 @@ const MockData = {
         },
       ],
       correct_answer: 3,
-      explanation:
-        "正確的key需求是獨特唯一且穩定可預測的，不應使用index作為key，因為可能會導致渲染錯誤。",
+      explanation: "正確的key需求是獨特唯一且穩定可預測的，不應使用index作為key，因為可能會導致渲染錯誤。",
     },
     {
       id: 3,
@@ -87,8 +85,7 @@ const MockData = {
         },
       ],
       correct_answer: 3,
-      explanation:
-        "正確的key需求是獨特唯一且穩定可預測的，不應使用index作為key，因為可能會導致渲染錯誤。",
+      explanation: "正確的key需求是獨特唯一且穩定可預測的，不應使用index作為key，因為可能會導致渲染錯誤。",
     },
   ],
 };
