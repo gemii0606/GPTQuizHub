@@ -15,13 +15,15 @@ const articlesList = async (req, res) => {
         const db = client.db(dbName);
         const articlesCollection = db.collection('quizzes');
         const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
+        const tag = req.query.tag ? parseInt(atob(req.query.tag)) : req.query.cursor;
 
         console.log(cursor)
 
         const articles = await articlesCollection.find({
             user_id: signInId,
             created_at: cursor ? { $lt: cursor } : { $exists: true },
-            is_deleted: false
+            is_deleted: false,
+            tag: tag ? tag : { $exists: true },
         }).project({
             _id: 1,     
             tags: 1,
