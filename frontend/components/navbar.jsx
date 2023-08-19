@@ -25,6 +25,9 @@ function Navbar() {
         <Link href="/test-histories" passHref>
           <p className="ml-2 mr-2 border-[#8198BF] hover:border-b-4">測驗紀錄</p>
         </Link>
+        <Link href="/joingame" passHref>
+          <p className="ml-2 mr-2 border-[#8198BF] hover:border-b-4">加入測驗</p>
+        </Link>
       </div>
       <div className="flex mx-6 ml-auto">
         <button type="button" className="mx-4 hover:-translate-y-2" onClick={handleLogout}>
