@@ -1,7 +1,7 @@
 "use client";
 
-import QuestionBankSideBar from "../../components/QuestionBankSideBar";
-import QuestionsBanksCard from "../../components/QuestionBankCard";
+import QuestionBankSideBar from "../../components/questionbanks/QuestionBankSideBar";
+import QuestionsBanksCard from "../../components/questionbanks/QuestionBankCard";
 // import useQuizList from "@/hooks/useQuizList";
 
 const MockData = [
@@ -26,6 +26,7 @@ function Page() {
   // const [quizzesData, setQuizzesData] = useState([]);
   // const [cursor, setCursor] = useState(null);
   // const fetchQuizzesData = useQuizList(null, cursor);
+  // const [selectedTag, setSelectedTag] = useState("");
   return (
     <div className="flex justify-center mt-20">
       <div className="mr-10">

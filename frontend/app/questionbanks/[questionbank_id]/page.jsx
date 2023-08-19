@@ -1,4 +1,4 @@
-import QuestonBankCard from "../../../components/QuestionCard";
+import QuestonBankCard from "../../../components/questionbanks/QuestionCard";
 
 function Page() {
   return (

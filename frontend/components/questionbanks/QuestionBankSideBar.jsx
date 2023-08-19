@@ -18,11 +18,11 @@ const mocktags = [
 ];
 
 function QuestionBankSideBar() {
-  //   const [currentTag, setCurrentTag] = useState("未分類");
   const tagsItems = mocktags.map((tag) => (
     <p
       key={tag.id}
       type="button"
+      // onClick={() => SelectTag(tag.name)}
       className="px-4 py-4 text-2xl font-bold border rounded-lg min-w-[15rem] max-w-[20rem] mt-4 hover:bg-[#8198BF] hover:text-white break-words cursor-pointer truncate"
     >
       {tag.name}

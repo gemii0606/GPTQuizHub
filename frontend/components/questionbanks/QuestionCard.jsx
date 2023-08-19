@@ -4,10 +4,10 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import Link from "next/link";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import nookies from "nookies";
-import Edit from "../public/edit.png";
+// import axios from "axios";
+// import { useRouter } from "next/navigation";
+// import nookies from "nookies";
+import Edit from "../../public/edit.png";
 
 const MockData = {
   id: 1,
@@ -69,7 +69,7 @@ const MockData = {
 };
 
 function QuestonBankCard() {
-  const router = useRouter();
+  // const router = useRouter();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [editQuestion, setEditQuestion] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
@@ -83,22 +83,30 @@ function QuestonBankCard() {
   async function editQuestionHandler(e) {
     e.preventDefault();
     setLoading(true);
-    try {
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/questions/`, {
-        headers: { Authorization: `Bearer ${nookies.get().access_token}` },
-      });
-      console.log(response);
-    } catch (error) {
-      if (error?.response?.status === 403) {
-        Swal.fire("帳號已過期", "請重新登入", "error");
-        router.push("/login");
-      }
-      if (error?.response?.status >= 500 && error?.response?.status < 600) {
-        Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
-      } else {
-        Swal.fire("上傳失敗", `${error}`, "error");
-      }
-    }
+    // const params = {
+    //   question: questionRef.current.value,
+    //   difficulty: difficultyRef.current.value,
+    //   options: optionsRefs.current.map((ref) => ref.value),
+    //   correct_answer: correctAnswerRef.current.value,
+    //   explanation: explanationRef.current.value,
+    // };
+    // try {
+    //   const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/questions/`, {
+    //     headers: { Authorization: `Bearer ${nookies.get().access_token}` },
+    //     params,
+    //   });
+    //   console.log(response);
+    // } catch (error) {
+    //   if (error?.response?.status === 403) {
+    //     Swal.fire("帳號已過期", "請重新登入", "error");
+    //     router.push("/login");
+    //   }
+    //   if (error?.response?.status >= 500 && error?.response?.status < 600) {
+    //     Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
+    //   } else {
+    //     Swal.fire("上傳失敗", `${error}`, "error");
+    //   }
+    // }
     Swal.fire("題目已修改", "", "success");
     setLoading(false);
     setEditQuestion(false);
