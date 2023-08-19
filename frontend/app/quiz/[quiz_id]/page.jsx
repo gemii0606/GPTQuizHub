@@ -244,7 +244,7 @@ function Page({ params }) {
         <button
           type="button"
           onClick={() => {
-            router.push("/questionsbanks");
+            router.push("/questionbanks");
           }}
           className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
         >
@@ -339,7 +339,7 @@ function Page({ params }) {
           disabled={loading}
           onClick={() => {
             setLoading(true);
-            router.push("/questionsbanks");
+            router.push("/questionbanks");
             setLoading(false);
           }}
           className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
