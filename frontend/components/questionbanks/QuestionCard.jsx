@@ -4,6 +4,9 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import Link from "next/link";
+// import axios from "axios";
+// import { useRouter } from "next/navigation";
+// import nookies from "nookies";
 import Edit from "../../public/edit.png";
 
 const MockData = {
@@ -15,7 +18,7 @@ const MockData = {
     {
       id: 1,
       difficulty: "簡單",
-      content: "React中的key的作用是什麼？",
+      question: "React中的key的作用是什麼？",
       options: [
         {
           id: 1,
@@ -66,23 +69,58 @@ const MockData = {
 };
 
 function QuestonBankCard() {
+  // const router = useRouter();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [editQuestion, setEditQuestion] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
   const [loading, setLoading] = useState(false);
-  const explanationRef = useRef(null);
-  function editQuestionHandler() {
+  const questionRef = useRef();
+  const difficultyRef = useRef();
+  const optionsRefs = useRef([]);
+  const correctAnswerRef = useRef();
+  const explanationRef = useRef();
+  async function editQuestionHandler(e) {
+    e.preventDefault();
     setLoading(true);
+    // const params = {
+    //   question: questionRef.current.value,
+    //   difficulty: difficultyRef.current.value,
+    //   options: optionsRefs.current.map((ref) => ref.value),
+    //   correct_answer: correctAnswerRef.current.value,
+    //   explanation: explanationRef.current.value,
+    // };
+    // try {
+    //   const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/questions/`, {
+    //     headers: { Authorization: `Bearer ${nookies.get().access_token}` },
+    //     params,
+    //   });
+    //   console.log(response);
+    // } catch (error) {
+    //   if (error?.response?.status === 403) {
+    //     Swal.fire("帳號已過期", "請重新登入", "error");
+    //     router.push("/login");
+    //   }
+    //   if (error?.response?.status >= 500 && error?.response?.status < 600) {
+    //     Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
+    //   } else {
+    //     Swal.fire("上傳失敗", `${error}`, "error");
+    //   }
+    // }
     Swal.fire("題目已修改", "", "success");
     setLoading(false);
     setEditQuestion(false);
   }
-  function deleteQuestionHandler() {
+  async function deleteQuestionHandler() {
     setLoading(true);
     Swal.fire({
       title: "確定刪除?",
+      text: "你無法找回此題目",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "確定",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "確定刪除",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("題目已刪除", "", "success");
@@ -91,41 +129,54 @@ function QuestonBankCard() {
           setQuestionIndex(questionIndex + 1);
         }
       }
-      setEditQuestion(false);
-      setLoading(false);
     });
+    setEditQuestion(false);
+    setLoading(false);
   }
   const OptionsItems = MockData.questions[questionIndex].options.map((option) => (
     <p key={option.id} className="mt-3 text-2xl font-bold">{`(${option.id}) ${option.content}`}</p>
   ));
   const QuestionContent = (
     <>
-      <h1 className="mb-5 text-2xl font-bold rounded-lg">{MockData.questions[questionIndex].content}</h1>
+      <h1 className="mb-5 text-2xl font-bold rounded-lg">{MockData.questions[questionIndex].question}</h1>
       <div className="flex items-center">
         <p className="mr-3">難度 :</p>
         <p>{MockData.questions[questionIndex].difficulty}</p>
       </div>
       {OptionsItems}
       <div className="flex items-center mt-4 mb-4">
-        <p className="mr-3 font-bold">正確答案 :</p>
+        <p className="relative mr-3 font-bold">正確答案 :</p>
         {showAnswer && <p className="font-bold">({MockData.questions[questionIndex].correct_answer})</p>}
         <button
           type="button"
           onClick={() => {
             setShowAnswer(!showAnswer);
           }}
-          className="text-base font-bold ml-8 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+          className="absolute left-36 text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
         >
           {showAnswer ? "隱藏" : "顯示"}
         </button>
       </div>
       <div className="mb-4">
-        <p className="mb-2">說明 :</p>
-        <div className="break-words whitespace-pre-wrap">{MockData.questions[questionIndex].explanation}</div>
+        <div className="flex items-center">
+          <p className="mb-2 mr-4">說明 :</p>
+          <button
+            type="button"
+            onClick={() => {
+              setShowExplanation(!showExplanation);
+            }}
+            className="text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+          >
+            {showExplanation ? "隱藏" : "顯示"}
+          </button>
+        </div>
+        {showExplanation && (
+          <p className="mt-3 break-words whitespace-pre-wrap">{MockData.questions[questionIndex].explanation}</p>
+        )}
       </div>
     </>
   );
-  const OptionsEditItems = MockData.questions[questionIndex].options.map((option) => (
+  const OptionsEditItems = MockData.questions[questionIndex].options.map((option, index) => (
     <div className="flex items-center mt-3" key={option.id}>
       <p key={option.id} className="mt-3 mr-3 text-2xl font-bold">
         ({option.id})
@@ -134,6 +185,7 @@ function QuestonBankCard() {
         type="text"
         defaultValue={option.content}
         required
+        ref={(ref) => (optionsRefs.current[index] = ref)}
         className="border rounded-md focus:outline-none py-2 px-3.5 min-w-[30rem] text-2xl font-bold"
       />
     </div>
@@ -142,13 +194,16 @@ function QuestonBankCard() {
     <form method="post" onSubmit={editQuestionHandler}>
       <input
         type="text"
-        defaultValue={MockData.questions[questionIndex].content}
+        ref={questionRef}
+        required
+        defaultValue={MockData.questions[questionIndex].question}
         className="min-w-[30rem] border px-4 py-3 text-2xl font-bold rounded-lg mb-5"
       />
       <div className="flex items-center">
         <p className="mr-3">難度 :</p>
         <select
           defaultValue={MockData.questions[questionIndex].difficulty}
+          ref={difficultyRef}
           required
           className="px-2 py-1 border rounded-lg"
         >
@@ -168,6 +223,7 @@ function QuestonBankCard() {
         <p className="mr-3 font-bold">正確答案 :</p>
         <select
           defaultValue={MockData.questions[questionIndex].correct_answer}
+          ref={correctAnswerRef}
           required
           className="px-2 py-1 border rounded-lg"
         >
@@ -218,13 +274,14 @@ function QuestonBankCard() {
   );
   // TODO:到時候key要設定
   return (
-    <div className="bg-white border p-5 min-w-[80rem] rounded-lg relative" key={1}>
+    <div className="bg-white border p-5 min-w-[80rem] rounded-lg relative" key={MockData.id}>
       <div className="flex mb-4">
         <p className="mr-3">{`第${questionIndex + 1}題`}</p>
         <button
           type="button"
+          hidden={editQuestion === true}
           onClick={() => {
-            setEditQuestion(() => !editQuestion);
+            setEditQuestion(true);
           }}
         >
           <Image src={Edit} alt="edit-icon" width={20} height={20} className="absolute cursor-pointer top-3 right-3" />

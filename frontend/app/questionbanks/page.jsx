@@ -3,6 +3,7 @@
 import QuestionBankSideBar from "../../components/questionbanks/QuestionBankSideBar";
 import QuestionsBanksCard from "../../components/questionbanks/QuestionBankCard";
 import Navbar from "../../components/navbar";
+// import useQuizList from "@/hooks/useQuizList";
 
 const MockData = [
   {
@@ -23,6 +24,10 @@ const questionsBankItems = MockData.map((questionsBank) => (
   <QuestionsBanksCard questionsBank={questionsBank} key={questionsBank.id} />
 ));
 function Page() {
+  // const [quizzesData, setQuizzesData] = useState([]);
+  // const [cursor, setCursor] = useState(null);
+  // const fetchQuizzesData = useQuizList(null, cursor);
+  // const [selectedTag, setSelectedTag] = useState("");
   return (
     <div>
       <Navbar />
