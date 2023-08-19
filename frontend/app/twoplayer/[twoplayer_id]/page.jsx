@@ -3,7 +3,6 @@
 // import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
 import QuizSetting from "../../../components/QuizSetting";
 import ShareLink from "../../../components/ShareLink";
 
@@ -105,6 +104,8 @@ function Page() {
   const [useCorrectRatio, setUseCorrectRatio] = useState(false);
   const [correctRatio, setCorrectRatio] = useState(1.05);
   const [score, setScore] = useState(0);
+  const [hasClickOption, setHasClickedOption] = useState(false);
+  const [selectedOptionId, setSelectedOptionId] = useState(null);
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const router = useRouter();
   // TODO:websocket雙人對戰
@@ -157,6 +158,7 @@ function Page() {
     } else {
       setQuestionIndex((prevIndex) => prevIndex + 1);
       setSeconds(questionSeconds);
+      setHasClickedOption(false);
     }
   };
   useEffect(() => {
@@ -250,65 +252,57 @@ function Page() {
     </div>
   );
   const handleOptionClick = (optionId) => {
+    setSelectedOptionId(optionId);
     const selectedOption = shuffledOptions.find((option) => option.id === optionId);
     const chooseCorrectAnswer =
       selectedOption && selectedOption.id === MockData.questions[questionIndex].correct_answer;
     const elapsedTime = questionSeconds - seconds + 0.5;
     const questionScore = Math.max(Math.round(100 - (100 * elapsedTime) / questionSeconds), 5);
     if (chooseCorrectAnswer) {
-      Swal.fire({
-        icon: "success",
-        title: "答對了",
-        showConfirmButton: false,
-        timer: 1000,
-      }).then(() => {
-        setScore((prevScore) => prevScore + questionScore);
-        setConsecutiveCorrectAnswers(true);
-        // TODO:websocket雙人對戰
-        // socket.emit("updateScore", {
-        //   participantId,
-        //   score,
-        // });
-        moveToNextQuestion();
-      });
+      setScore((prevScore) => prevScore + questionScore);
+      setConsecutiveCorrectAnswers(true);
+      setHasClickedOption(true);
+      // TODO:websocket雙人對戰
+      // socket.emit("updateScore", {
+      //   participantId,
+      //   score,
+      // });
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "答錯了",
-        showConfirmButton: false,
-        timer: 1000,
-      }).then(() => {
-        setConsecutiveCorrectAnswers(false);
-        moveToNextQuestion();
-      });
+      setConsecutiveCorrectAnswers(false);
+      setHasClickedOption(true);
     }
     if (chooseCorrectAnswer && consecutiveCorrectAnswers && useCorrectRatio) {
-      Swal.fire({
-        icon: "success",
-        title: `連續答對，分數乘${correctRatio}`,
-        showConfirmButton: false,
-        timer: 1000,
-      }).then(() => {
-        setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
-        // TODO:websocket雙人對戰
-        // socket.emit("updateScore", {
-        //   participantId,
-        //   score,
-        // });
-        moveToNextQuestion();
-      });
+      setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
+      setHasClickedOption(true);
+      // TODO:websocket雙人對戰
+      // socket.emit("updateScore", {
+      //   participantId,
+      //   score,
+      // });
     }
   };
-  const OptionsItems = shuffledOptions.map((option) => (
-    <button
-      type="button"
-      onClick={() => handleOptionClick(option.id)}
-      key={option.id}
-      className="block px-24 py-4 text-2xl bg-[#4783EA] text-white rounded-xl mt-20 w-[45rem] leading-8"
-    >
-      {option.content}
-    </button>
-  ));
+  const OptionsItems = shuffledOptions.map((option) => {
+    const isCorrectAnswer = option.id === MockData.questions[questionIndex].correct_answer;
+    const isSelected = hasClickOption && option.id === selectedOptionId;
+    let buttonClassName = "block px-24 py-4 text-2xl text-white rounded-xl mt-20 w-[45rem] leading-8 bg-[#4783EA]";
+    if (isSelected) {
+      buttonClassName += isCorrectAnswer ? " bg-green-500" : " bg-red-500";
+    } else if (!isSelected && hasClickOption) {
+      buttonClassName += " bg-slate-400";
+    }
+    return (
+      <button
+        type="button"
+        onClick={() => handleOptionClick(option.id)}
+        disabled={hasClickOption === true}
+        key={option.id}
+        className={buttonClassName}
+      >
+        {option.content}
+      </button>
+    );
+  });
+
   const ProcessPage = (
     <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
       {MockData.questions.length > 0 && (
@@ -360,6 +354,7 @@ function Page() {
           setScore(0);
           setConsecutiveCorrectAnswers(false);
           setLoading(false);
+          setHasClickedOption(false);
         }}
         className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
       >
