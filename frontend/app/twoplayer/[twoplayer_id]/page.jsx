@@ -253,6 +253,7 @@ function Page() {
   );
   const handleOptionClick = (optionId) => {
     setSelectedOptionId(optionId);
+    setHasClickedOption(true);
     const selectedOption = shuffledOptions.find((option) => option.id === optionId);
     const chooseCorrectAnswer =
       selectedOption && selectedOption.id === MockData.questions[questionIndex].correct_answer;
@@ -261,7 +262,6 @@ function Page() {
     if (chooseCorrectAnswer) {
       setScore((prevScore) => prevScore + questionScore);
       setConsecutiveCorrectAnswers(true);
-      setHasClickedOption(true);
       // TODO:websocket雙人對戰
       // socket.emit("updateScore", {
       //   participantId,
@@ -269,11 +269,9 @@ function Page() {
       // });
     } else {
       setConsecutiveCorrectAnswers(false);
-      setHasClickedOption(true);
     }
     if (chooseCorrectAnswer && consecutiveCorrectAnswers && useCorrectRatio) {
       setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
-      setHasClickedOption(true);
       // TODO:websocket雙人對戰
       // socket.emit("updateScore", {
       //   participantId,
@@ -334,6 +332,16 @@ function Page() {
       )}
     </div>
   );
+  function restartGameHandler() {
+    setLoading(true);
+    setQuizStatus("start");
+    setSeconds(10);
+    setQuestionIndex(0);
+    setScore(0);
+    setConsecutiveCorrectAnswers(false);
+    setHasClickedOption(false);
+    setLoading(false);
+  }
   const EndPage = (
     <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center justify-center">
       <p className="text-4xl">你的得分: {score}</p>
@@ -346,16 +354,7 @@ function Page() {
           </div> */}
       <button
         type="button"
-        onClick={() => {
-          setLoading(true);
-          setQuizStatus("start");
-          setSeconds(10);
-          setQuestionIndex(0);
-          setScore(0);
-          setConsecutiveCorrectAnswers(false);
-          setLoading(false);
-          setHasClickedOption(false);
-        }}
+        onClick={restartGameHandler}
         className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
       >
         重新測驗
@@ -366,7 +365,6 @@ function Page() {
         onClick={() => {
           setLoading(true);
           router.push("/questionbanks");
-          setLoading(false);
         }}
         className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
       >
