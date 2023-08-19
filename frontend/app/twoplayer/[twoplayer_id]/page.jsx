@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import QuizSetting from "../../../components/QuizSetting";
-import ShareLink from "../../../components/ShareLink";
 
 const MockData = {
   id: 1,
@@ -201,7 +200,7 @@ function Page() {
           >
             分享連結
           </button>
-          {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />}
+          {showShareLink && <p>分享連結</p>}
           <button
             type="button"
             className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
