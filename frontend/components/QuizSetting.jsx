@@ -64,7 +64,12 @@ function QuizSetting({
             <button
               onClick={() => {
                 setQuestionSeconds(questionSecondRef.current.value);
-                Swal.fire("修改成功", "", "success");
+                Swal.fire({
+                  icon: "success",
+                  title: "修改成功",
+                  showConfirmButton: false,
+                  timer: 600,
+                });
               }}
               type="button"
               className="px-[2.125rem] py-4 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
