@@ -7,13 +7,13 @@ import Link from "next/link";
 // import axios from "axios";
 // import { useRouter } from "next/navigation";
 // import nookies from "nookies";
+// import useDeleteQuestion from "@/hooks/useDeleteQuestion";
 import Edit from "../../public/edit.png";
 
 const MockData = {
   id: 1,
   created_at: "2023-08-13",
   title: "React中的Key概念",
-  is_liked: false,
   questions: [
     {
       id: 1,
@@ -70,6 +70,7 @@ const MockData = {
 
 function QuestonBankCard() {
   // const router = useRouter();
+  // const { quiz, isLoading, isError } = useQuiz(param.quesionbank_id);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [editQuestion, setEditQuestion] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
@@ -273,6 +274,9 @@ function QuestonBankCard() {
     </form>
   );
   // TODO:到時候key要設定
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
   return (
     <div className="bg-white border p-5 min-w-[80rem] rounded-lg relative" key={MockData.id}>
       <div className="flex mb-4">

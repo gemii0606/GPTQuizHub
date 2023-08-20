@@ -3,15 +3,15 @@ import axios from "axios";
 import nookies from "nookies";
 import Swal from "sweetalert2";
 
-const useQuiz = (id) => {
+const useDeleteQuestion = (id) => {
   const router = useRouter();
-  async function DeleteQuiz() {
+  async function DeleteQuestion() {
     try {
-      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/${id}`, {
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/questions/${id}`, {
         headers: { Authorization: `Bearer ${nookies.get().access_token}` },
       });
       console.log(response);
-      return response.data.data.quiz;
+      return response.data.data.question;
     } catch (error) {
       if (error.response?.status === 403) {
         Swal.fire("帳號已過期", "請重新登入", "error");
@@ -25,7 +25,7 @@ const useQuiz = (id) => {
       return null;
     }
   }
-  return DeleteQuiz;
+  return DeleteQuestion;
 };
 
-export default useQuiz;
+export default useDeleteQuestion;
