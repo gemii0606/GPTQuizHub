@@ -7,7 +7,6 @@ import DeleteIcon from "../../public/delete.png";
 function QuestionsBanksCard({ questionsBank }) {
   const [showQuizType, setShowQuizType] = useState(false);
   const showTypeButtonRef = useRef(null);
-
   const handleOutsideClick = (e) => {
     const clickedElement = e.target;
     if (showTypeButtonRef.current && !showTypeButtonRef.current.contains(clickedElement)) {
