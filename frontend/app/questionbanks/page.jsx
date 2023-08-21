@@ -1,33 +1,23 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import QuestionBankSideBar from "../../components/questionbanks/QuestionBankSideBar";
 import QuestionsBanksCard from "../../components/questionbanks/QuestionBankCard";
 import Navbar from "../../components/navbar";
-// import useQuizList from "@/hooks/useQuizList";
+import useQuizList from "../../hooks/useQuizList";
 
-const MockData = [
-  {
-    id: 1,
-    title: "React 是什麼?",
-  },
-  {
-    id: 2,
-    title: "Docker 是什麼?",
-  },
-  {
-    id: 3,
-    title:
-      ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
-  },
-];
-const questionsBankItems = MockData.map((questionsBank) => (
-  <QuestionsBanksCard questionsBank={questionsBank} key={questionsBank.id} />
-));
 function Page() {
-  // const [quizzesData, setQuizzesData] = useState([]);
-  // const [cursor, setCursor] = useState(null);
-  // const fetchQuizzesData = useQuizList(null, cursor);
-  // const [selectedTag, setSelectedTag] = useState("");
+  const [cursor, setCursor] = useState(null);
+  const [quizList, setQuizList] = useState([]);
+  const { quizzes, nextCursor, isLoading, isError } = useQuizList();
+  useEffect(() => {
+    console.log(quizzes);
+    setQuizList(quizzes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const questionsBankItems = quizList.map((questionsBank) => (
+    <QuestionsBanksCard questionsBank={questionsBank} key={questionsBank.id} />
+  ));
   return (
     <div>
       <Navbar />
@@ -38,6 +28,13 @@ function Page() {
         <div className="flex flex-col min-w-[60rem] rounded-lg bg-white border p-4 mr-6">
           <h1 className="mb-5 text-2xl font-bold leading-6">題庫</h1>
           {questionsBankItems}
+          {isLoading && <p>Loading...</p>}
+          {isError && <p>An error occurred while fetching data.</p>}
+          {nextCursor && (
+            <button type="button" onClick={() => setCursor(nextCursor)}>
+              Load More
+            </button>
+          )}
         </div>
       </div>
     </div>

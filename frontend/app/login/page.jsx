@@ -47,7 +47,7 @@ function Page() {
         password: loginPassword,
       });
       const userData = response.data.data;
-      const maxAge = { maxAge: 3600 }; // 1hr
+      const maxAge = { maxAge: 100000 }; // 1hr
       nookies.set(null, "access_token", userData.access_token, maxAge);
       nookies.set(null, "user_id", userData.user.id.toString(), maxAge);
       router.push("/");
@@ -103,9 +103,7 @@ function Page() {
       <div className="max-w-[53rem] mx-auto">
         <div className="flex dark:border dark:border-white md:rounded-[20px]">
           <div className="flex flex-col items-center justify-center md:border dark:border-0 md:rounded-l-[20px] md:px-[7.5rem]">
-            <p className="mb-6 text-6xl font-pattaya text-[#8198BF] font-normal mt-16">
-              GPTQuizHub
-            </p>
+            <p className="mb-6 text-6xl font-pattaya text-[#8198BF] font-normal mt-16">GPTQuizHub</p>
             {showLogin ? (
               <p className="mb-10 text-4xl text-black dark:text-white font-outfit">會員登入</p>
             ) : (
@@ -114,9 +112,7 @@ function Page() {
             {showLogin ? (
               <form method="post" className="flex flex-col items-center" onSubmit={loginHandler}>
                 <label htmlFor="email" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    電子郵件
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">電子郵件</p>
                   <input
                     ref={loginEmailRef}
                     type="email"
@@ -127,9 +123,7 @@ function Page() {
                   />
                 </label>
                 <label htmlFor="password" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    密碼
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">密碼</p>
                   <input
                     ref={loginPasswordRef}
                     type="password"
@@ -156,9 +150,7 @@ function Page() {
             ) : (
               <form className="flex flex-col items-center pb-11" onSubmit={signupHandler}>
                 <label htmlFor="email" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    使用者名稱
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">使用者名稱</p>
                   <input
                     ref={signupNameRef}
                     type="text"
@@ -169,9 +161,7 @@ function Page() {
                   />
                 </label>
                 <label htmlFor="email" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    電子郵件
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">電子郵件</p>
                   <input
                     ref={signupEmailRef}
                     type="email"
@@ -182,9 +172,7 @@ function Page() {
                   />
                 </label>
                 <label htmlFor="password" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    密碼
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">密碼</p>
                   <input
                     ref={signupPasswordRef}
                     required
@@ -193,9 +181,7 @@ function Page() {
                   />
                 </label>
                 <label htmlFor="confirmPassword" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    再次輸入密碼
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">再次輸入密碼</p>
                   <input
                     ref={signupConfirmPasswordRef}
                     required
