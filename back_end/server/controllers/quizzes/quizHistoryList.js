@@ -12,6 +12,8 @@ const quizHistoryList = async (req, res) => {
         const signInId = req.signInId;
         const db = client.db(dbName);
         const quizzesHistoryCollection = db.collection('quizzesHistory');
+        const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
+        const tag = req.query.tag ? parseInt(atob(req.query.tag)) : req.query.tag;
 
         const quizzes = await quizzesHistoryCollection.aggregate([
             {
@@ -27,7 +29,9 @@ const quizHistoryList = async (req, res) => {
             },
             {
               $match: {
-                "quiz.user_id": new ObjectId(signInId)
+                "quiz.user_id": new ObjectId(signInId),
+                created_at: cursor ? { $lt: cursor } : { $exists: true },
+                tag: tag ? tag : { $exists: true },
               }
             },
             {
@@ -41,7 +45,7 @@ const quizHistoryList = async (req, res) => {
                 title:"$quiz.title"
               }
             }
-          ]).toArray()
+          ]).sort({ created_at: -1 }).limit(limit).toArray()
         res.status(200).json({data:{quizHistories}})
           
     } catch (error) {
