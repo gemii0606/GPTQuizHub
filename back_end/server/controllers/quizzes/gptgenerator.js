@@ -19,7 +19,7 @@ const template = {
        "option",
        "option",
        "option" ],
-     "correct_answer": "1, 2, 3, 4",
+     "correct_answer": "1, 2, 3, 4 (be a number)",
      "explanation": "explanation"
      }]
  }
@@ -68,8 +68,10 @@ const gptquizgenerator = async (req, res) => {
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
         
-        const usersCollection = db.collection('users');
-        const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
+        if (article.tag) {
+            const usersCollection = db.collection('users');
+            const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
+        }
 
         const questionsList = gptResult.questions.map(obj => {
             const result = {
