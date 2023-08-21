@@ -3,7 +3,7 @@ const {isValidEmail, hashPassword, generateToken} = require('../../utils/utils')
 require('dotenv').config({ path: __dirname + `/../../.env` });
 
 const url = process.env.MONGOURL;
-const dbName = 'users';
+const dbName = 'GPTQuizHub';
 
 const signUp = async (req, res) => {
   const { name, email, password } = req.body;
