@@ -13,7 +13,8 @@ const quizDetail = async (req, res) => {
         await client.connect();
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
-
+        console.log(user_id)
+        console.log(quiz_id)
         const aggregation = [
             {
                 $match: {
