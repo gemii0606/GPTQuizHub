@@ -17,7 +17,7 @@ const questionDelete = async (req, res) => {
         const questionsCollection = db.collection('questions');
         const deleteQuestion = await questionsCollection.deleteOne( {_id: question_id } );
 
-        if (result.deletedCount === 1) {
+        if (deleteQuestion.deletedCount === 1) {
             console.log('Document deleted successfully.');
         } else {
             console.log('Document not found or not deleted.');
