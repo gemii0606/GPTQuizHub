@@ -9,7 +9,7 @@ const { authAccessToken } = require('../middleware/authAccessToken');
 
 //users
 const { signIn } = require('../controllers/users/signIn');
-const { signUp } = require('../controllers/users/signup');
+const { signUp } = require('../controllers/users/signUp');
 
 //quizzes
 const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
