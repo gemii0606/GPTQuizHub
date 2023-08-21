@@ -43,6 +43,7 @@ const quizDetail = async (req, res) => {
                 question: obj.question,
                 type: obj.type,
                 difficulty: obj.difficulty,
+                correct_answer: obj.correct_answer,
                 options: [
                     {id: 1, content: obj.options[0]},
                     {id: 2, content: obj.options[1]},
