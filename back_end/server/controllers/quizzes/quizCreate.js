@@ -35,7 +35,7 @@ const quizCreate = async (req, res) => {
             insertQuiz
         }
 
-        axios.post(process.env.GPTURL, data, { timeout: 120000 });
+        axios.post(process.env.GPTURL, data, { timeout: 600000 });
 
         console.log('gptres')
         res.status(200).json({
