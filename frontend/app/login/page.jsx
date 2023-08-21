@@ -47,7 +47,7 @@ function Page() {
         password: loginPassword,
       });
       const userData = response.data.data;
-      const maxAge = { maxAge: 3600 }; // 1hr
+      const maxAge = { maxAge: 36000 }; // 1hr
       nookies.set(null, "access_token", userData.access_token, maxAge);
       nookies.set(null, "user_id", userData.user.id.toString(), maxAge);
       router.push("/");
@@ -103,7 +103,7 @@ function Page() {
       <div className="max-w-[53rem] mx-auto">
         <div className="flex dark:border dark:border-white md:rounded-[20px]">
           <div className="flex flex-col items-center justify-center md:border dark:border-0 md:rounded-l-[20px] md:px-[7.5rem]">
-            <p className="mb-6 text-6xl font-pattaya text-[#8198BF] font-normal mt-16">
+            <p className="mt-16 mb-6 text-6xl font-normal font-pattaya text-primary">
               GPTQuizHub
             </p>
             {showLogin ? (
@@ -141,7 +141,7 @@ function Page() {
                   <button
                     disabled={loading}
                     type="submit"
-                    className="rounded-md py-2.5 px-12 bg-[#8198BF] text-white font-outfit font-normal text-base cursor-pointer disabled:opacity-50"
+                    className="rounded-md py-2.5 px-12 bg-primary text-white font-outfit font-normal text-base cursor-pointer disabled:opacity-50"
                   >
                     登入
                   </button>
@@ -207,7 +207,7 @@ function Page() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="rounded-md py-2.5 px-12 border bg-[#8198BF] text-white font-outfit font-normal text-base cursor-pointer disabled:opacity-50"
+                    className="rounded-md py-2.5 px-12 border bg-primary text-white font-outfit font-normal text-base cursor-pointer disabled:opacity-50"
                   >
                     註冊
                   </button>
@@ -221,7 +221,7 @@ function Page() {
               </form>
             )}
           </div>
-          <div className="bg-[#8198BF] hidden rounded-r-[20px] min-w-[18.65rem] min-h-[38.75rem] md:block" />
+          <div className="bg-primary hidden rounded-r-[20px] min-w-[18.65rem] min-h-[38.75rem] md:block" />
         </div>
         <p className="hidden mt-4 font-normal text-right cursor-pointer text-grey dark:text-white md:block">
           關於我們 · 隱私權條款 · Cookie 條款 · © 2023 GPTQuizHub, Inc.

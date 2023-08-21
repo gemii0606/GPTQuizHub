@@ -26,7 +26,7 @@ const ProgressSpan = styled.span`
   position: absolute;
   text-align: end;
   padding-right: 5px;
-  background-color: rgb(130, 152, 192);
+  background-color: #84C1FF;
   animation: ${progressAnimation} 1s linear;
 `;
 
