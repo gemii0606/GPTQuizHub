@@ -43,8 +43,8 @@ router.post('/quizzes/history', authAccessToken, quizHistoryCreate)
 router.get('/quizzes/history', authAccessToken, quizHistoryList)
 
 router.get('/quizzes/:id/check', authAccessToken, quizStatusCheck)
-router.get('/quizzes/:id', authAccessToken, quizDetail)
-router.delete('/quizzes/:id', authAccessToken, quizDelete)
+router.get('/quizzes/:id/detail', authAccessToken, quizDetail)
+router.delete('/quizzes/:id/detail', authAccessToken, quizDelete)
 
 router.get('/articles/search', authAccessToken, articlesList)
 router.get('/articles/:id', authAccessToken, articleDetail)
