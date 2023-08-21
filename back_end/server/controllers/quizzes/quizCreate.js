@@ -19,21 +19,16 @@ const quizCreate = async (req, res) => {
         const db = client.db(dbName);
 
         const quizzesCollection = db.collection('quizzes');
-        
-        const quizData = {
+
+        const insertQuiz = await quizzesCollection.insertOne({ 
             user_id: user_id,
             title: article.title,
+            tag: article.tag,
             content: article.content,
             is_deleted: false,
             status: "pending",
             created_at: getCurrentTime()
-        };
-        
-        if (article.tag) {
-            quizData.tag = article.tag;
-        }
-        
-        const insertQuiz = await quizzesCollection.insertOne(quizData);
+        });
 
         const data = {
             user_id: req.signInId,
