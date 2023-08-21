@@ -27,7 +27,7 @@ const articlesList = async (req, res) => {
         }).project({
             _id: 0,
             id: "$_id",   
-            tags: 1,
+            tag: 1,
             created_at: 1,
             title:1
             // user_id: -1
