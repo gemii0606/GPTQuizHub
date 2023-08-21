@@ -6,6 +6,7 @@ const dbName = 'GPTQuizHub';
 const limit = 10;
 
 const quizList = async (req, res) => {
+    console.log('quizlist')
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {       
         const signInId = new ObjectId(req.signInId);
