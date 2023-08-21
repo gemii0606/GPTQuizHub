@@ -32,7 +32,7 @@ function Page() {
           {isError && <p>An error occurred while fetching data.</p>}
           {nextCursor && (
             <button type="button" onClick={() => setCursor(nextCursor)}>
-              Load More
+              {cursor}
             </button>
           )}
         </div>
