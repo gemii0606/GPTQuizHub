@@ -31,8 +31,11 @@ const { articleDelete } = require('../controllers/articles/articleDelete');
 const { questionEdit } = require('../controllers/questions/questionEdit');
 const { questionDelete } = require('../controllers/questions/questionDelete');
 
+const { findTags } = require('../controllers/articles/articleTag');
+
 router.post('/users/signup', signUp)
 router.post('/users/signin', signIn);
+router.get('/users/tags', authAccessToken, findTags)
 
 router.post('/quizzes/test', quizGenerate)
 router.get('/quizzes/search', authAccessToken, quizList)
@@ -53,6 +56,7 @@ router.put('/questions/:id', authAccessToken, questionEdit)
 router.delete('/questions/:id', authAccessToken, questionDelete)
 
 router.post('/gptquizgenerator', gptquizgenerator )
+
 
 module.exports = router;
 
