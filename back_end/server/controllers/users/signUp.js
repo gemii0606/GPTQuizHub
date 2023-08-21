@@ -1,5 +1,5 @@
 const { MongoClient } = require('mongodb');
-const {isValidEmail, hashPassword, generateToken} = require('../utils');
+const {isValidEmail, hashPassword, generateToken} = require('../../utils/utils');
 require('dotenv').config({ path: __dirname + `/../../.env` });
 
 const url = process.env.MONGOURL;
