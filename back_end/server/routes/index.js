@@ -31,9 +31,8 @@ const { articleDelete } = require('../controllers/articles/articleDelete');
 const { questionEdit } = require('../controllers/questions/questionEdit');
 const { questionDelete } = require('../controllers/questions/questionDelete');
 
-router.post('/users/signUp', signUp)
+router.post('/users/signup', signUp)
 router.post('/users/signin', signIn);
-
 
 router.post('/quizzes/test', quizGenerate)
 router.get('/quizzes/search', authAccessToken, quizList)

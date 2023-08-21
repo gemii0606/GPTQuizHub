@@ -52,7 +52,7 @@ const signUp = async (req, res) => {
     };
 
     // Sign the Access Token using JWT
-    const accessToken = generateToken(payload.id);
+    const accessToken = generateToken( {id:payload.id} );
 
     // Return the successful signup response
     res.status(200).json({
