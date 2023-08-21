@@ -45,7 +45,7 @@ const quizHistoryList = async (req, res) => {
                 title:"$quiz.title"
               }
             }
-          ]).toArray()
+          ]).sort({ created_at: -1 }).limit(limit).toArray()
         res.status(200).json({data:{quizHistories}})
           
     } catch (error) {
