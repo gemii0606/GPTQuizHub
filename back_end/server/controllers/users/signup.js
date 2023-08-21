@@ -1,9 +1,9 @@
 const { MongoClient } = require('mongodb');
-const { hashPassword, isValidEmail, generateToken } = require('../../utils/utils');
+const {isValidEmail, hashPassword, generateToken} = require('../utils');
 require('dotenv').config({ path: __dirname + `/../../.env` });
 
 const url = process.env.MONGOURL;
-const dbName = 'GPTQuizHub';
+const dbName = 'users';
 
 const signUp = async (req, res) => {
   const { name, email, password } = req.body;
@@ -15,8 +15,8 @@ const signUp = async (req, res) => {
     return res.status(400).json({ error: 'Please fill the correct email address!' });
   }
 
-  const client = new MongoClient(url, { useUnifiedTopology: true });
   try {
+    const client = new MongoClient(url, { useUnifiedTopology: true });
     await client.connect();
     console.log('Connected to MongoDB');
 
@@ -36,9 +36,7 @@ const signUp = async (req, res) => {
     const newUser = {
       name,
       email,
-      password: securePassword,
-      provider: 'native',
-      tags:[]
+      password: securePassword
     };
 
     // Insert the new user
@@ -54,24 +52,22 @@ const signUp = async (req, res) => {
     };
 
     // Sign the Access Token using JWT
-    const accessToken = generateToken({ id: payload.id });
+    const accessToken = generateToken(payload.id);
 
     // Return the successful signup response
-    return res.status(200).json({
+    res.status(200).json({
       data: {
         access_token: accessToken,
         user: payload,
       },
     });
+
+    client.close();
   } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'An error occurred while signing up.' });
-  } finally {
-      await client.close();
+    console.error('Error:', error);
+    res.status(500).json({ error: 'An error occurred while signing up.' });
   }
 };
 
 // 導出 signUpUser 函數供其他地方使用
-module.exports = {
-  signUp
-};
+module.exports = signUp;
