@@ -12,10 +12,13 @@ const { signIn } = require('../controllers/users/signIn');
 const { signUp } = require('../controllers/users/signup');
 
 //quizzes
+const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
 const { quizGenerate } = require('../controllers/quizzes/quizGenerate_test');
 const { quizList } = require('../controllers/quizzes/quizList');
 const { quizCreate } = require('../controllers/quizzes/quizCreate');
 const { quizDetail } = require('../controllers/quizzes/quizDetail');
+const { quizStatusCheck } = require('../controllers/quizzes/quizStatusCheck');
+const { quizDelete } = require('../controllers/quizzes/quizDelete');
 
 const { quizHistoryCreate } = require('../controllers/quizzes/quizHistoryCreate');
 const { quizHistoryList } = require('../controllers/quizzes/quizHistoryList');
