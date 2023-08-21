@@ -9,7 +9,7 @@ const { authAccessToken } = require('../middleware/authAccessToken');
 
 //users
 const { signIn } = require('../controllers/users/signIn');
-const { signUp } = require('../controllers/users/signup');
+const { signUp } = require('../controllers/users/signUp');
 
 //quizzes
 const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
@@ -28,18 +28,11 @@ const { articlesList } = require('../controllers/articles/articlesList');
 const { articleDetail } = require('../controllers/articles/articleDetail');
 const { articleDelete } = require('../controllers/articles/articleDelete');
 
-const { quizCreate } = require('../controllers/quizzes/quizCreate');
-const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
-const { quizDetail } = require('../controllers/quizzes/quizDetail');
-const { quizStatusCheck } = require('../controllers/quizzes/quizStatusCheck');
-const { quizDelete } = require('../controllers/quizzes/quizDelete');
-
 const { questionEdit } = require('../controllers/questions/questionEdit');
 const { questionDelete } = require('../controllers/questions/questionDelete');
 
 router.post('/users/signup', signUp)
 router.post('/users/signin', signIn);
-
 
 router.post('/quizzes/test', quizGenerate)
 router.get('/quizzes/search', authAccessToken, quizList)
@@ -49,8 +42,8 @@ router.post('/quizzes/history', authAccessToken, quizHistoryCreate)
 router.get('/quizzes/history', authAccessToken, quizHistoryList)
 
 router.get('/quizzes/:id/check', authAccessToken, quizStatusCheck)
-router.get('/quizzes/:id', authAccessToken, quizDetail)
-router.delete('/quizzes/:id', authAccessToken, quizDelete)
+router.get('/quizzes/:id/detail', authAccessToken, quizDetail)
+router.delete('/quizzes/:id/detail', authAccessToken, quizDelete)
 
 router.get('/articles/search', authAccessToken, articlesList)
 router.get('/articles/:id', authAccessToken, articleDetail)

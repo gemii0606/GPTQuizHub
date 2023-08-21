@@ -6,6 +6,7 @@ const dbName = 'GPTQuizHub';
 const limit = 10;
 
 const quizList = async (req, res) => {
+    console.log('quizlist')
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {       
         const signInId = new ObjectId(req.signInId);
@@ -14,15 +15,19 @@ const quizList = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
         const quizzesCollection = db.collection('quizzes');
-        const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
-        const tag = req.query.tag ? parseInt(atob(req.query.tag)) : req.query.tag;
+        const cursor = req.query.cursor ? atob(req.query.cursor) : req.query.cursor;
+        const tag = req.query.tag;
+        
+        console.log(cursor);
+        console.log(tag)
 
         const quizzes = await quizzesCollection.find({
             user_id: signInId,
             created_at: cursor ? { $lt: cursor } : { $exists: true },
             tag: tag ? tag : { $exists: true },
         }).project({
-            _id: 1,     
+            _id: 0,
+            id: "$_id",     
             created_at: 1,
             tag: 1,
             title:1

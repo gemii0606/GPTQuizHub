@@ -8,6 +8,7 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const quizCreate = async (req, res) => {
+    console.log('quizcreate')
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         const user_id = new ObjectId(req.signInId);
@@ -35,7 +36,7 @@ const quizCreate = async (req, res) => {
             insertQuiz
         }
 
-        axios.post(process.env.GPTURL, data, { timeout: 120000 });
+        axios.post(process.env.GPTURL, data, { timeout: 600000 });
 
         console.log('gptres')
         res.status(200).json({

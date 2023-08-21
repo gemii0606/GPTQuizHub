@@ -6,6 +6,7 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const quizDetail = async (req, res) => {
+    console.log('quizdetail')
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         const user_id = new ObjectId(req.signInId);
@@ -13,7 +14,8 @@ const quizDetail = async (req, res) => {
         await client.connect();
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
-
+        console.log(user_id)
+        console.log(quiz_id)
         const aggregation = [
             {
                 $match: {
@@ -41,6 +43,7 @@ const quizDetail = async (req, res) => {
                 question: obj.question,
                 type: obj.type,
                 difficulty: obj.difficulty,
+                correct_answer: obj.correct_answer,
                 options: [
                     {id: 1, content: obj.options[0]},
                     {id: 2, content: obj.options[1]},
