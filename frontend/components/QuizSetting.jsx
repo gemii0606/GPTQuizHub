@@ -23,6 +23,7 @@ function QuizSetting({
   const questionNumberRef = useRef(null);
   const questionSecondRef = useRef(null);
   const correctRatioRef = useRef(null);
+  const pathname = usePathname();
   return (
     <Modal>
       <div className="flex flex-col items-center">
@@ -55,7 +56,7 @@ function QuizSetting({
             </button>
             <p className="ml-3">此功能尚未開放</p>
           </div>
-          {usePathname().includes("/twoplayer") && (
+          {(pathname.includes("/twoplayer") || pathname.includes("/multiplayer")) && (
             <div className="flex items-center mt-5">
               <p className="mr-5 text-3xl">得分倍率</p>
               <button
