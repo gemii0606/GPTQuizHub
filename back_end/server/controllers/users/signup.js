@@ -70,4 +70,4 @@ const signUp = async (req, res) => {
 };
 
 // 導出 signUpUser 函數供其他地方使用
-module.exports = signUp;
+module.exports = {signUp};
