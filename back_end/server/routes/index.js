@@ -28,12 +28,6 @@ const { articlesList } = require('../controllers/articles/articlesList');
 const { articleDetail } = require('../controllers/articles/articleDetail');
 const { articleDelete } = require('../controllers/articles/articleDelete');
 
-const { quizCreate } = require('../controllers/quizzes/quizCreate');
-const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
-const { quizDetail } = require('../controllers/quizzes/quizDetail');
-const { quizStatusCheck } = require('../controllers/quizzes/quizStatusCheck');
-const { quizDelete } = require('../controllers/quizzes/quizDelete');
-
 const { questionEdit } = require('../controllers/questions/questionEdit');
 const { questionDelete } = require('../controllers/questions/questionDelete');
 
