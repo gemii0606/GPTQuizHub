@@ -46,7 +46,7 @@ const quizHistoryList = async (req, res) => {
               }
             }
           ]).sort({ created_at: -1 }).limit(limit).toArray()
-        res.status(200).json({data:{quizHistories}})
+        res.status(200).json({data:{quizzes}})
           
     } catch (error) {
         console.log(error);

@@ -16,6 +16,9 @@ const quizList = async (req, res) => {
         const quizzesCollection = db.collection('quizzes');
         const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
         const tag = req.query.tag ? parseInt(atob(req.query.tag)) : req.query.tag;
+        
+        console.log(cursor);
+        console.log(tag)
 
         const quizzes = await quizzesCollection.find({
             user_id: signInId,
