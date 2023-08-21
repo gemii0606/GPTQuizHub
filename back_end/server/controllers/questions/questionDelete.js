@@ -6,6 +6,7 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const questionDelete = async (req, res) => {
+    console.log('questiondelete')
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         const user_id = new ObjectId(req.signInId);
@@ -16,7 +17,7 @@ const questionDelete = async (req, res) => {
 
         const questionsCollection = db.collection('questions');
         const deleteQuestion = await questionsCollection.deleteOne( {_id: question_id } );
-
+        console.log(deleteQuestion)
         if (deleteQuestion.deletedCount === 1) {
             console.log('Document deleted successfully.');
         } else {
