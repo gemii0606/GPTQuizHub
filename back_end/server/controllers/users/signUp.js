@@ -36,7 +36,8 @@ const signUp = async (req, res) => {
     const newUser = {
       name,
       email,
-      password: securePassword
+      password: securePassword,
+      tags:[]
     };
 
     // Insert the new user
