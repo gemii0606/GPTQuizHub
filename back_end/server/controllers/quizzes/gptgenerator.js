@@ -68,7 +68,7 @@ const gptquizgenerator = async (req, res) => {
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
         
-        if (article.tag) {
+        if (!article.tag) {
             const usersCollection = db.collection('users');
             const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
         }
