@@ -22,6 +22,10 @@ const questionEdit = async (req, res) => {
             {_id: question_id }, 
             { $set: {...userEdit} }
         );
+        
+        if (!updateQuestion) {
+            return res.status(400).json({error: 'No such question id found.'})
+        }
 
         res.status(200).json({
             data: {
