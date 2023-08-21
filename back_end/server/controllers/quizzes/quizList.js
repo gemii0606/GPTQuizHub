@@ -25,7 +25,8 @@ const quizList = async (req, res) => {
             created_at: cursor ? { $lt: cursor } : { $exists: true },
             tag: tag ? tag : { $exists: true },
         }).project({
-            _id: 1,     
+            _id: 0,
+            id: "$_id",     
             created_at: 1,
             tag: 1,
             title:1

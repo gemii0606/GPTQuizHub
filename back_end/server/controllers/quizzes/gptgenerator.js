@@ -2,12 +2,6 @@ const { MongoClient, ObjectId } = require('mongodb');
 const { getCurrentTime } = require('../../utils/utils');
 require('dotenv').config({ path: __dirname + `/../../.env` });
 
-const { Configuration, OpenAIApi } = require("openai");
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-    });
-const openai = new OpenAIApi(configuration);
-
 const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
@@ -35,6 +29,12 @@ const gptquizgenerator = async (req, res) => {
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
+        const { Configuration, OpenAIApi } = require("openai");
+        const configuration = new Configuration({
+            apiKey: process.env.OPENAI_API_KEY,
+            });
+        const openai = new OpenAIApi(configuration);
+
         const user_id = new ObjectId(req.body.user_id);
         const article = req.body.article;
         const total = req.body.total;
