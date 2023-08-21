@@ -6,11 +6,13 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const questionEdit = async (req, res) => {
+    console.log('questionedit')
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         const user_id = new ObjectId(req.signInId);
         const question_id = new ObjectId(req.params.id);
         const userEdit = req.body;
+        console.log(userEdit)
         await client.connect();
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
