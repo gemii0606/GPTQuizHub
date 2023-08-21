@@ -14,8 +14,8 @@ const articlesList = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
         const articlesCollection = db.collection('quizzes');
-        const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
-        const tag = req.query.tag ? parseInt(atob(req.query.tag)) : req.query.tag;
+        const cursor = req.query.cursor ? atob(req.query.cursor) : req.query.cursor;
+        const tag = req.query.tag
 
         console.log(cursor)
 
@@ -25,7 +25,8 @@ const articlesList = async (req, res) => {
             is_deleted: false,
             tag: tag ? tag : { $exists: true },
         }).project({
-            _id: 1,     
+            _id: 0,
+            id: "$_id",   
             tags: 1,
             created_at: 1,
             title:1

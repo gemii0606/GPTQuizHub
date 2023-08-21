@@ -54,11 +54,12 @@ function encodejsonBase64(obj) {
 function getCurrentTime() {
     // Get the current date object
     const currentDate = new Date();
-
+    const utcOffset = 8 * 60 * 60 * 1000; // Offset in milliseconds for UTC+8
+    const utcPlus8Time = new Date(currentDate.getTime() + utcOffset);
     // Format the date object to the desired format
     // const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Taipei' };
     // const formattedTime = currentDate.toLocaleString('en-US', options).replace(',', '');
-    const formattedTime = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+    const formattedTime = utcPlus8Time.toISOString().slice(0, 19).replace('T', ' ');
     return formattedTime;
 }
 
