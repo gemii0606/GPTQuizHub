@@ -12,8 +12,8 @@ const quizHistoryList = async (req, res) => {
         const signInId = req.signInId;
         const db = client.db(dbName);
         const quizzesHistoryCollection = db.collection('quizzesHistory');
-        const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
-        const tag = req.query.tag ? parseInt(atob(req.query.tag)) : req.query.tag;
+        const cursor = req.query.cursor ? atob(req.query.cursor) : req.query.cursor;
+        const tag = req.query.tag;
 
         const quizzes = await quizzesHistoryCollection.aggregate([
             {

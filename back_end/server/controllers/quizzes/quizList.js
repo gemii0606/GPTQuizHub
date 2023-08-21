@@ -14,8 +14,8 @@ const quizList = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
         const quizzesCollection = db.collection('quizzes');
-        const cursor = req.query.cursor ? parseInt(atob(req.query.cursor)) : req.query.cursor;
-        const tag = req.query.tag ? parseInt(atob(req.query.tag)) : req.query.tag;
+        const cursor = req.query.cursor ? atob(req.query.cursor) : req.query.cursor;
+        const tag = req.query.tag;
         
         console.log(cursor);
         console.log(tag)
