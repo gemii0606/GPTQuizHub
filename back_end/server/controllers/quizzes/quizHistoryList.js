@@ -6,6 +6,7 @@ const dbName = 'GPTQuizHub';
 const limit = 10;
 
 const quizHistoryList = async (req, res) => {
+    console.log('quizhistorylist')
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         await client.connect();

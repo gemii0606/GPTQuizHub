@@ -6,6 +6,7 @@ const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
 const quizDetail = async (req, res) => {
+    console.log('quizdetail')
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         const user_id = new ObjectId(req.signInId);
