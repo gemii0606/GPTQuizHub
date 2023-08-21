@@ -1,9 +1,9 @@
 const { MongoClient } = require('mongodb');
-const {isValidEmail, hashPassword, generateToken} = require('../../utils/utils');
+const { isValidEmail, hashPassword, generateToken } = require('../../utils/utils');
 require('dotenv').config({ path: __dirname + `/../../.env` });
 
 const url = process.env.MONGOURL;
-const dbName = 'users';
+const dbName = 'GPTQuizHub';
 
 const signUp = async (req, res) => {
   const { name, email, password } = req.body;
@@ -52,7 +52,7 @@ const signUp = async (req, res) => {
     };
 
     // Sign the Access Token using JWT
-    const accessToken = generateToken( {id:payload.id} );
+    const accessToken = generateToken({ id: payload.id });
 
     // Return the successful signup response
     res.status(200).json({
@@ -70,4 +70,4 @@ const signUp = async (req, res) => {
 };
 
 // 導出 signUpUser 函數供其他地方使用
-module.exports = {signUp};
+module.exports = { signUp };
