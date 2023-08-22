@@ -11,16 +11,15 @@ const findTags = async (req, res) => {
         await client.connect();
         const db = client.db(dbName);
         const usersCollection = db.collection('users');
+        let transformedTags = []
 
         const user = await usersCollection.findOne({ _id: signInId });
         if (!user.tags) {
-            const transformedTags = user.tags.map((tag, index) => ({
+            transformedTags = user.tags.map((tag, index) => ({
                 id: index + 1,
                 name: `${tag}`,
             }));
-        } else {
-            const transformedTags = [];
-        }
+        } 
         res.status(200).json({ data: { tags: transformedTags}})
     } catch(error) {
         console.log(error);
