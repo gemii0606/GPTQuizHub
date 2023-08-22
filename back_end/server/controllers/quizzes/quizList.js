@@ -30,7 +30,8 @@ const quizList = async (req, res) => {
             id: "$_id",     
             created_at: 1,
             tag: 1,
-            title:1
+            title:1,
+            status:1
             // user_id: -1
         }).sort({ created_at: -1 }).limit(limit).toArray();
 
