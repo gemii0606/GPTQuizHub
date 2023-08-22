@@ -72,6 +72,7 @@ const gptquizgenerator = async (req, res) => {
         if (article.tag) {
             const usersCollection = db.collection('users');
             const insertTag = await usersCollection.updateOne({ _id: user_id }, { $addToSet: { tags: article.tag } });
+            console.log(insertTag)
         }
 
         const questionsList = gptResult.questions.map(obj => {
