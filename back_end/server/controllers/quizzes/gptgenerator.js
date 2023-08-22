@@ -41,6 +41,7 @@ const gptquizgenerator = async (req, res) => {
     try {
         const user_id = new ObjectId(req.body.user_id);
         const article = req.body.article;
+        console.log(article)
         const total = req.body.total;
         insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
         const completion = await openai.createChatCompletion({
