@@ -28,6 +28,7 @@ const gptquizgenerator = async (req, res) => {
     console.log('here is gpt');
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
+    let insertQuizId;
     try {
         const { Configuration, OpenAIApi } = require("openai");
         const configuration = new Configuration({
@@ -38,7 +39,7 @@ const gptquizgenerator = async (req, res) => {
         const user_id = new ObjectId(req.body.user_id);
         const article = req.body.article;
         const total = req.body.total;
-        const insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
+        insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             // max_tokens: 128,
@@ -70,7 +71,7 @@ const gptquizgenerator = async (req, res) => {
         
         if (!article.tag) {
             const usersCollection = db.collection('users');
-            const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
+            const insertTag = await usersCollection.updateOne({ _id: user_id }, { $addToSet: { tags: article.tag } });
         }
 
         const questionsList = gptResult.questions.map(obj => {
@@ -98,7 +99,10 @@ const gptquizgenerator = async (req, res) => {
         res.status(200).json({ message: "gptquizgenerator completed successfully." });
 
     } catch (error) {
-        const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuizId }, { $set: { status: 'failed' } });
+        if (insertQuizId) {
+            const quizzesCollection = db.collection('quizzes');
+            const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuizId }, { $set: { status: 'failed' } });
+        }
         console.log(error);
         res.status(500).json({ error: "gpt failed." })
     } finally {
