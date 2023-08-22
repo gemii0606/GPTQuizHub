@@ -47,7 +47,7 @@ function Page() {
         password: loginPassword,
       });
       const userData = response.data.data;
-      const maxAge = { maxAge: 36000 }; // 1hr
+      const maxAge = { maxAge: 100000 }; // 1hr
       nookies.set(null, "access_token", userData.access_token, maxAge);
       nookies.set(null, "user_id", userData.user.id.toString(), maxAge);
       router.push("/");
@@ -114,9 +114,7 @@ function Page() {
             {showLogin ? (
               <form method="post" className="flex flex-col items-center" onSubmit={loginHandler}>
                 <label htmlFor="email" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    電子郵件
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">電子郵件</p>
                   <input
                     ref={loginEmailRef}
                     type="email"
@@ -127,9 +125,7 @@ function Page() {
                   />
                 </label>
                 <label htmlFor="password" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    密碼
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">密碼</p>
                   <input
                     ref={loginPasswordRef}
                     type="password"
@@ -156,9 +152,7 @@ function Page() {
             ) : (
               <form className="flex flex-col items-center pb-11" onSubmit={signupHandler}>
                 <label htmlFor="email" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    使用者名稱
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">使用者名稱</p>
                   <input
                     ref={signupNameRef}
                     type="text"
@@ -169,9 +163,7 @@ function Page() {
                   />
                 </label>
                 <label htmlFor="email" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    電子郵件
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">電子郵件</p>
                   <input
                     ref={signupEmailRef}
                     type="email"
@@ -182,9 +174,7 @@ function Page() {
                   />
                 </label>
                 <label htmlFor="password" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    密碼
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">密碼</p>
                   <input
                     ref={signupPasswordRef}
                     required
@@ -193,9 +183,7 @@ function Page() {
                   />
                 </label>
                 <label htmlFor="confirmPassword" className="block mb-6">
-                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">
-                    再次輸入密碼
-                  </p>
+                  <p className="mb-2.5 font-outfit text-base font-medium text-black dark:text-white">再次輸入密碼</p>
                   <input
                     ref={signupConfirmPasswordRef}
                     required
