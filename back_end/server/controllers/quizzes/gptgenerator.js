@@ -2,6 +2,12 @@ const { MongoClient, ObjectId } = require('mongodb');
 const { getCurrentTime } = require('../../utils/utils');
 require('dotenv').config({ path: __dirname + `/../../.env` });
 
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+    });
+const openai = new OpenAIApi(configuration);
+
 const url = process.env.MONGOURL;
 const dbName = 'GPTQuizHub';
 
@@ -19,7 +25,7 @@ const template = {
        "option",
        "option",
        "option" ],
-     "correct_answer": "1, 2, 3, 4 (only provide the number of answer)",
+     "correct_answer": "1, 2, 3, 4",
      "explanation": "explanation"
      }]
  }
@@ -29,12 +35,6 @@ const gptquizgenerator = async (req, res) => {
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
-        const { Configuration, OpenAIApi } = require("openai");
-        const configuration = new Configuration({
-            apiKey: process.env.OPENAI_API_KEY,
-            });
-        const openai = new OpenAIApi(configuration);
-
         const user_id = new ObjectId(req.body.user_id);
         const article = req.body.article;
         const total = req.body.total;
@@ -43,7 +43,7 @@ const gptquizgenerator = async (req, res) => {
             model: "gpt-3.5-turbo",
             // max_tokens: 128,
             messages: [
-                {role: "system", content: "你是位專業的出題老師，而且你是根據'''標記以上文章的主要語言來出同樣語言的題目，而且你的正確答案給的是正解的題號數字"},
+                {role: "system", content: "你是位專業的出題老師，而且你是根據'''標記以上文章的主要語言來出同樣語言的題目"},
                 {
                 role: "user", 
                 content: requestJson(
@@ -68,10 +68,8 @@ const gptquizgenerator = async (req, res) => {
         console.log('Connected to MongoDB');
         const db = client.db(dbName);
         
-        if (!article.tag) {
-            const usersCollection = db.collection('users');
-            const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
-        }
+        const usersCollection = db.collection('users');
+        const insertTag = await usersCollection.updateOne({ _id: user_id }, { $push: { tags: article.tag } });
 
         const questionsList = gptResult.questions.map(obj => {
             const result = {
@@ -98,7 +96,6 @@ const gptquizgenerator = async (req, res) => {
         res.status(200).json({ message: "gptquizgenerator completed successfully." });
 
     } catch (error) {
-        const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuizId }, { $set: { status: 'failed' } });
         console.log(error);
         res.status(500).json({ error: "gpt failed." })
     } finally {
