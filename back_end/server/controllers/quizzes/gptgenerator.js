@@ -5,7 +5,7 @@ require('dotenv').config({ path: __dirname + `/../../.env` });
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
-    });
+});
 const openai = new OpenAIApi(configuration);
 
 const url = process.env.MONGOURL;
@@ -17,26 +17,23 @@ const requestJson = (prompt, jsonStructure) => `${prompt}
 
 const template = {
     "questions": [{
-     "difficulty": "easy, normal, hard",
-     "type": "multiple questions",
-     "question": "question",
-     "options":
-       [ "option",
-       "option",
-       "option",
-       "option" ],
-     "correct_answer": "1, 2, 3, 4",
-     "explanation": "explanation"
-     }]
- }
+        "difficulty": "easy, normal, hard",
+        "type": "multiple questions",
+        "question": "question",
+        "options":
+        [ "option",
+        "option",
+        "option",
+        "option" ],
+        "correct_answer": "1, 2, 3, 4",
+        "explanation": "explanation"
+    }]
+}
 
 const gptquizgenerator = async (req, res) => {
     console.log('here is gpt');
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
-    await client.connect();
-    console.log('Connected to MongoDB');
-    const db = client.db(dbName);
     let insertQuizId;
     try {
         const user_id = new ObjectId(req.body.user_id);
@@ -47,10 +44,10 @@ const gptquizgenerator = async (req, res) => {
             model: "gpt-3.5-turbo",
             // max_tokens: 128,
             messages: [
-                {role: "system", content: "你是位專業的出題老師，而且你是根據'''標記以上文章的主要語言來出同樣語言的題目"},
+                { role: "system", content: "你是位專業的出題老師，而且你是根據'''標記以上文章的主要語言來出同樣語言的題目" },
                 {
-                role: "user", 
-                content: requestJson(
+                    role: "user",
+                    content: requestJson(
                     `
                     ${article.content}
                     '''
@@ -65,18 +62,22 @@ const gptquizgenerator = async (req, res) => {
         if (!gptResult) {
             const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuizId }, { $set: { status: 'failed' } });
             res.status(500).json({ error: 'The json strucure generated from gpt is not a valid one, please try again' });
-            return 
+            return
         }
 
-        if (article.tag) {
-            const usersCollection = db.collection('users');
-            const insertTag = await usersCollection.updateOne({ _id: user_id }, { $addToSet: { tags: article.tag } });
-        }
+        await client.connect();
+        console.log('Connected to MongoDB');
+        const db = client.db(dbName);
+
+
+        const usersCollection = db.collection('users');
+        const insertTag = await usersCollection.updateOne({ _id: user_id }, { $addToSet: { tags: article.tag } });
+
 
         const questionsList = gptResult.questions.map(obj => {
             const result = {
                 user_id: user_id,
-                quiz_id: insertQuizId, 
+                quiz_id: insertQuizId,
                 question: obj.question,
                 type: obj.type,
                 difficulty: obj.difficulty,
@@ -112,4 +113,4 @@ const gptquizgenerator = async (req, res) => {
 
 module.exports = {
     gptquizgenerator
-  };
+};
