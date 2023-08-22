@@ -18,9 +18,9 @@ function HistoryLink({
         </div>
       </div>
       <div className="flex mt-4">
-        <p className="ml-6 text-slate-400">{createdAt}</p>
+        <p className="ml-6 text-black">{createdAt}</p>
         <Link href="/" passHref className="mt-auto ml-auto">
-          <div className="block bg-[#8198BF] text-white px-4 py-1 rounded-md hover:bg-[#638ace]">測驗傳送門</div>
+          <div className="block bg-[#84C1FF] text-white px-4 py-1 rounded-md hover:bg-[#638ace]">測驗傳送門</div>
         </Link>
       </div>
     </div>
