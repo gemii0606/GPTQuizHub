@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { mutate } from "swr";
 import useTags from "../../hooks/useTags";
 
-function QuestionBankSideBar({ setSelectTag, refresh }) {
+function QuestionBankSideBar({ setSelectTag }) {
   const [taglist, setTagList] = useState([]);
   const { tags, isLoading, isError } = useTags();
   useEffect(() => {
@@ -15,7 +16,7 @@ function QuestionBankSideBar({ setSelectTag, refresh }) {
       type="button"
       onClick={() => {
         setSelectTag(tag.name);
-        refresh();
+        mutate(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/search/`, tag.name);
       }}
       className="px-4 py-4 text-2xl font-bold border rounded-lg min-w-[15rem] max-w-[20rem] mt-4 hover:bg-[#8198BF] hover:text-white break-words cursor-pointer truncate"
     >

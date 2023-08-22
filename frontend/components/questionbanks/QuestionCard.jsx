@@ -36,12 +36,14 @@ function QuestionBankCard({ id }) {
       explanation: explanationRef.current.value,
     };
     console.log(params);
-    console.log(`Bearer ${nookies.get().access_token}`);
     try {
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/questions/${id}`, {
-        headers: { Authorization: `Bearer ${nookies.get().access_token}` },
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/questions/${quiz?.questions?.[questionIndex]?.id}`,
         params,
-      });
+        {
+          headers: { Authorization: `Bearer ${nookies.get().access_token}` },
+        }
+      );
       console.log(response);
     } catch (error) {
       if (error?.response?.status === 403) {

@@ -50,14 +50,17 @@ function Page({ params }) {
       wrongAnswer,
     });
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/history`, {
-        headers: { Authorization: `Bearer ${nookies.get().access_token}` },
-        params: {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/quizzes/history`,
+        {
           quiz_id: params.quiz_id,
           accuracy,
           wrongAnswer,
         },
-      });
+        {
+          headers: { Authorization: `Bearer ${nookies.get().access_token}` },
+        }
+      );
       console.log(response);
       Swal.fire({
         position: "top-end",
