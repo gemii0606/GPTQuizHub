@@ -21,7 +21,7 @@ function Page() {
       });
       setListArticles(response.data.data.articles);
       console.log(listArticles);
-      if (response.data.data.article.length !== 0) {
+      if (response.data.data.length !== 0) {
         setShowArticles(true);
       }
     } catch (error) {

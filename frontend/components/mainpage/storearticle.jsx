@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import nookies from "nookies";
-import useTagApi from "../../hooks/tagApi";
 import { useRouter } from "next/navigation";
+import useTagApi from "../../hooks/tagApi";
 
 function Storearticle() {
   const [easy, setEasy] = useState("");

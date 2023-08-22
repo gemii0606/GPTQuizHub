@@ -22,7 +22,7 @@ function Page() {
       if (listHistories.length !== 0) {
         setNoHistory(true);
       }
-      console.log(listHistories);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
