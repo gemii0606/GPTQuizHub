@@ -27,6 +27,7 @@ function Page({ params }) {
   const [selectedOptionId, setSelectedOptionId] = useState(null);
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const router = useRouter();
+  const [startGame, setStartGame] = useState(false);
   // TODO:websocket雙人對戰
   // const [participants, setParticipants] = useState([]);
   // const [opponentScore, setOpponentScore] = useState(0);
@@ -110,7 +111,19 @@ function Page({ params }) {
   //     Swal.fire("必須人數到齊才能開始遊戲", "", "warning");
   //   }
   // };
-  const StartPage = (
+  function startGameHandler() {
+    console.log("hello");
+    setStartGame(!startGame);
+  }
+  const WaitingPage = (
+    <div className="p-5 border border-black rounded-lg min-w-[10rem] min-h-[7rem]">
+      {startGame && <p className="mb-3 text-4xl">正在等待對手</p>}
+      <button type="button" onClick={startGameHandler} className="px-4 py-2 text-4xl text-white rounded-lg bg-primary">
+        {startGame ? "已開始" : "取消"}
+      </button>
+    </div>
+  );
+  const SettingPage = (
     <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
       <p className="text-center mt-[8rem] font-extrabold text-4xl">{quiz?.title}</p>
       <div className="flex flex-col items-center mt-24">
@@ -293,7 +306,8 @@ function Page({ params }) {
   );
   return (
     <div className="flex justify-center mt-[5rem]">
-      {quizStatus === "start" && StartPage}
+      {WaitingPage}
+      {quizStatus === "start" && SettingPage}
       {quizStatus === "process" && ProcessPage}
       {quizStatus === "end" && EndPage}
     </div>
