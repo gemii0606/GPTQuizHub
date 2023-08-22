@@ -13,6 +13,7 @@ const { signUp } = require('../controllers/users/signUp');
 
 //quizzes
 const { gptquizgenerator } = require('../controllers/quizzes/gptgenerator');
+const { gptfunctioncall } = require('../controllers/quizzes/gptfunctioncall');
 const { quizGenerate } = require('../controllers/quizzes/quizGenerate_test');
 const { quizList } = require('../controllers/quizzes/quizList');
 const { quizCreate } = require('../controllers/quizzes/quizCreate');
@@ -56,7 +57,7 @@ router.put('/questions/:id', authAccessToken, questionEdit)
 router.delete('/questions/:id', authAccessToken, questionDelete)
 
 router.post('/gptquizgenerator', gptquizgenerator )
-
+router.post('/gptfunctioncall', gptfunctioncall )
 
 module.exports = router;
 
