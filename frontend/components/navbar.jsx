@@ -14,19 +14,19 @@ function Navbar() {
   }
   return (
     <div className="bg-white w-full h-auto p-2.5 border-b-2 flex items-center">
-      <Link href="/" passHref className="text-4xl text-primary inter">GPTQuizHub</Link>
+      <Link href="/" passHref className="text-4xl text-primary">GPTQuizHub</Link>
       <div className="flex h-6 ml-8 text-base font-bold">
         <Link href="/articles" passHref>
           <p className="ml-2 mr-2 hover:text-slate-400">文章</p>
         </Link>
-        <Link href="/questionsbanks" passHref>
+        <Link href="/questionbanks" passHref>
           <p className="ml-2 mr-2 hover:text-slate-400">題庫</p>
         </Link>
         <Link href="/test-histories" passHref>
           <p className="ml-2 mr-2 hover:text-slate-400">測驗紀錄</p>
         </Link>
         <Link href="/joingame" passHref>
-          <p className="ml-2 mr-2 border-[#8198BF] hover:border-b-4">加入測驗</p>
+          <p className="ml-2 mr-2 hover:text-slate-400">加入測驗</p>
         </Link>
       </div>
       <div className="flex mx-6 ml-auto">

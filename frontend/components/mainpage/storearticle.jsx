@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import nookies from "nookies";
+import useTagApi from "../../hooks/tagApi";
 
 function Storearticle() {
   const [easy, setEasy] = useState("");
@@ -13,7 +14,7 @@ function Storearticle() {
   const [showMenu, setShowMenu] = useState(false);
   const [tag, setTag] = useState("");
   const tagRef = useRef(null);
-  // const [loading, setLoading] = useState(false);
+  const tags = useTagApi();
   const handleSubmit = async (e) => {
     e.preventDefault();
     // setLoading(true);
@@ -49,48 +50,6 @@ function Storearticle() {
       }
     }
     // setLoading(false);
-  };
-  const fakeData = {
-    data: {
-      quizzes: [
-        {
-          id: 1,
-          title: "React 是什麼?",
-          tag: "天竺鼠",
-          created_at: "2023-08-15 15:30:00",
-          status: "pending",
-        },
-        {
-          id: 2,
-          title: "Docker 是什麼?",
-          tag: "雞娃娃",
-          created_at: "2023-08-15 15:30:00",
-          status: "ok",
-        },
-        {
-          id: 3,
-          title: "Docker 是什麼?",
-          tag: "吉娃娃",
-          created_at: "2023-08-15 15:30:00",
-          status: "ok",
-        },
-        {
-          id: 4,
-          title: "Docker 是什麼?",
-          tag: "可愛吉娃娃",
-          created_at: "2023-08-15 15:30:00",
-          status: "ok",
-        },
-        {
-          id: 5,
-          title: "Docker 是什麼?",
-          tag: "瘋癲吉娃娃",
-          created_at: "2023-08-15 15:30:00",
-          status: "ok",
-        },
-      ],
-      next_cursor: "KHEAX0GAFjlPyyqAqTcQOXTLKgIVvshji9AqRmuAGjCDESoLlUrrIn7P",
-    },
   };
 
   function handleInputChange(e, difficulty) {
@@ -138,29 +97,57 @@ function Storearticle() {
   return (
     <div className="p-8 m-0">
       <form action="" method="post" onSubmit={handleSubmit}>
-        <p className="mb-2 text-base">文章標題</p>
-        <input required onChange={(e) => setTitle(e.target.value)} className="px-3 py-2 mb-2 rounded-md w-80 drop-shadow-lg hover:bg-slate-50" />
-        <p className="mt-1 mb-2 text-base">文章類別</p>
+        <p className="mb-2 text-base font-bold">文章標題</p>
+        <input
+          required
+          onChange={(e) => setTitle(e.target.value)}
+          className="px-3 py-2 mb-2 rounded-md outline-none w-80 drop-shadow-md hover:bg-slate-50 focus:drop-shadow-2xl"
+        />
+        <p className="mt-1 mb-2 text-base font-bold">文章類別</p>
         <div className="relative h-auto w-60">
-          <input required placeholder="未分類" id="123" value={tag} onChange={(e) => setTag(e.target.value)} ref={tagRef} className="block px-3 py-2 mb-2 rounded-md shadow-sm w-60 drop-shadow-lg hover:bg-slate-50" onClick={handleShowMenu} />
+          <input
+            required
+            placeholder="未分類"
+            id="123"
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
+            ref={tagRef}
+            onFocus={() => {
+              if (tag === "") {
+                setTag(""); // 清空默认文本，允许用户编辑
+              }
+            }}
+            onBlur={() => {
+              if (tag === "") {
+                setTag("未分類"); // 恢复默认文本，如果输入框为空
+              }
+            }}
+            className="block px-3 py-2 mb-2 rounded-md shadow-sm outline-none w-60 drop-shadow-md hover:bg-slate-50 focus:drop-shadow-2xl"
+            onClick={handleShowMenu}
+          />
           {showMenu && (
-          <div className="absolute z-10 w-full overflow-y-scroll h-44 top-11">
-            {fakeData.data.quizzes.map((quiz) => (
+          <div className="absolute z-10 w-full overflow-y-scroll h-42 top-11">
+            {tags.map((taggie) => (
               <button
                 type="button"
-                key={quiz.id}
-                onClick={() => handleTagClick(quiz.tag)} // Pass the clicked tag to the function
-                className="block w-full p-2 bg-white border-2 top-12 hover:bg-[#D2E9FF]"
+                key={taggie.id}
+                onClick={() => handleTagClick(taggie.name)} // Pass the clicked tag to the function
+                className="block w-full p-2 bg-white border-2 top-12 hover:bg-[#D2E9FF] h-10 truncate"
               >
-                {quiz.tag}
+                {taggie.name}
               </button>
             ))}
           </div>
           )}
         </div>
-        <p className="mb-2 text-base ">文章內容</p>
-        <textarea required onChange={(e) => setContent(e.target.value)} className="w-full px-3 py-2 mb-2 rounded-md h-[50vh] drop-shadow-lg hover:bg-slate-50 resize-none" placeholder="Relation between Java and Javascript is like dog and hotdog." />
-        <p className="mt-1 mb-2 text-base">題目設定</p>
+        <p className="mb-2 text-base font-bold">文章內容</p>
+        <textarea
+          required
+          onChange={(e) => setContent(e.target.value)}
+          className="w-full px-3 py-2 mb-2 rounded-md h-[50vh] drop-shadow-md hover:bg-slate-50 resize-none outline-none focus:drop-shadow-2xl"
+          placeholder="Relation between Java and Javascript is like dog and hotdog."
+        />
+        <p className="mt-1 mb-2 text-base font-bold">題目設定</p>
         <div className="flex items-center w-full h-24 p-2 bg-white rounded drop-shadow-lg">
           <p className="justify-center mt-4 ml-10 text-base font-bold">
             設定題目難易度
@@ -175,7 +162,7 @@ function Storearticle() {
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "easy")}
-            className="w-16 px-3 py-2 ml-2 rounded-md bg-slate-200 "
+            className="w-16 px-3 py-2 ml-2 rounded-md outline-none bg-slate-200"
           />
           <p className="ml-6 text-base font-bold">中等:</p>
           <input
@@ -185,7 +172,7 @@ function Storearticle() {
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "normal")}
-            className="w-16 px-3 py-2 ml-2 rounded-md bg-slate-200"
+            className="w-16 px-3 py-2 ml-2 rounded-md outline-none bg-slate-200"
           />
           <p className="ml-6 text-base font-bold">困難:</p>
           <input
@@ -195,7 +182,7 @@ function Storearticle() {
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "hard")}
-            className="w-16 px-3 py-2 ml-2 rounded-md bg-slate-200"
+            className="w-16 px-3 py-2 ml-2 rounded-md outline-none bg-slate-200"
           />
           {errorMessage && <p className="ml-2 text-red-500">{errorMessage}</p>}
         </div>

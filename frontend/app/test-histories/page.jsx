@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import nookies from "nookies";
+import Image from "next/image";
 import Navbar from "../../components/navbar";
 import HistoryLink from "../../components/test-histories/historylink";
 import ArticleSidebar from "../../components/articles/article-sidebar";
@@ -21,6 +22,7 @@ function Page() {
       if (listHistories.length !== 0) {
         setNoHistory(true);
       }
+      console.log(listHistories);
     } catch (error) {
       console.log(error);
     }
@@ -49,8 +51,10 @@ function Page() {
         </div>
       )
         : (
-          <div className="w-full h-screen bg-white">
-            You don&apos;t have a quiz record yet, go and answer it!
+
+          <div className="flex items-center justify-center w-full h-screen bg-white">
+            <div>No test, go create an article!</div>
+            <Image src="/walker.gif" alt="alpaca" height={150} width={150} />
           </div>
         )}
     </div>
@@ -58,15 +62,3 @@ function Page() {
 }
 
 export default Page;
-
-// <div>
-//   {listHistories.data.data.map((article) => (
-//     <HistoryLink
-//       key={article.id}
-//       title={article.title}
-//       createdAt={article.created_at}
-//       articlekey={article.quiz_id}
-//       percentage={article.accuracy}
-//     />
-//   ))}
-// </div>

@@ -7,7 +7,7 @@ function Articlelink({
   return (
     <div className="p-4 bg-white rounded w-[70vw] h-24 hover:bg-slate-200 truncate m-4">
       <Link href={`/article/${id}`} passHref>
-        <div className="mb-2 overflow-hidden text-xl font-semibold">
+        <div className="mb-2 overflow-hidden text-xl font-semibold truncate">
           {title}
         </div>
       </Link>

@@ -1,7 +1,7 @@
 import React from "react";
 import useTagApi from "../../hooks/tagApi";
 
-function ArticleSidebar() {
+function ArticleSidebar({ onTagButtonClick }) {
   const tags = useTagApi();
   return (
     <div className="w-[15vw]">
@@ -10,8 +10,9 @@ function ArticleSidebar() {
         {tags.map((tag) => (
           <button
             type="button"
-            className="mb-2 text-base font-semibold hover:text-white hover:bg-[#84C1FF] min-w-3/4 rounded-xl p-2 h-auto block break-words"
+            className="mb-2 text-base font-semibold hover:text-white hover:bg-[#84C1FF] w-full rounded-xl p-2 block break-words max-h-12 truncate"
             key={tag.id}
+            onClick={() => onTagButtonClick(tag.name)}
           >
             {tag.name}
           </button>

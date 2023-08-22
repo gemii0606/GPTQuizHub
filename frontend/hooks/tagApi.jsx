@@ -19,7 +19,6 @@ const useTagApi = () => {
   };
   useEffect(() => {
     fetchTags();
-    console.log(tags);
   }, []);
 
   return tags;
