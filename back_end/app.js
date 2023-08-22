@@ -1,12 +1,16 @@
 const express = require('express');
 const http = require('http');
-const socketIo = require('socket.io');
+// const socketIo = require('socket.io');
 const cors = require('cors'); // 引入 cors 模块
 
 const app = express();
 app.use(cors()); // 使用 cors 中间件
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "*",
+    },
+});
 
 io.on('connection', (socket) => {
     console.log('A user connected');
