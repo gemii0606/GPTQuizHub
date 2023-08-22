@@ -16,7 +16,7 @@ const findTags = async (req, res) => {
         const transformedTags = user.tags.map((tag, index) => ({
                 id: index + 1,
                 name: `${tag}`,
-            }));
+        }));
         res.status(200).json({ data: { tags: transformedTags}})
     } catch(error) {
         console.log(error);
