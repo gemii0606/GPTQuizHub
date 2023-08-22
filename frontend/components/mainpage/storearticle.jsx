@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import nookies from "nookies";
 import useTagApi from "../../hooks/tagApi";
+import { useRouter } from "next/navigation";
 
 function Storearticle() {
   const [easy, setEasy] = useState("");
@@ -15,32 +16,35 @@ function Storearticle() {
   const [tag, setTag] = useState("");
   const tagRef = useRef(null);
   const tags = useTagApi();
+  const router = useRouter();
+  // const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     // setLoading(true);
     console.log(nookies.get().access_token);
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/create`, {
-        article: {
-          title,
-          tag,
-          easy,
-          normal,
-          hard,
-          content,
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/quizzes/create`,
+        {
+          article: {
+            title,
+            tag,
+            easy,
+            normal,
+            hard,
+            content,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${nookies.get().access_token}`,
+          },
         }
-      }, {
-        headers: {
-          Authorization: `Bearer ${nookies.get().access_token}`,
-        }
-      });
+      );
       console.log(tag);
       console.log("Completed!", response);
-      Swal.fire(
-        "Succesfully submit",
-        "Let's create the questions!",
-        "success"
-      );
+      Swal.fire("Succesfully submit", "Let's create the questions!", "success");
+      router.push("/questionbanks");
     } catch (error) {
       console.log(error);
       if (error?.response?.status >= 500 && error?.response?.status < 600) {
@@ -186,7 +190,13 @@ function Storearticle() {
           />
           {errorMessage && <p className="ml-2 text-red-500">{errorMessage}</p>}
         </div>
-        <button id="submitBtn" type="submit" className="block bg-primary text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]">生成題目</button>
+        <button
+          id="submitBtn"
+          type="submit"
+          className="block bg-primary text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]"
+        >
+          生成題目
+        </button>
       </form>
     </div>
   );

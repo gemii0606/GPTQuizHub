@@ -23,6 +23,7 @@ function Page() {
           className="flex flex-col border border-black rounded-xl min-w-[30rem] min-h-[30rem] items-center justify-center"
         >
           <p className="mb-6 text-6xl font-pattaya text-[#8198BF] font-normal mt-16">GPTQuizHub</p>
+          <p>此功能目前還沒用</p>
           <div className="my-5">
             <select className="px-4 py-3 text-4xl border border-black rounded-lg" ref={gameTypeRef}>
               <option value="twoplayer" className="text-4xl">

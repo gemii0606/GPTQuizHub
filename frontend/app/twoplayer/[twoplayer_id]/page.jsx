@@ -119,7 +119,7 @@ function Page({ params }) {
           className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
           onClick={ShareLinkModalToggleHandler}
         >
-          分享連結
+          創建房間
         </button>
         {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />}
         <button
@@ -231,7 +231,7 @@ function Page({ params }) {
             </div>
             <div className="flex flex-col items-center mt-10">
               <h1 className="mb-4 text-4xl">剩餘時間 : {seconds}</h1>
-              <p className="text-4xl">{quiz?.questions[questionIndex].content}</p>
+              <p className="text-4xl">{quiz?.questions?.[questionIndex].question}</p>
               <div className="flex my-4">
                 <p className="mr-3 text-3xl">難度 :</p>
                 <p className="mr-6 text-3xl">{quiz?.questions[questionIndex].difficulty}</p>

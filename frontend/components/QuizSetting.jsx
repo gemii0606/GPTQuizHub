@@ -11,16 +11,11 @@ function QuizSetting({
   setRandomOptions,
   questionSeconds,
   setQuestionSeconds,
-  randomOrder,
-  setRandomOrder,
-  questionNumber,
-  setQuestionNumber,
   correctRatio,
   setCorrectRatio,
   setUseCorrectRatio,
   useCorrectRatio,
 }) {
-  const questionNumberRef = useRef(null);
   const questionSecondRef = useRef(null);
   const correctRatioRef = useRef(null);
   const pathname = usePathname();
@@ -32,30 +27,6 @@ function QuizSetting({
           <Image src={Close} alt="close-button" />
         </button>
         <div>
-          <div className="flex items-center">
-            <p className="mr-5 text-3xl">題目數量</p>
-            <input
-              type="number"
-              max={10}
-              disabled
-              min="1"
-              defaultValue={questionNumber}
-              ref={questionNumberRef}
-              className="px-2 mr-5 text-3xl border rounded-xl"
-            />
-            <button
-              onClick={() => {
-                setQuestionNumber(questionNumberRef.current.value);
-                Swal.fire("修改成功", "", "success");
-              }}
-              disabled
-              type="button"
-              className="px-[2.125rem] py-4 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
-            >
-              更改題目數
-            </button>
-            <p className="ml-3">此功能尚未開放</p>
-          </div>
           {(pathname.includes("/twoplayer") || pathname.includes("/multiplayer")) && (
             <div className="flex items-center mt-5">
               <p className="mr-5 text-3xl">得分倍率</p>
@@ -123,20 +94,6 @@ function QuizSetting({
             >
               更改秒數
             </button>
-          </div>
-          <div className="flex items-center mt-5">
-            <p className="mr-5 text-3xl">隨機題目排序</p>
-            <button
-              type="button"
-              disabled
-              className="px-[2.125rem] py-4 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
-              onClick={() => {
-                setRandomOrder((prev) => !prev);
-              }}
-            >
-              {randomOrder ? "啟用" : "未啟用"}
-            </button>
-            <p className="ml-3">此功能尚未開放</p>
           </div>
           <div className="flex items-center mt-5">
             <p className="mr-5 text-3xl">隨機選項排序</p>
