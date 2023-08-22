@@ -1,11 +1,10 @@
 "use client";
 
+// import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
-import axios from "axios";
-import nookies from "nookies";
 import QuizSetting from "../../../components/QuizSetting";
+import ShareLink from "../../../components/ShareLink";
 
 const MockData = {
   id: 1,
@@ -89,24 +88,48 @@ const MockData = {
     },
   ],
 };
-// TODO:隨機題目排序
-// TODO:根據題目數量選擇相對應的題數
-function Page({ params }) {
+// const socket = io(`ws://localhost:3000/multiplayer/${id}`);
+function Page() {
   const [quizStatus, setQuizStatus] = useState("start");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [questionSeconds, setQuestionSeconds] = useState(10);
   const [seconds, setSeconds] = useState(10);
   const [loading, setLoading] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
+  const [showShareLink, setShowShareLink] = useState(false);
   const [randomOptions, setRandomOptions] = useState(false);
-  const [randomOrder, setRandomOrder] = useState(false);
-  const [questionNumber, setQuestionNumber] = useState(MockData.questions.length);
   const [shuffledOptions, setShuffledOptions] = useState([]);
-  const [wrongAnswer, setWrongAnswer] = useState([]);
-  const [unansweredQuestion, setUnansweredQuestion] = useState([]);
+  const [useCorrectRatio, setUseCorrectRatio] = useState(false);
+  const [correctRatio, setCorrectRatio] = useState(1.05);
+  const [score, setScore] = useState(0);
+  const [hasClickOption, setHasClickedOption] = useState(false);
+  const [selectedOptionId, setSelectedOptionId] = useState(null);
+  const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const router = useRouter();
-  const correctAnswers = MockData.questions.length - wrongAnswer.length;
-  const accuracy = (correctAnswers / MockData.questions.length) * 100;
+  // const [participants, setParticipants] = useState([]);
+  // const [opponentScore, setOpponentScore] = useState(0);
+  // useEffect(() => {
+  //   socket.on("participantConnected", (participantId) => {
+  //     setParticipants((prevParticipants) => [...prevParticipants, participantId]);
+  //     if (participants.length === 2) {
+  //       // Both participants are connected, start the game here
+  //       setQuizStatus("process");
+  //       setSeconds(questionSeconds);
+  //     }
+  //   });
+  //   return () => {
+  //     socket.off("participantConnected");
+  //   };
+  // }, [participants]);
+  // useEffect(() => {
+  //   socket.on("scoreUpdate", (updatedScores) => {
+  //     setScore(updatedScores[participantId]);
+  //     setOpponentScore(updatedScores[opponentParticipantId]);
+  //   });
+  //   return () => {
+  //     socket.off("scoreUpdate");
+  //   };
+  // }, [participantId, opponentParticipantId]);
   useEffect(() => {
     setShuffledOptions(
       randomOptions
@@ -126,80 +149,25 @@ function Page({ params }) {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   });
-  async function quizSubmitHandler() {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/quizzes/history/create`,
-        {
-          quiz_id: params.quiz_id,
-          accuracy,
-          wrongAnswer,
-        },
-        { headers: { Authorization: `Bearer ${nookies.get().access_token}` } }
-      );
-      console.log(response);
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "測驗紀錄已上傳",
-        timerProgressBar: true,
-        showConfirmButton: false,
-        timer: 1000,
-      });
-    } catch (error) {
-      if (error?.response?.status >= 500 && error?.response?.status < 600) {
-        Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: "Server Error",
-          text: "請稍後再試或和我們的技術團隊聯絡",
-          timerProgressBar: true,
-          showConfirmButton: false,
-          timer: 1000,
-        });
-      } else {
-        Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: "測驗紀錄上傳失敗",
-          text: `${error}`,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          timer: 1000,
-        });
-      }
-    }
-  }
   const moveToNextQuestion = () => {
     if (questionIndex === MockData.questions.length - 1) {
-      quizSubmitHandler();
       setQuizStatus("end");
     } else {
       setQuestionIndex((prevIndex) => prevIndex + 1);
       setSeconds(questionSeconds);
+      setHasClickedOption(false);
     }
-  };
-  const handleTimeUp = async () => {
-    Swal.fire({
-      icon: "warning",
-      title: "時間到",
-      showConfirmButton: false,
-      timer: 1000,
-    }).then(() => {
-      setUnansweredQuestion((prevUnansweredQuestion) => [...prevUnansweredQuestion, questionIndex]);
-      setWrongAnswer((prevWrongAnswer) => [...prevWrongAnswer, questionIndex]);
-      moveToNextQuestion();
-    });
   };
   useEffect(() => {
-    if (quizStatus === "process" && seconds > 0) {
+    if (quizStatus === "process") {
       const interval = setInterval(() => {
-        setSeconds((prevSeconds) => prevSeconds - 1);
+        if (seconds > 0) {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else {
+          moveToNextQuestion();
+        }
       }, 1000);
       return () => clearInterval(interval);
-    }
-    if (quizStatus === "process" && seconds === 0) {
-      handleTimeUp();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizStatus, seconds]);
@@ -207,10 +175,30 @@ function Page({ params }) {
     setShowSetting((prev) => !prev);
     document.body.classList.toggle("modal-open");
   };
+  const ShareLinkModalToggleHandler = () => {
+    setShowShareLink((prev) => !prev);
+    document.body.classList.toggle("modal-open");
+  };
+  // const startGameHandler = () => {
+  //   if (participants.length === 2) {
+  //     setQuizStatus("process");
+  //     setSeconds(questionSeconds);
+  //   } else {
+  //     Swal.fire("必須人數到齊才能開始遊戲", "", "warning");
+  //   }
+  // };
   const StartPage = (
     <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
       <p className="text-center mt-[8rem] font-extrabold text-4xl">{MockData.title}</p>
       <div className="flex flex-col items-center mt-24">
+        <button
+          type="button"
+          className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
+          onClick={ShareLinkModalToggleHandler}
+        >
+          分享連結
+        </button>
+        {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />}
         <button
           type="button"
           className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
@@ -221,14 +209,14 @@ function Page({ params }) {
         {showSetting && (
           <QuizSetting
             modalToggleHandler={ModalToggleHandler}
-            questionNumber={questionNumber}
-            setQuestionNumber={setQuestionNumber}
-            setQuestionSeconds={setQuestionSeconds}
             questionSeconds={questionSeconds}
+            setQuestionSeconds={setQuestionSeconds}
             randomOptions={randomOptions}
             setRandomOptions={setRandomOptions}
-            randomOrder={randomOrder}
-            setRandomOrder={setRandomOrder}
+            useCorrectRatio={useCorrectRatio}
+            setUseCorrectRatio={setUseCorrectRatio}
+            correctRatio={correctRatio}
+            setCorrectRatio={setCorrectRatio}
           />
         )}
         <button
@@ -253,52 +241,69 @@ function Page({ params }) {
       </div>
     </div>
   );
+  // const JoinGamePage = (
+  //   <div>
+  //     <input type="text" placeholder="請輸入使用者名稱" />
+  //     <button type="button">加入遊戲</button>
+  //     <button type="button" onClick={setQuizStatus("process")}>
+  //       開始遊戲
+  //     </button>
+  //   </div>
+  // );
   const handleOptionClick = (optionId) => {
+    setSelectedOptionId(optionId);
+    setHasClickedOption(true);
     const selectedOption = shuffledOptions.find((option) => option.id === optionId);
-    if (selectedOption && selectedOption.id === MockData.questions[questionIndex].correct_answer) {
-      Swal.fire({
-        icon: "success",
-        title: "答對了",
-        showConfirmButton: false,
-        timer: 1000,
-      }).then(() => {
-        moveToNextQuestion();
-      });
+    const chooseCorrectAnswer =
+      selectedOption && selectedOption.id === MockData.questions[questionIndex].correct_answer;
+    const elapsedTime = questionSeconds - seconds + 0.5;
+    const questionScore = Math.max(Math.round(100 - (100 * elapsedTime) / questionSeconds), 5);
+    if (chooseCorrectAnswer) {
+      setScore((prevScore) => prevScore + questionScore);
+      setConsecutiveCorrectAnswers(true);
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "答錯了",
-        showConfirmButton: false,
-        timer: 1000,
-      }).then(() => {
-        setWrongAnswer((prevWrongAnswer) => [...prevWrongAnswer, questionIndex + 1]);
-        moveToNextQuestion();
-      });
+      setConsecutiveCorrectAnswers(false);
+    }
+    if (chooseCorrectAnswer && consecutiveCorrectAnswers && useCorrectRatio) {
+      setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
     }
   };
-  const OptionsItems = shuffledOptions.map((option) => (
-    <button
-      type="button"
-      onClick={() => handleOptionClick(option.id)}
-      key={option.id}
-      className="block px-24 py-4 text-2xl bg-[#4783EA] text-white rounded-xl mt-20 w-[45rem] leading-8"
-    >
-      {option.content}
-    </button>
-  ));
+  const OptionsItems = shuffledOptions.map((option) => {
+    const isCorrectAnswer = option.id === MockData.questions[questionIndex].correct_answer;
+    const isSelected = hasClickOption && option.id === selectedOptionId;
+    let buttonClassName = "block px-24 py-4 text-2xl text-white rounded-xl mt-20 w-[45rem] leading-8 bg-[#4783EA]";
+    if (isSelected) {
+      buttonClassName += isCorrectAnswer ? " bg-green-500" : " bg-red-500";
+    } else if (!isSelected && hasClickOption) {
+      buttonClassName += " bg-slate-400";
+    }
+    return (
+      <button
+        type="button"
+        onClick={() => handleOptionClick(option.id)}
+        disabled={hasClickOption === true}
+        key={option.id}
+        className={buttonClassName}
+      >
+        {option.content}
+      </button>
+    );
+  });
   const ProcessPage = (
     <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
       {MockData.questions.length > 0 && (
         <div>
-          <div className="flex flex-col items-center mt-10">
-            <h1 className="mb-4 text-4xl">剩餘時間 : {seconds}</h1>
-            <p className="text-4xl">{MockData.questions[questionIndex].content}</p>
-            <div className="flex my-4">
-              <p className="mr-3 text-3xl">難度 :</p>
-              <p className="mr-6 text-3xl">{MockData.questions[questionIndex].difficulty}</p>
-              <p className="text-3xl">
-                {questionIndex + 1} / {MockData.questions.length}
-              </p>
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col items-center mt-10">
+              <h1 className="mb-4 text-4xl">剩餘時間 : {seconds}</h1>
+              <p className="text-4xl">{MockData.questions[questionIndex].content}</p>
+              <div className="flex my-4">
+                <p className="mr-3 text-3xl">難度 :</p>
+                <p className="mr-6 text-3xl">{MockData.questions[questionIndex].difficulty}</p>
+                <p className="mr-6 text-3xl">
+                  {questionIndex + 1} / {MockData.questions.length}
+                </p>
+              </div>
             </div>
           </div>
           <div className="flex flex-col items-center mb-10">{OptionsItems}</div>
@@ -307,51 +312,31 @@ function Page({ params }) {
     </div>
   );
   const EndPage = (
-    <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
-      <div className="mt-[8rem]">
-        {accuracy === 100 && <p className="text-4xl">滿分，你超強</p>}
-        {accuracy > 60 && accuracy < 100 && <p className="text-4xl">還不錯</p>}
-        {accuracy < 60 && <p className="text-4xl">你超爛</p>}
-        <p className="text-4xl">答對率 : {accuracy.toFixed(2)}%</p>
-        <p className="text-4xl">總題數 : {MockData.questions.length}</p>
-        <p className="text-4xl">未答題數 : {unansweredQuestion.length}</p>
-        <p className="text-4xl">正確題數 : {correctAnswers}</p>
-        <p className="text-4xl">錯誤題數 : {wrongAnswer.length}</p>
-      </div>
+    <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center justify-center">
+      <p className="text-4xl">你的得分: {score}</p>
       <div>
-        <button
-          type="button"
-          onClick={() => {
-            setLoading(true);
-            setUnansweredQuestion([]);
-            setWrongAnswer([]);
-            setQuizStatus("start");
-            setSeconds(10);
-            setQuestionIndex(0);
-            setLoading(false);
-          }}
-          className="block px-24 py-4 text-4xl mr-8 bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
-        >
-          重新測驗
-        </button>
-        <button
-          type="button"
-          disabled={loading}
-          onClick={() => {
-            setLoading(true);
-            router.push("/questionbanks");
-            setLoading(false);
-          }}
-          className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
-        >
-          回到題庫
-        </button>
+        <p className="text-4xl">第一名: 王大明 {score}</p>
+        <p className="text-4xl">第二名: 王大明 {score}</p>
+        <p className="text-4xl">第三名: 王大明 {score}</p>
+        <p className="text-4xl">第n名: {score}</p>
       </div>
+      <button
+        type="button"
+        disabled={loading}
+        onClick={() => {
+          setLoading(true);
+          router.push("/");
+        }}
+        className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
+      >
+        離開
+      </button>
     </div>
   );
   return (
     <div className="flex justify-center mt-[5rem]">
       {quizStatus === "start" && StartPage}
+      {/* {quizStatus === "joingame" && JoinGamePage} */}
       {quizStatus === "process" && ProcessPage}
       {quizStatus === "end" && EndPage}
     </div>

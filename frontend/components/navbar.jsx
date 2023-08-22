@@ -21,9 +21,13 @@ function Navbar() {
         </Link>
         <Link href="/questionsbanks" passHref>
           <p className="ml-2 mr-2 hover:text-slate-400">題庫</p>
+
         </Link>
         <Link href="/test-histories" passHref>
           <p className="ml-2 mr-2 hover:text-slate-400">測驗紀錄</p>
+        </Link>
+        <Link href="/joingame" passHref>
+          <p className="ml-2 mr-2 border-[#8198BF] hover:border-b-4">加入測驗</p>
         </Link>
       </div>
       <div className="flex mx-6 ml-auto">
