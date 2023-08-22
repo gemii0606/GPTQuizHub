@@ -27,7 +27,7 @@ const quizList = async (req, res) => {
             tag: tag ? tag : { $exists: true },
         }).project({
             _id: 0,
-            id: "$_id",     
+            id: "$_id",
             created_at: 1,
             tag: 1,
             title:1,
