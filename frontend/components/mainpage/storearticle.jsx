@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import nookies from "nookies";
+import { useRouter } from "next/navigation";
 
 function Storearticle() {
   const [easy, setEasy] = useState("");
@@ -13,33 +14,35 @@ function Storearticle() {
   const [showMenu, setShowMenu] = useState(false);
   const [tag, setTag] = useState("");
   const tagRef = useRef(null);
+  const router = useRouter();
   // const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     // setLoading(true);
     console.log(nookies.get().access_token);
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/create`, {
-        article: {
-          title,
-          tag,
-          easy,
-          normal,
-          hard,
-          content,
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/quizzes/create`,
+        {
+          article: {
+            title,
+            tag,
+            easy,
+            normal,
+            hard,
+            content,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${nookies.get().access_token}`,
+          },
         }
-      }, {
-        headers: {
-          Authorization: `Bearer ${nookies.get().access_token}`,
-        }
-      });
+      );
       console.log(tag);
       console.log("Completed!", response);
-      Swal.fire(
-        "Succesfully submit",
-        "Let's create the questions!",
-        "success"
-      );
+      Swal.fire("Succesfully submit", "Let's create the questions!", "success");
+      router.push("/questionbanks");
     } catch (error) {
       console.log(error);
       if (error?.response?.status >= 500 && error?.response?.status < 600) {
@@ -139,27 +142,45 @@ function Storearticle() {
     <div className="p-8 m-0">
       <form action="" method="post" onSubmit={handleSubmit}>
         <p className="mb-2 text-base">文章標題</p>
-        <input required onChange={(e) => setTitle(e.target.value)} className="px-3 py-2 mb-2 rounded-md w-80 drop-shadow-lg hover:bg-slate-50" />
+        <input
+          required
+          onChange={(e) => setTitle(e.target.value)}
+          className="px-3 py-2 mb-2 rounded-md w-80 drop-shadow-lg hover:bg-slate-50"
+        />
         <p className="mt-1 mb-2 text-base">文章類別</p>
         <div className="relative h-auto w-60">
-          <input required placeholder="未分類" id="123" value={tag} onChange={(e) => setTag(e.target.value)} ref={tagRef} className="block px-3 py-2 mb-2 rounded-md shadow-sm w-60 drop-shadow-lg hover:bg-slate-50" onClick={handleShowMenu} />
+          <input
+            required
+            placeholder="未分類"
+            id="123"
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
+            ref={tagRef}
+            className="block px-3 py-2 mb-2 rounded-md shadow-sm w-60 drop-shadow-lg hover:bg-slate-50"
+            onClick={handleShowMenu}
+          />
           {showMenu && (
-          <div className="absolute z-10 w-full overflow-y-scroll h-44 top-11">
-            {fakeData.data.quizzes.map((quiz) => (
-              <button
-                type="button"
-                key={quiz.id}
-                onClick={() => handleTagClick(quiz.tag)} // Pass the clicked tag to the function
-                className="block w-full p-2 bg-white border-2 top-12 hover:bg-[#D2E9FF]"
-              >
-                {quiz.tag}
-              </button>
-            ))}
-          </div>
+            <div className="absolute z-10 w-full overflow-y-scroll h-44 top-11">
+              {fakeData.data.quizzes.map((quiz) => (
+                <button
+                  type="button"
+                  key={quiz.id}
+                  onClick={() => handleTagClick(quiz.tag)} // Pass the clicked tag to the function
+                  className="block w-full p-2 bg-white border-2 top-12 hover:bg-[#D2E9FF]"
+                >
+                  {quiz.tag}
+                </button>
+              ))}
+            </div>
           )}
         </div>
         <p className="mb-2 text-base ">文章內容</p>
-        <textarea required onChange={(e) => setContent(e.target.value)} className="w-full px-3 py-2 mb-2 rounded-md h-[50vh] drop-shadow-lg hover:bg-slate-50 resize-none" placeholder="Relation between Java and Javascript is like dog and hotdog." />
+        <textarea
+          required
+          onChange={(e) => setContent(e.target.value)}
+          className="w-full px-3 py-2 mb-2 rounded-md h-[50vh] drop-shadow-lg hover:bg-slate-50 resize-none"
+          placeholder="Relation between Java and Javascript is like dog and hotdog."
+        />
         <p className="mt-1 mb-2 text-base">題目設定</p>
         <div className="flex items-center w-full h-24 p-2 bg-white rounded drop-shadow-lg">
           <p className="justify-center mt-4 ml-10 text-base font-bold">
@@ -199,7 +220,13 @@ function Storearticle() {
           />
           {errorMessage && <p className="ml-2 text-red-500">{errorMessage}</p>}
         </div>
-        <button id="submitBtn" type="submit" className="block bg-primary text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]">生成題目</button>
+        <button
+          id="submitBtn"
+          type="submit"
+          className="block bg-primary text-white px-6 py-1 rounded-md mt-4 ml-auto hover:bg-[#638ace]"
+        >
+          生成題目
+        </button>
       </form>
     </div>
   );
