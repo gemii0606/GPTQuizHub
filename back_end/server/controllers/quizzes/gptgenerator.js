@@ -34,6 +34,9 @@ const gptquizgenerator = async (req, res) => {
     console.log('here is gpt');
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
+    await client.connect();
+    console.log('Connected to MongoDB');
+    const db = client.db(dbName);
     let insertQuizId;
     try {
         const user_id = new ObjectId(req.body.user_id);
@@ -65,10 +68,6 @@ const gptquizgenerator = async (req, res) => {
             return 
         }
 
-        await client.connect();
-        console.log('Connected to MongoDB');
-        const db = client.db(dbName);
-        
         if (!article.tag) {
             const usersCollection = db.collection('users');
             const insertTag = await usersCollection.updateOne({ _id: user_id }, { $addToSet: { tags: article.tag } });
