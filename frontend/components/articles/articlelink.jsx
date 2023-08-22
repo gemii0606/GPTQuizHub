@@ -5,7 +5,9 @@ function Articlelink({ title, createdAt, id }) {
   return (
     <div className="p-4 bg-white rounded w-[70vw] h-24 hover:bg-slate-200 truncate m-4">
       <Link href={`/article/${id}`} passHref>
-        <div className="mb-2 overflow-hidden text-xl font-semibold">{title}</div>
+        <div className="mb-2 overflow-hidden text-xl font-semibold truncate">
+          {title}
+        </div>
       </Link>
       <div className="flex mt-2">
         <p className="ml-6 text-black">{createdAt}</p>
