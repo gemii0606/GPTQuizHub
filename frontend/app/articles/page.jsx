@@ -17,20 +17,18 @@ function Page() {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/articles/search`, {
         headers: {
           Authorization: `Bearer ${nookies.get().access_token}`,
-        }
+        },
       });
       setListArticles(response.data.data.articles);
       console.log(listArticles);
-      if (response.data.data.article.length !== 0) {
+      if (response.data.data.length !== 0) {
         setShowArticles(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  const filteredArticles = selectedTag
-    ? listArticles.filter((article) => article.tag === selectedTag)
-    : listArticles;
+  const filteredArticles = selectedTag ? listArticles.filter((article) => article.tag === selectedTag) : listArticles;
   useEffect(() => {
     articlesApi();
     console.log(showArticles);
@@ -43,12 +41,7 @@ function Page() {
           <ArticleSidebar onTagButtonClick={setSelectedTag} />
           <div>
             {filteredArticles.map((article) => (
-              <Articlelink
-                key={article.id}
-                id={article.id}
-                title={article.title}
-                createdAt={article.created_at}
-              />
+              <Articlelink key={article.id} id={article.id} title={article.title} createdAt={article.created_at} />
             ))}
           </div>
         </div>
