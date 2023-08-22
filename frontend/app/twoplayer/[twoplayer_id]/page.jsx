@@ -119,7 +119,7 @@ function Page({ params }) {
           className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
           onClick={ShareLinkModalToggleHandler}
         >
-          分享連結
+          創建房間
         </button>
         {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />}
         <button

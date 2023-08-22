@@ -17,7 +17,6 @@ function Page({ params }) {
   const [loading, setLoading] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
   const [randomOptions, setRandomOptions] = useState(false);
-  const [randomOrder, setRandomOrder] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState([]);
   const [wrongAnswer, setWrongAnswer] = useState([]);
   const [unansweredQuestion, setUnansweredQuestion] = useState([]);
@@ -116,14 +115,14 @@ function Page({ params }) {
     });
   };
   useEffect(() => {
+    if (quizStatus === "process" && seconds === 0) {
+      handleTimeUp();
+    }
     if (quizStatus === "process") {
       const interval = setInterval(() => {
         setSeconds((prevSeconds) => prevSeconds - 1);
       }, 1000);
       return () => clearInterval(interval);
-    }
-    if (quizStatus === "process" && seconds === 0) {
-      handleTimeUp();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizStatus, seconds, questionIndex]);
@@ -149,8 +148,6 @@ function Page({ params }) {
             questionSeconds={questionSeconds}
             randomOptions={randomOptions}
             setRandomOptions={setRandomOptions}
-            randomOrder={randomOrder}
-            setRandomOrder={setRandomOrder}
           />
         )}
         <button
