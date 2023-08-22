@@ -22,7 +22,7 @@ function Page({ params }) {
   const [unansweredQuestion, setUnansweredQuestion] = useState([]);
   const router = useRouter();
   useEffect(() => {
-    let currentOptions = quiz?.questions?.[questionIndex].options;
+    let currentOptions = quiz?.questions?.[questionIndex]?.options;
     if (randomOptions) {
       currentOptions = [...currentOptions].sort(() => Math.random() - 0.5);
     }
