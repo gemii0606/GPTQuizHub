@@ -1,9 +1,11 @@
 const express = require('express');
+const routes = require('./server/routes');
+const app = express();
 const http = require('http');
 // const socketIo = require('socket.io');
 var cors = require('cors'); // 引入 cors 模块
 
-const app = express();
+
 app.use(cors()); // 使用 cors 中间件
 app.use('/api/1.0', routes);
 const server = http.createServer(app);
