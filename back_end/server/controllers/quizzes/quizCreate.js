@@ -42,7 +42,7 @@ const quizCreate = async (req, res) => {
         console.log('gptres')
         res.status(200).json({
             data: {
-                quiz: {id: insertQuiz.insertedId}
+                quiz: {id: insertQuiz.insertedId},
             }
         });
         return

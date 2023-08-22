@@ -53,7 +53,7 @@ const gptfunctioncall = async (req, res) => {
 
     const client = new MongoClient(url, { useUnifiedTopology: true });
     await client.connect();
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB in gpt');
     const db = client.db(dbName);
     let insertQuizId;
     try {
@@ -62,7 +62,7 @@ const gptfunctioncall = async (req, res) => {
         const total = req.body.total;
         insertQuizId = new ObjectId(req.body.insertQuiz.insertedId);
 
-
+        console.log("1")
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             // max_tokens: 128,
@@ -79,7 +79,7 @@ const gptfunctioncall = async (req, res) => {
             ],
             functions: [ openaiFunctionCalling ]
         });
-
+        console.log("2")
         const gptResult = JSON.parse(completion.data.choices[0].message?.content);
         console.log(gptResult)
 
@@ -119,6 +119,7 @@ const gptfunctioncall = async (req, res) => {
         res.status(200).json({ message: "gptquizgenerator completed successfully." });
 
     } catch (error) {
+        console.log("An error has occur")
         if (insertQuizId) {
             const quizzesCollection = db.collection('quizzes');
             const updateQuiz = await quizzesCollection.updateOne({ _id: insertQuizId }, { $set: { status: 'failed' } });

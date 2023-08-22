@@ -10,7 +10,7 @@ const quizHistoryList = async (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
     try {
         await client.connect();
-        const signInId = req.signInId;
+        const signInId = new ObjectId(req.signInId);
         const db = client.db(dbName);
         const quizzesHistoryCollection = db.collection('quizzesHistory');
         const cursor = req.query.cursor ? atob(req.query.cursor) : req.query.cursor;
@@ -30,9 +30,9 @@ const quizHistoryList = async (req, res) => {
             },
             {
               $match: {
-                "quiz.user_id": new ObjectId(signInId),
-                created_at: cursor ? { $lt: cursor } : { $exists: true },
-                tag: tag ? tag : { $exists: true },
+                "quiz.user_id": signInId,
+                // created_at: cursor ? { $lt: cursor } : { $exists: true },
+                // tag: tag ? tag : { $exists: true },
               }
             },
             {
@@ -41,14 +41,16 @@ const quizHistoryList = async (req, res) => {
                 id: "$_id",
                 quiz_id: 1,
                 accuracy: 1,
-                quizHistory_created_at: 1,
+                created_at: 1,
                 wrongAnswer: 1,
                 title:"$quiz.title"
               }
             }
           ]).sort({ created_at: -1 }).limit(limit).toArray()
         res.status(200).json({data:{quizzes}})
-          
+
+        console.log(signInId)
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Internal server error." })
