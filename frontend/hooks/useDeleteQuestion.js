@@ -10,8 +10,7 @@ const useDeleteQuestion = (id) => {
       const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/questions/${id}`, {
         headers: { Authorization: `Bearer ${nookies.get().access_token}` },
       });
-      console.log(response);
-      return response.data.data.question;
+      console.log(response.data);
     } catch (error) {
       if (error.response?.status === 403) {
         Swal.fire("帳號已過期", "請重新登入", "error");
@@ -22,7 +21,6 @@ const useDeleteQuestion = (id) => {
       } else {
         Swal.fire("無法刪除題庫", `${error}`, "error");
       }
-      return null;
     }
   }
   return DeleteQuestion;

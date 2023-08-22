@@ -313,12 +313,11 @@ function Page() {
   );
   const EndPage = (
     <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center justify-center">
-      <p className="text-4xl">你的得分: {score}</p>
       <div>
         <p className="text-4xl">第一名: 王大明 {score}</p>
         <p className="text-4xl">第二名: 王大明 {score}</p>
         <p className="text-4xl">第三名: 王大明 {score}</p>
-        <p className="text-4xl">第n名: {score}</p>
+        <p className="text-4xl">第n名: 你 {score}</p>
       </div>
       <button
         type="button"

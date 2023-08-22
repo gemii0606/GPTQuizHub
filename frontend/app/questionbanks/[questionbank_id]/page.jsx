@@ -1,12 +1,12 @@
 import Navbar from "../../../components/navbar";
-import QuestonBankCard from "../../../components/questionbanks/QuestionCard";
+import QuestionBankCard from "../../../components/questionbanks/QuestionCard";
 
-function Page() {
+function Page({ params }) {
   return (
     <div>
       <Navbar />
       <div className="flex justify-center mt-8">
-        <QuestonBankCard />
+        <QuestionBankCard id={params.questionbank_id} />
       </div>
     </div>
   );
