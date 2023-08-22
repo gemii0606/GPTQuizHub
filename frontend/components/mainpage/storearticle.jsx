@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import nookies from "nookies";
-import useTagApi from "../../hooks/tagApi";
 import { useRouter } from "next/navigation";
+import useTagApi from "../../hooks/tagApi";
 
 function Storearticle() {
   const [easy, setEasy] = useState("");
@@ -130,18 +130,18 @@ function Storearticle() {
             onClick={handleShowMenu}
           />
           {showMenu && (
-          <div className="absolute z-10 w-full overflow-y-scroll h-42 top-11">
-            {tags.map((taggie) => (
-              <button
-                type="button"
-                key={taggie.id}
-                onClick={() => handleTagClick(taggie.name)} // Pass the clicked tag to the function
-                className="block w-full p-2 bg-white border-2 top-12 hover:bg-[#D2E9FF] h-10 truncate"
-              >
-                {taggie.name}
-              </button>
-            ))}
-          </div>
+            <div className="absolute z-10 w-full overflow-y-scroll h-42 top-11">
+              {tags.map((taggie) => (
+                <button
+                  type="button"
+                  key={taggie.id}
+                  onClick={() => handleTagClick(taggie.name)} // Pass the clicked tag to the function
+                  className="block w-full p-2 bg-white border-2 top-12 hover:bg-[#D2E9FF] h-10 truncate"
+                >
+                  {taggie.name}
+                </button>
+              ))}
+            </div>
           )}
         </div>
         <p className="mb-2 text-base font-bold">文章內容</p>

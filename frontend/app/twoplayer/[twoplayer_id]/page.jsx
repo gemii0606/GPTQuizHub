@@ -28,7 +28,6 @@ function Page({ params }) {
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const router = useRouter();
   const [startGame, setStartGame] = useState(false);
-  const [countdown, setCountdown] = useState(3);
   // TODO:websocket雙人對戰
   // const [participants, setParticipants] = useState([]);
   // const [opponentScore, setOpponentScore] = useState(0);
