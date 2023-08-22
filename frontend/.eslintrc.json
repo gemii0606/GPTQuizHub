@@ -22,6 +22,9 @@
     "import/no-unresolved": "off",
     "operator-linebreak": "off",
     "no-return-assign": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "no-underscore-dangle": "off",
+    "no-unsafe-optional-chaining": "off",
+    "max-len": "off"
   }
 }

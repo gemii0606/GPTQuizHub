@@ -3,10 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
 import DeleteIcon from "../../public/delete.png";
+import useDeleteQuiz from "../../hooks/useDeleteQuiz";
 
 function QuestionsBanksCard({ questionsBank }) {
   const [showQuizType, setShowQuizType] = useState(false);
   const showTypeButtonRef = useRef(null);
+  const deleteQuiz = useDeleteQuiz(questionsBank.id);
   const handleOutsideClick = (e) => {
     const clickedElement = e.target;
     if (showTypeButtonRef.current && !showTypeButtonRef.current.contains(clickedElement)) {
@@ -30,7 +32,7 @@ function QuestionsBanksCard({ questionsBank }) {
       confirmButtonText: "確定刪除",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("成功", "題庫已刪除", "success");
+        deleteQuiz();
       }
     });
   }
