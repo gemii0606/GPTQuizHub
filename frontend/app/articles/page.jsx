@@ -1,49 +1,58 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import nookies from "nookies";
 import Navbar from "../../components/navbar";
 import Articlelink from "../../components/articles/articlelink";
 import ArticleSidebar from "../../components/articles/article-sidebar";
 
-const page = () => {
-  const fakeData = {
-    data: {
-      article: [
-        {
-          id: 1,
-          title: "三分鐘了解React?",
-          created_at: "2023-08-13",
-        },
-        {
-          id: 2,
-          title: "Docker武功大全?",
-          created_at: "2023-08-13",
-        },
-        {
-          id: 3,
-          title: "「草泥馬」為什麼會沖你吐口水",
-          created_at: "2023-08-24",
-        },
-      ],
-    },
+function Page() {
+  const [listArticles, setListArticles] = useState([]);
+  const [showAriticles, setShowArticles] = useState([]);
+  const articlesApi = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/articles/search`, {
+        headers: {
+          Authorization: `Bearer ${nookies.get().access_token}`,
+        }
+      });
+      setListArticles(response.data.data.articles);
+      console.log(listArticles);
+      if (listArticles.length !== 0) {
+        setShowArticles(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+  useEffect(() => {
+    articlesApi();
+  }, []);
   return (
     <div className="bg-[#F9F9F9] h-full w-full  m-0">
       <Navbar />
-      <div className="flex justify-center p-8">
-        <ArticleSidebar />
-        <div>
-          {fakeData.data.article.map((article) => (
-            <Articlelink
-              key={article.id}
-              title={article.title}
-              createdAt={article.created_at}
-            />
-          ))}
+      {showAriticles ? (
+        <div className="flex justify-center p-8">
+          <ArticleSidebar />
+          <div>
+            {listArticles.map((article) => (
+              <Articlelink
+                key={article.id}
+                id={article.id}
+                title={article.title}
+                createdAt={article.created_at}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-full h-screen bg-white">
+          You don&apos;t have any article yet, go and create one!
+        </div>
+      )}
     </div>
   );
-};
+}
 
-export default page;
+export default Page;
