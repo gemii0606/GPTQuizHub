@@ -6,13 +6,11 @@ function HistoryLink({
   title, createdAt, animationkey, percentage,
 }) {
   return (
-    <div className="p-4 bg-white rounded w-[70vw] h-30 hover:bg-slate-200 truncate m-4">
+    <div className="p-4 bg-white rounded w-[70vw] h-30 truncate m-4">
       <div className="flex">
-        <Link href="/article/demo" passHref>
-          <div className="mb-2 overflow-hidden text-xl font-semibold">
-            {title}
-          </div>
-        </Link>
+        <div className="max-w-xl mb-2 overflow-hidden text-xl font-semibold truncate">
+          {title}
+        </div>
         <div className="ml-auto">
           <Progressbar percentage={percentage} animationkey={animationkey} />
         </div>

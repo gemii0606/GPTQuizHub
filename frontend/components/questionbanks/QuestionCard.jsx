@@ -83,42 +83,38 @@ function QuestionBankCard({ id }) {
     setLoading(false);
   }
   const OptionsItems = quiz?.questions?.[questionIndex]?.options.map((option) => (
-    <p key={option.id} className="mt-3 text-2xl font-bold">{`(${option.id}) ${option.content}`}</p>
+    <p key={option.id} className="mt-3 text-lg font-bold">{`(${option.id}) ${option.content}`}</p>
   ));
   const QuestionContent = (
     <>
       <h1 className="mb-5 text-2xl font-bold rounded-lg">{quiz?.questions?.[questionIndex]?.question}</h1>
       <div className="flex items-center">
-        <p className="mr-3">難度 :</p>
-        <p>{quiz?.questions?.[questionIndex]?.difficulty}</p>
+        <p className="mr-3 text-lg font-bold">難度 :</p>
+        <p className="text-lg font-bold">{quiz?.questions?.[questionIndex]?.difficulty}</p>
       </div>
       {OptionsItems}
-      <div className="flex items-center mt-4 mb-4">
-        <p className="relative mr-3 font-bold">正確答案 :</p>
-        {showAnswer && <p className="font-bold">({quiz?.questions?.[questionIndex]?.correct_answer})</p>}
+      <div className="flex items-center h-12 p-6 mt-2 mb-2">
         <button
           type="button"
           onClick={() => {
             setShowAnswer(!showAnswer);
           }}
-          className="absolute left-36 text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+          className="absolute px-4 py-1 text-base font-bold text-white rounded-md left-5 bg-primary disabled:opacity-50 hover:bg-indigo-500"
         >
-          {showAnswer ? "隱藏" : "顯示"}
+          {showAnswer ? "隱藏答案" : "顯示答案"}
         </button>
+        {showAnswer && <p className="ml-32 font-bold">({quiz?.questions?.[questionIndex]?.correct_answer})</p>}
       </div>
-      <div className="mb-4">
-        <div className="flex items-center">
-          <p className="mb-2 mr-4">說明 :</p>
-          <button
-            type="button"
-            onClick={() => {
-              setShowExplanation(!showExplanation);
-            }}
-            className="text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
-          >
-            {showExplanation ? "隱藏" : "顯示"}
-          </button>
-        </div>
+      <div className="flex items-center h-12 mb-4">
+        <button
+          type="button"
+          onClick={() => {
+            setShowExplanation(!showExplanation);
+          }}
+          className="px-4 py-1 mr-2 text-base font-bold text-white rounded-md bg-primary disabled:opacity-50 hover:bg-indigo-500"
+        >
+          {showExplanation ? "隱藏說明" : "顯示說明"}
+        </button>
         {showExplanation && (
           <p className="mt-3 break-words whitespace-pre-wrap">{quiz?.questions?.[questionIndex]?.explanation}</p>
         )}
@@ -127,7 +123,7 @@ function QuestionBankCard({ id }) {
         type="button"
         onClick={() => deleteQuestionHandler(quiz?.questions?.[questionIndex]?.id)}
         disabled={loading}
-        className="absolute bottom-3 right-3 text-base font-bold mt-4 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+        className="absolute bottom-3 right-3 text-base font-bold mt-4 text-white bg-primary py-2.5 px-4 rounded-md disabled:opacity-50 hover:bg-red-500"
       >
         刪除題目
       </button>
@@ -246,7 +242,7 @@ function QuestionBankCard({ id }) {
   return (
     <div className="bg-white border p-5 min-w-[80rem] rounded-lg relative" key={1}>
       <div className="flex mb-4">
-        <p className="mr-3">{`第${questionIndex + 1}題`}</p>
+        <p className="mr-3 text-xl">{`第 ${questionIndex + 1} 題`}</p>
         <button
           type="button"
           hidden={editQuestion === true}
@@ -254,7 +250,7 @@ function QuestionBankCard({ id }) {
             setEditQuestion(true);
           }}
         >
-          <Image src={Edit} alt="edit-icon" width={20} height={20} className="absolute cursor-pointer top-3 right-3" />
+          <Image src={Edit} alt="edit-icon" width={30} height={30} className="absolute cursor-pointer top-3 right-3 hover:-translate-y-1 hover:scale-110" />
         </button>
       </div>
       {editQuestion ? QuestionEditArea : QuestionContent}
@@ -266,7 +262,7 @@ function QuestionBankCard({ id }) {
             setQuestionIndex(questionIndex - 1);
           }}
           hidden={editQuestion}
-          className="text-base font-bold mr-6 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+          className="text-base font-bold mr-6 text-white bg-primary hover:bg-indigo-500 py-2.5 px-4 rounded-md disabled:opacity-50"
         >
           上一題
         </button>
@@ -277,7 +273,7 @@ function QuestionBankCard({ id }) {
             setQuestionIndex(questionIndex + 1);
           }}
           hidden={editQuestion}
-          className="text-base font-bold mr-6 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+          className="text-base font-bold mr-6 text-white bg-primary hover:bg-indigo-500 py-2.5 px-4 rounded-md disabled:opacity-50"
         >
           下一題
         </button>

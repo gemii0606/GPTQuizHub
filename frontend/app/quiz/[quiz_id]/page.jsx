@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Swal from "sweetalert2";
 import axios from "axios";
 import nookies from "nookies";
@@ -131,12 +132,15 @@ function Page({ params }) {
     document.body.classList.toggle("modal-open");
   };
   const StartPage = (
-    <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
-      <p className="text-center mt-[8rem] font-extrabold text-4xl">{quiz?.title}</p>
-      <div className="flex flex-col items-center mt-24">
+    <div className="items-center justify-center rounded-xl h-3/5">
+      <p className="text-center mt-[2rem] font-extrabold text-4xl text-primary">GPTQuizHub</p>
+      <div className="flex justify-center">
+        <p className="mt-[4rem] font-extrabold text-xl w-4/5">{quiz?.title}</p>
+      </div>
+      <div className="flex flex-col items-center mt-4">
         <button
           type="button"
-          className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
+          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
           onClick={ModalToggleHandler}
         >
           測驗設定
@@ -156,7 +160,7 @@ function Page({ params }) {
             setQuizStatus("process");
             setSeconds(questionSeconds);
           }}
-          className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mb-20"
+          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
         >
           開始測驗
         </button>
@@ -165,7 +169,7 @@ function Page({ params }) {
           onClick={() => {
             router.push("/questionbanks");
           }}
-          className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
+          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
         >
           回到題庫
         </button>
@@ -203,23 +207,26 @@ function Page({ params }) {
         type="button"
         onClick={() => handleOptionClick(option.id)}
         key={option.id}
-        className="block px-24 py-4 text-2xl bg-[#4783EA] text-white rounded-xl mt-20 w-[45rem] leading-8"
+        className="block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9]"
       >
         {option.content}
       </button>
     ));
   const ProcessPage = (
-    <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
+    <div className="items-center my-4">
       {quiz && quiz?.questions?.length > 0 && (
         <div>
-          <div className="flex flex-col items-center mt-10">
-            <h1 className="mb-4 text-4xl">剩餘時間 : {seconds}</h1>
-            <p className="text-4xl">{quiz?.questions?.[questionIndex].question}</p>
+          <div className="flex flex-col items-center mt-4">
+            <div className="flex">
+              <p className="h-auto text-2xl w-7/8">{quiz?.questions?.[questionIndex].question}</p>
+              <h1 className="w-4 mb-4 ml-6 text-2xl">{seconds}</h1>
+              <p className="mb-4 ml-6 text-2xl ">seconds</p>
+            </div>
             <div className="flex my-4">
-              <p className="mr-3 text-3xl">難度 :</p>
-              <p className="mr-6 text-3xl">{quiz?.questions?.[questionIndex].difficulty}</p>
-              <p className="text-3xl">
-                {questionIndex + 1} / {quiz?.questions?.length}
+              <p className="mr-3 text-xl">難度 :</p>
+              <p className="mr-6 text-xl">{quiz?.questions?.[questionIndex].difficulty}</p>
+              <p className="text-lg">
+                {questionIndex + 1} of {quiz?.questions?.length}
               </p>
             </div>
           </div>
@@ -229,18 +236,41 @@ function Page({ params }) {
     </div>
   );
   const EndPage = (
-    <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
-      <div className="mt-[8rem]">
-        {accuracy === 100 && <p className="text-4xl">滿分，你超強</p>}
-        {accuracy > 60 && accuracy < 100 && <p className="text-4xl">還不錯</p>}
-        {accuracy < 60 && <p className="text-4xl">你超爛</p>}
-        <p className="text-4xl">答對率 : {accuracy.toFixed(2)}%</p>
-        <p className="text-4xl">總題數 : {quiz?.questions?.length}</p>
-        <p className="text-4xl">未答題數 : {unansweredQuestion.length}</p>
-        <p className="text-4xl">正確題數 : {correctAnswers}</p>
-        <p className="text-4xl">錯誤題數 : {wrongAnswer.length}</p>
+    <div className="flex flex-col items-center">
+      <div className="mt-[4rem]">
+        {accuracy === 100 && (
+          <div>
+            <div className="flex justify-center border-b-4 border-slate-300 w-[16rem]">
+              <p className="mb-2 text-4xl">Bravo!</p>
+            </div>
+            <Image src="/bravo.gif" alt="bravo" width={200} height={200} className="absolute right-20" />
+          </div>
+        )}
+        {accuracy > 60 && accuracy < 100 && (
+          <div>
+            <div className="flex justify-center border-b-4 border-slate-300 w-[16rem]">
+              <p className="mb-2 text-4xl">Sweet~</p>
+            </div>
+            <Image src="/sweet.gif" alt="bravo" width={200} height={200} className="absolute right-20" />
+          </div>
+        )}
+        {accuracy < 60 && (
+          <div>
+            <div className="flex justify-center border-b-4 border-slate-300 w-[16rem]">
+              <p className="mb-2 text-4xl">Keep Going...</p>
+            </div>
+            <Image src="/keepgoing.gif" alt="bravo" width={200} height={200} className="absolute right-20" />
+          </div>
+        )}
+        <div className="flex flex-col items-center mt-2">
+          <p className="m-2 text-xl">答對率 : {accuracy.toFixed(2)}%</p>
+          <p className="m-2 text-xl">總題數 : {quiz?.questions?.length}</p>
+          <p className="m-2 text-xl">未答題數 : {unansweredQuestion.length}</p>
+          <p className="m-2 text-xl">正確題數 : {correctAnswers}</p>
+          <p className="m-2 text-xl">錯誤題數 : {wrongAnswer.length}</p>
+        </div>
       </div>
-      <div>
+      <div className="flex">
         <button
           type="button"
           onClick={() => {
@@ -252,9 +282,9 @@ function Page({ params }) {
             setQuestionIndex(0);
             setLoading(false);
           }}
-          className="block px-24 py-4 text-4xl mr-8 bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
+          className="block px-16 py-4 text-2xl mr-8 bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50 hover:bg-[#3c70c9]"
         >
-          重新測驗
+          再來一次
         </button>
         <button
           type="button"
@@ -264,7 +294,7 @@ function Page({ params }) {
             router.push("/questionbanks");
             setLoading(false);
           }}
-          className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
+          className="block px-16 py-4 text-2xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50 hover:bg-[#3c70c9]"
         >
           回到題庫
         </button>
@@ -272,7 +302,7 @@ function Page({ params }) {
     </div>
   );
   return (
-    <div className="flex justify-center mt-[5rem]">
+    <div className="flex justify-center min-h-screen bg-white">
       {isLoading && <p>正在載入測驗資料...</p>}
       {!isLoading && quizStatus === "start" && StartPage}
       {!isLoading && quizStatus === "process" && ProcessPage}
