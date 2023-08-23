@@ -2,7 +2,6 @@ const express = require('express');
 const routes = require('./server/routes');
 const app = express();
 var cors = require('cors');
-const socketIO = require('socket.io');
 const http = require('http');
 // const socketIo = require('socket.io');
 var cors = require('cors'); // 引入 cors 模块
@@ -144,14 +143,14 @@ io.on('connection', (socket) => {
         }
         io.to(roomName).emit('isready', {data});
         }
-        
+
+        socket.on('disconnect', () => {
+            console.log(`User ${socket.id} disconnected`);
+            const keyToDelete = 'room:' + socket.id;
+            delete roomConnections[keyToDelete];
+        });
     });
 })
-/*
-app.listen(3000, () => {
-    console.log(`Ready. Listening in ${3000}`);
-}); 
-*/
 
 server.listen(3000, () => {
     console.log(`Server is running on port ${3000}`);
