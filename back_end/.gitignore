@@ -6,3 +6,4 @@ private/
 server/utils/addQuestion.js
 tempCodeRunnerFile.js
 web_socket_test.js
+server/controllers/room/
