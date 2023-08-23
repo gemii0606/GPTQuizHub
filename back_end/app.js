@@ -7,6 +7,12 @@ const http = require('http');
 // const socketIo = require('socket.io');
 var cors = require('cors'); // 引入 cors 模块
 
+const { MongoClient, ObjectId } = require('mongodb');
+require('dotenv').config({ path: __dirname + `/.env` });
+
+const url = process.env.MONGOURL;
+const dbName = 'GPTQuizHub';
+
 
 app.use(cors()); // 使用 cors 中间件
 app.use('/api/1.0', routes);
@@ -43,7 +49,7 @@ io.on('connection', (socket) => {
         console.log(roomConnections)
     });
 
-    socket.on('isready', (roomName, user_id) => {
+    socket.on('isready', async (roomName, user_id) => {
         console.log(`User ${user_id} is ready in room ${roomName}`);
         if (roomConnections[roomName].creater_id === user_id) {
             roomConnections[roomName].creater_status = 'ok'
@@ -52,7 +58,29 @@ io.on('connection', (socket) => {
             roomConnections[roomName].opponent_status = 'ok'
         }
         if (roomConnections[roomName].creater_status === 'ok' && roomConnections[roomName].opponent_status === 'ok') {
+            // const creater_id = new ObjectId(roomConnections[roomName].creater_id);
+            // const opponent_id = new ObjectId(roomConnections[roomName].opponent_id);
+
+            // const client = new MongoClient(url, { useUnifiedTopology: true });
+            // await client.connect();
+            // const db = client.db(dbName);
+            // const quizzesCollection = db.collection('quizzes');
+            // const allQuiz = await quizzesCollection.aggregate([
+            //     { $match: {
+            //         $or: [
+            //             { user_id: creater_id },
+            //             { user_id: opponent_id }
+            //         ]
+            //     }},
+            //     { $sample: { size: 1 } } // 随机选择一个文档
+            // ]).toArray();
+
+            // const randomQuizId = allQuiz[0]._id;
+            // console.log(randomQuizId)
+
+
             const data = {
+                "article": "test",
                 "quiz":{
                     "id": 123,
                     "title": "title",
