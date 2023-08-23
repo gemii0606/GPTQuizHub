@@ -141,7 +141,7 @@ io.on('connection', (socket) => {
                     ]
             }
         }
-        io.to(roomName).emit('isready', {data});
+        socket.emit('isready', {data});
         }
 
         socket.on('disconnect', () => {
