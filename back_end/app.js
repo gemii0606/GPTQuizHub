@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
             const randomQuiz = allQuiz[0];
             console.log(randomQuiz)
             const questionsCollection = db.collection('questions');
-            const randomQuestion = await questionsCollection.findOne({quiz_id: randomQuiz._id});
+            const randomQuestion = await questionsCollection.find({quiz_id: randomQuiz._id}).toArray();
             console.log(randomQuestion)
             const questions = randomQuestion.map(obj => {
                 const result = {
@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
                     ]
                 };
                 return result;
-            })
+            });
 
             const data = {
                 article: randomQuiz.content,
