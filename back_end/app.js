@@ -50,13 +50,20 @@ io.on('connection', (socket) => {
 
     socket.on('isready', (roomName, user_id) => {
         console.log(`User ${user_id} is ready in room ${roomName}`);
+        console.log(roomName)
+        console.log(user_id)
         if (roomConnections[roomName].creater_id === user_id) {
-            roomConnections[roomName].creater_status = 'ok'
+            roomConnections[roomName].creater_status = 'ok';
+            console.log(roomConnections)
         }
         if (roomConnections[roomName].opponent_id === user_id) {
-            roomConnections[roomName].opponent_status = 'ok'
+            roomConnections[roomName].opponent_status = 'ok';
+            console.log(roomConnections)
         }
         if (roomConnections[roomName].creater_status === 'ok' && roomConnections[roomName].opponent_status === 'ok') {
+            console.log('in double status')
+            console.log(roomName)
+            console.log(user_id)
             // const creater_id = new ObjectId(roomConnections[roomName].creater_id);
             // const opponent_id = new ObjectId(roomConnections[roomName].opponent_id);
 
