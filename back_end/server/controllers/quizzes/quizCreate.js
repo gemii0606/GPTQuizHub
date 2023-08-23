@@ -37,15 +37,15 @@ const quizCreate = async (req, res) => {
             insertQuiz
         }
 
-        axios.post(process.env.GPTURL, data, { timeout: 600000 });
-
         console.log('gptres')
         res.status(200).json({
             data: {
                 quiz: {id: insertQuiz.insertedId},
             }
         });
-        return
+        
+        await axios.post(process.env.GPTURL, data, { timeout: 600000 });
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Internal server error." })
