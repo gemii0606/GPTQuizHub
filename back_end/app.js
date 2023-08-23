@@ -146,6 +146,19 @@ io.on('connection', (socket) => {
         }
     });
     
+    socket.on('updatescore', (roomName, user_id, users_score) => {
+        socket.join(socket.id);
+        if (!roomConnections[roomName].score)
+            roomConnections[roomName].score = [];
+        
+        roomConnections[roomName].score.push({user_id, score:users_score})
+        
+        
+        if (roomConnections[roomName].score.length == 2){
+            roomConnections[roomName].score.sort((a, b) => b.score - a.score);
+            io.to(roomName).emit('updatescore', roomConnections[roomName].score)
+        }
+    })
 
     socket.on('end', (roomName, user_id, users_score) => {
         socket.join(socket.id);
