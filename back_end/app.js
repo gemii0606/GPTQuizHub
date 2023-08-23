@@ -18,6 +18,9 @@ const io = require("socket.io")(server, {
 io.on('connection', (socket) => {
     console.log('A user connected');
 
+    socket.on('twoplayers', () => {
+        socket.emit('test from backend');
+    });
     socket.on('disconnect', () => {
         console.log('User disconnected');
     });
