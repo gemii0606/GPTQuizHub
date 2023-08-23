@@ -142,7 +142,7 @@ io.on('connection', (socket) => {
                     ]
             }
         }
-        io.to(roomName).emit('start', {data});
+        io.to(roomName).emit('isready', {data});
         }
         
     });
