@@ -111,7 +111,7 @@ io.on('connection', (socket) => {
                     ]
             }
         }
-            socket.emit('start', {data});
+        io.to(roomName).emit('start', {data});
         }
         
     });
