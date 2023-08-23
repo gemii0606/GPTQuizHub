@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         console.log(roomConnections)
     });
 
-    socket.on('isready', async (roomName, user_id) => {
+    socket.on('isready', (roomName, user_id) => {
         console.log(`User ${user_id} is ready in room ${roomName}`);
         if (roomConnections[roomName].creater_id === user_id) {
             roomConnections[roomName].creater_status = 'ok'
