@@ -18,10 +18,11 @@ const io = require("socket.io")(server, {
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    socket.on('twoplayers', () => {
-        console.log('in twoplayers')
-        socket.emit('test from backend');
+    socket.on('joinroom', (roomName) => {
+        socket.join(roomName);
+        console.log(`User ${socket.id} joined room ${roomName}`);
     });
+    
     socket.on('disconnect', () => {
         console.log('User disconnected');
     });
