@@ -2,10 +2,15 @@ const express = require('express');
 const routes = require('./server/routes');
 const app = express();
 var cors = require('cors');
-const socketIO = require('socket.io');
 const http = require('http');
 // const socketIo = require('socket.io');
 var cors = require('cors'); // 引入 cors 模块
+
+const { MongoClient, ObjectId } = require('mongodb');
+require('dotenv').config({ path: __dirname + `/.env` });
+
+const url = process.env.MONGOURL;
+const dbName = 'GPTQuizHub';
 
 
 app.use(cors()); // 使用 cors 中间件
@@ -23,7 +28,7 @@ io.on('connection', (socket) => {
     console.log('A user connected');
 
     socket.on('createroom', (user_id) => {
-        socket.join(`room:${socket.id}`);
+        socket.join(socket.id);
         console.log(`User ${user_id} created and joined room ${socket.id}`);
         roomConnections[socket.id] = {
             creater_id: user_id
@@ -45,14 +50,43 @@ io.on('connection', (socket) => {
 
     socket.on('isready', (roomName, user_id) => {
         console.log(`User ${user_id} is ready in room ${roomName}`);
+        console.log(roomName)
+        console.log(user_id)
         if (roomConnections[roomName].creater_id === user_id) {
-            roomConnections[roomName].creater_status = 'ok'
+            roomConnections[roomName].creater_status = 'ok';
+            console.log(roomConnections)
         }
         if (roomConnections[roomName].opponent_id === user_id) {
-            roomConnections[roomName].opponent_status = 'ok'
+            roomConnections[roomName].opponent_status = 'ok';
+            console.log(roomConnections)
         }
         if (roomConnections[roomName].creater_status === 'ok' && roomConnections[roomName].opponent_status === 'ok') {
+            console.log('in double status')
+            console.log(roomName)
+            console.log(user_id)
+            // const creater_id = new ObjectId(roomConnections[roomName].creater_id);
+            // const opponent_id = new ObjectId(roomConnections[roomName].opponent_id);
+
+            // const client = new MongoClient(url, { useUnifiedTopology: true });
+            // await client.connect();
+            // const db = client.db(dbName);
+            // const quizzesCollection = db.collection('quizzes');
+            // const allQuiz = await quizzesCollection.aggregate([
+            //     { $match: {
+            //         $or: [
+            //             { user_id: creater_id },
+            //             { user_id: opponent_id }
+            //         ]
+            //     }},
+            //     { $sample: { size: 1 } } // 随机选择一个文档
+            // ]).toArray();
+
+            // const randomQuizId = allQuiz[0]._id;
+            // console.log(randomQuizId)
+
+
             const data = {
+                "article": "test",
                 "quiz":{
                     "id": 123,
                     "title": "title",
@@ -114,16 +148,16 @@ io.on('connection', (socket) => {
                     ]
             }
         }
-        io.to(roomName).emit('start', {data});
+        io.to(roomName).emit('isready', {data});
         }
-        
+
+        socket.on('disconnect', () => {
+            console.log(`User ${socket.id} disconnected`);
+            const keyToDelete = 'room:' + socket.id;
+            delete roomConnections[keyToDelete];
+        });
     });
 })
-/*
-app.listen(3000, () => {
-    console.log(`Ready. Listening in ${3000}`);
-}); 
-*/
 
 server.listen(3000, () => {
     console.log(`Server is running on port ${3000}`);
