@@ -21,31 +21,38 @@ const openaiFunctionCalling = {
     parameters: {
         type: 'object',
         properties: {
+            /*
             article: {
                 type: "string",
-                description: "Please use this article to make a quiz" //, including 1 hard, 1 medium and 1 easy problem, and return it useing the quitions format."
+                description: "Summary of the article" //, including 1 hard, 1 medium and 1 easy problem, and return it useing the quitions format."
             },
+            */
             questions: {
                 type: 'array',
                 items: {
                     type: "object",
                     properties: {
                         difficulty: { type: "string", enum: ["easy", "medium", "hard"], description: "The level corresponding to the question" },
-                        type: { type: "string", enum: ["multiple question"], description: "The type of the question" },
+                        question_type: { type: "string", enum: ["multiple question"], description: "The type of the question" },
                         question: { type: "string", description: "The question" },
-                        options: { type: "array", description: "options of the questions, mostly 4" },
-                        correct_answer: { type: "number", description: "The currect option of the  question." },
-                        explanation: { type: "string", description: "The explanation of the correct answer," }
+                        question_options: {
+                            type: "array", items: {
+                                type: "string"
+                            }, description: "options of the questions, mostly 4"
+                        },
+                        explanation: { type: "string", description: "The explanation of the correct answer." },
+                        correct_answer: { type: "number", description: "The currect option of the  question." }
                     }
                 }
             }
+
         },
-        required: ['article']
+        required: ['questions']
     }
 }
 
-async function generate_questions(article){
-    return article;
+async function generate_questions(questions) {
+    return questions;
 }
 
 const gptfunctioncall = async (req, res) => {
@@ -64,7 +71,7 @@ const gptfunctioncall = async (req, res) => {
 
         console.log("1")
         const completion = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
+            model: "gpt-3.5-turbo-0613",
             // max_tokens: 128,
             messages: [
                 { role: "system", content: systemPrompt },
@@ -77,10 +84,11 @@ const gptfunctioncall = async (req, res) => {
                     `
                 }
             ],
-            functions: [ openaiFunctionCalling ]
+            functions: [openaiFunctionCalling]
         });
         console.log("2")
-        const gptResult = JSON.parse(completion.data.choices[0].message?.content);
+        console.log(completion.data.choices[0].message.function_call.arguments)
+        const gptResult = JSON.parse(completion.data.choices[0].message.function_call.arguments);
         console.log(gptResult)
 
         if (!gptResult) {
@@ -99,10 +107,10 @@ const gptfunctioncall = async (req, res) => {
                 user_id: user_id,
                 quiz_id: insertQuizId,
                 question: obj.question,
-                type: obj.type,
+                type: obj.question_type,
                 difficulty: obj.difficulty,
-                options: obj.options,
-                correct_answer: obj.correct_answer,
+                options: obj.question.question_options,
+                correct_answer: obj.correct_answer + 1,
                 explanation: obj.explanation,
                 created_at: getCurrentTime()
             };
