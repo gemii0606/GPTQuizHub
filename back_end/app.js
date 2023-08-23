@@ -20,17 +20,18 @@ const roomConnections = {}; // 用于存储房间和连接的关系
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    socket.on('createroom', (roomName) => {
-        socket.join(`room:${roomName}`);
-        console.log(`User ${socket.id} created and joined room ${roomName}`);
-        roomConnections[roomName] = {
-            creater_id: roomName
+    socket.on('createroom', (user_id) => {
+        socket.join(`room:${socket.id}`);
+        console.log(`User ${user_id} created and joined room ${socket.id}`);
+        roomConnections[socket.id] = {
+            creater_id: user_id
         }
+        socket.emit('createroom', socket.id);
         console.log(roomConnections)
     });
 
     socket.on('joinroom', (roomName, user_id) => {
-        console.log(`User ${socket.id} joined room ${roomName}`);
+        console.log(`User ${user_id} joined room ${roomName}`);
         if (roomConnections[roomName]) {
             socket.join(roomName);
             roomConnections[roomName].opponent_id = user_id; // 添加连接到房间的关系
@@ -41,7 +42,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('isready', (roomName, user_id) => {
-        console.log(`User ${socket.id} is ready in room ${roomName}`);
+        console.log(`User ${user_id} is ready in room ${roomName}`);
         if (roomConnections[roomName].creater_id === user_id) {
             roomConnections[roomName].creater_status = 'ok'
         }
@@ -118,18 +119,8 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log(`User ${socket.id} disconnected`);
-        
-        // 从房间关系中删除断开连接的记录
-        // for (const room in roomConnections) {
-        //     const index = roomConnections[room].indexOf(socket.id);
-        //     if (index !== -1) {
-        //         roomConnections[room].splice(index, 1);
-        //         if (roomConnections[room].length === 0) {
-        //             delete roomConnections[room]; // 如果房间为空，删除房间关系
-        //         }
-        //         break;
-        //     }
-        // }
+        const keyToDelete = 'room:' + socket.id;
+        delete roomConnections[keyToDelete];
     });
 });
 
