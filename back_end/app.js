@@ -55,109 +55,108 @@ io.on('connection', (socket) => {
             console.log('in double status')
             console.log(roomName)
             console.log(user_id)
-            const creater_id = new ObjectId(roomConnections[roomName].creater_id);
-            const opponent_id = new ObjectId(roomConnections[roomName].opponent_id);
+            // const creater_id = new ObjectId(roomConnections[roomName].creater_id);
+            // const opponent_id = new ObjectId(roomConnections[roomName].opponent_id);
 
-            const client = new MongoClient(url, { useUnifiedTopology: true });
-            await client.connect();
-            const db = client.db(dbName);
-            const quizzesCollection = db.collection('quizzes');
-            const allQuiz = await quizzesCollection.aggregate([
-                { $match: {
-                    $or: [
-                        { user_id: creater_id },
-                        { user_id: opponent_id }
-                    ]
-                }},
-                { $sample: { size: 1 } } // 随机选择一个文档
-            ]).toArray();
-
-            const randomQuizId = allQuiz[0]._id;
-            console.log(randomQuizId)
-            const questionsCollection = db.collection('questions');
-            const randomQuestion = await questionsCollection.findOne({quiz_id: randomQuizId});
-
-
-
-            // const data = {
-            //     "article": "test",
-            //     "quiz":{
-            //         "id": 123,
-            //         "title": "title",
-            //         "tag" : "world",
-            //         "created_at": "2023-08-07 03:32:19",
-            //         "questions":[
-            //               {
-            //                 "id": 1,
-            //                 "question": "What is the capital of France?",
-            //                 "type": "multiple-choice",
-            //                 "difficulty": "hard",
-            //                     "options" : [
-            //                                         {
-            //                                           "id": 1,
-            //                                           "content": "London",
-            //                                         },
-            //                                         {
-            //                                           "id": 2,
-            //                                           "content": "Paris",
-            //                                         },
-            //                                         {
-            //                                           "id": 3,
-            //                                           "content": "Berlin",
-            //                                         },
-            //                                         {
-            //                                           "id": 4,
-            //                                             "content": "Madrid",
-            //                                         },
-            //                                       ],
-            //                 "correct_answer": 2,
-            //                 "explanation": "The capital of France is Paris.",
-            //               },
-            //               {
-            //                 "id": 2,
-            //                 "question": "What is the chemical symbol for gold?",
-            //                 "type": "multiple-choice",
-            //                 "difficulty": "normal",
-            //                     "options" : [
-            //                                         {
-            //                                           "id": 1,
-            //                                           "content": "Au",
-            //                                         },
-            //                                         {
-            //                                           "id": 2,
-            //                                           "content": "Ag",
-            //                                         },
-            //                                         {
-            //                                           "id": 3,
-            //                                           "content": "Cu",
-            //                                         },
-            //                                         {
-            //                                           "id": 4,
-            //                                             "content": "Fe",
-            //                                         },
-            //                                       ],
-            //                 "correct_answer": 1,
-            //                 "explanation": "The chemical symbol for gold is Au.",
-            //               }
+            // const client = new MongoClient(url, { useUnifiedTopology: true });
+            // await client.connect();
+            // const db = client.db(dbName);
+            // const quizzesCollection = db.collection('quizzes');
+            // const allQuiz = await quizzesCollection.aggregate([
+            //     { $match: {
+            //         $or: [
+            //             { user_id: creater_id },
+            //             { user_id: opponent_id }
             //         ]
-            // }
-        // }
+            //     }},
+            //     { $sample: { size: 1 } } // 随机选择一个文档
+            // ]).toArray();
+
+            // const randomQuizId = allQuiz[0]._id;
+            // console.log(randomQuizId)
+            // const questionsCollection = db.collection('questions');
+            // const randomQuestion = await questionsCollection.findOne({quiz_id: randomQuizId});
+
+
+
+            const data = {
+                "article": "test",
+                "quiz":{
+                    "id": 123,
+                    "title": "title",
+                    "tag" : "world",
+                    "created_at": "2023-08-07 03:32:19",
+                    "questions":[
+                          {
+                            "id": 1,
+                            "question": "What is the capital of France?",
+                            "type": "multiple-choice",
+                            "difficulty": "hard",
+                                "options" : [
+                                                    {
+                                                      "id": 1,
+                                                      "content": "London",
+                                                    },
+                                                    {
+                                                      "id": 2,
+                                                      "content": "Paris",
+                                                    },
+                                                    {
+                                                      "id": 3,
+                                                      "content": "Berlin",
+                                                    },
+                                                    {
+                                                      "id": 4,
+                                                        "content": "Madrid",
+                                                    },
+                                                  ],
+                            "correct_answer": 2,
+                            "explanation": "The capital of France is Paris.",
+                          },
+                          {
+                            "id": 2,
+                            "question": "What is the chemical symbol for gold?",
+                            "type": "multiple-choice",
+                            "difficulty": "normal",
+                                "options" : [
+                                                    {
+                                                      "id": 1,
+                                                      "content": "Au",
+                                                    },
+                                                    {
+                                                      "id": 2,
+                                                      "content": "Ag",
+                                                    },
+                                                    {
+                                                      "id": 3,
+                                                      "content": "Cu",
+                                                    },
+                                                    {
+                                                      "id": 4,
+                                                        "content": "Fe",
+                                                    },
+                                                  ],
+                            "correct_answer": 1,
+                            "explanation": "The chemical symbol for gold is Au.",
+                          }
+                    ]
+            }
+        }
         io.to(roomName).emit('isready', {data});
         }
     });
 
     socket.on('end', (roomName, user_id, users_score) => {
-        socket.join(`room:${socket.id}`);
+        socket.join(socket.id);
         if (!roomConnections[roomName].score)
             roomConnections[roomName].score = [];
         
-        roomConnections[roomName].score.push({user_id, score:user_score})
+        roomConnections[roomName].score.push({user_id, score:users_score})
         
         
         if (roomConnections[roomName].score.length == 2){
             roomConnections[roomName].score.sort((a, b) => b.score - a.score);
-            const winner = roomConnections[roomName].score[0].user_id
-            socket.emit('end', roomConnections[roomName].score , winner)
+            io.to(roomName).emit('end', roomConnections[roomName].score)
         }
     })
 })
