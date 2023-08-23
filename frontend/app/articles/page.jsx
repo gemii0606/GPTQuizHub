@@ -17,7 +17,7 @@ function Page() {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/articles/search`, {
         headers: {
           Authorization: `Bearer ${nookies.get().access_token}`,
-        }
+        },
       });
       setListArticles(response.data.data.articles);
       console.log(listArticles);
@@ -28,9 +28,7 @@ function Page() {
       console.log(error);
     }
   };
-  const filteredArticles = selectedTag
-    ? listArticles.filter((article) => article.tag === selectedTag)
-    : listArticles;
+  const filteredArticles = selectedTag ? listArticles.filter((article) => article.tag === selectedTag) : listArticles;
   useEffect(() => {
     articlesApi();
   }, []);
@@ -42,12 +40,7 @@ function Page() {
           <ArticleSidebar onTagButtonClick={setSelectedTag} name="文章" />
           <div>
             {filteredArticles.map((article) => (
-              <Articlelink
-                key={article.id}
-                id={article.id}
-                title={article.title}
-                createdAt={article.created_at}
-              />
+              <Articlelink key={article.id} id={article.id} title={article.title} createdAt={article.created_at} />
             ))}
           </div>
         </div>
