@@ -7,7 +7,6 @@ function QuestionBankSideBar({ setSelectTag }) {
   const { tags, isLoading, isError } = useTags();
   useEffect(() => {
     setTagList(tags);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tags]);
   const tagsItems = taglist?.map((tag) => (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events

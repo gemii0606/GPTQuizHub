@@ -11,9 +11,7 @@ const useQuizList = (selectedTag) => {
     console.log(response);
     return [response.data.data.quizzes, response.data.data.next_cursor];
   };
-  const { data, error } = useSWR([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/search/`], fetcher, {
-    revalidateOnFocus: true,
-  });
+  const { data, error } = useSWR([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/search/`], fetcher);
   if (error) {
     console.log(error);
   }

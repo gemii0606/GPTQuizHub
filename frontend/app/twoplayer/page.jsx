@@ -16,7 +16,6 @@ function App() {
   const [testStatus, setTestStatus] = useState("setting");
   const [roomId, setRoomId] = useState("");
   const [startGame, setStartGame] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [showShareLink, setShowShareLink] = useState(false);
   // process state
   const [seconds, setSeconds] = useState(10);
@@ -26,7 +25,7 @@ function App() {
   const [useCorrectRatio, setUseCorrectRatio] = useState(false);
   const [correctRatio, setCorrectRatio] = useState(1.05);
   const [score, setScore] = useState(0);
-  // const [opponentScore,setOpponentScore]=useState(0)
+  const [opponentScore, setOpponentScore] = useState(0);
   const [hasClickOption, setHasClickedOption] = useState(false);
   const [selectedOptionId, setSelectedOptionId] = useState(null);
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
@@ -67,7 +66,7 @@ function App() {
         console.log(data);
         const filteredData = data.filter((item) => item.user_id !== nookies.get().user_id);
         console.log(filteredData[0].score);
-        // setOpponentScore(filteredData[0].score)
+        setOpponentScore(filteredData[0].score);
       });
       setTestStatus("end");
     } else {
@@ -104,8 +103,6 @@ function App() {
     setTestStatus("waiting");
   }
   function startGameHandler() {
-    setLoading(true);
-    console.log(roomId);
     socket.emit("isready", roomId, nookies.get().user_id);
     setStartGame(!startGame);
     socket.on("isready", (data) => {
@@ -113,7 +110,6 @@ function App() {
       setQuiz(data.data.quiz);
       setTestStatus("process");
     });
-    setLoading(false);
   }
   const SettingPage = (
     <>
@@ -121,7 +117,7 @@ function App() {
         <button
           type="button"
           onClick={createRoomHandler}
-          className="px-20 py-4 mt-3 text-2xl text-white bg-primary rounded-xl min-w-[20rem]"
+          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
         >
           創建房間
         </button>
@@ -134,7 +130,10 @@ function App() {
           required
           className="px-4 py-2 text-2xl text-center border max-w-[22.5rem]"
         />
-        <button type="submit" className="px-20 py-4 mt-5 text-2xl text-white bg-primary rounded-xl">
+        <button
+          type="submit"
+          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+        >
           加入房間
         </button>
       </form>
@@ -159,14 +158,14 @@ function App() {
     document.body.classList.toggle("modal-open");
   };
   const WaitingPage = (
-    <div className="mt-5">
-      <div className="flex flex-col items-center mt-6 mb-4">
+    <div className="flex flex-col items-center mt-5">
+      <div className="flex flex-col items-center mt-6">
         <p className="text-2xl">房號</p>
         <p className="mt-3 text-2xl">{roomId}</p>
         <button
           type="button"
           onClick={copyLink}
-          className="px-24 py-4 mt-3 text-2xl text-white border rounded-xl bg-primary"
+          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
         >
           複製房號
         </button>
@@ -174,14 +173,14 @@ function App() {
       <button
         type="button"
         onClick={ShareLinkModalToggleHandler}
-        className="block px-24 py-4 mb-4 text-2xl text-white rounded-xl bg-primary"
+        className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
       >
         分享連結
       </button>
       {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />}
       <button
         type="button"
-        className="block px-24 py-4 mb-4 text-2xl text-white bg-primary rounded-xl"
+        className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
         onClick={ShowSettingModalToggleHandler}
       >
         測驗設定
@@ -202,10 +201,10 @@ function App() {
       <button
         type="button"
         onClick={startGameHandler}
-        disabled={loading === true}
-        className="block px-24 py-4 mb-4 text-2xl text-white rounded-xl bg-primary"
+        disabled={startGame === true}
+        className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
       >
-        {startGame ? "取消" : "點擊開始"}
+        {startGame ? "等待中" : "點擊開始"}
       </button>
       {startGame && <p className="mb-3 text-2xl">正在等待對手...</p>}
     </div>
@@ -219,14 +218,12 @@ function App() {
     const elapsedTime = questionSeconds - seconds + 0.5;
     const questionScore = Math.max(Math.round(100 - (100 * elapsedTime) / questionSeconds), 5);
     function HandleScoreUpdate() {
-      // TODO:websocket雙人對戰
-      // socket.emit("updatescore", roomId, nookies.get().user_id, score);
-      // socket.on("updatescore", (data) => {
-      //   console.log(data);
-      //   const filteredData = data.filter((item) => item.user_id !== nookies.get().user_id);
-      //   console.log(filteredData[0].score);
-      //   setOpponentScore(filteredData[0].score)
-      // });
+      socket.emit("update", roomId, nookies.get().user_id, score);
+      socket.on("update", (data) => {
+        const filteredData = data.filter((item) => item.user_id !== nookies.get().user_id);
+        console.log(filteredData[0].score);
+        setOpponentScore(filteredData[0].score);
+      });
     }
     if (chooseCorrectAnswer) {
       setScore((prevScore) => prevScore + questionScore);
@@ -287,7 +284,7 @@ function App() {
             </div>
             <div className="flex flex-col items-center p-4 ml-4 border rounded-lg">
               <p>對手</p>
-              {/* <p className="text-3xl">目前分數: {opponentScore}</p> */}
+              <p className="text-3xl">目前分數: {opponentScore}</p>
             </div>
           </div>
           <div className="flex flex-col items-center mb-10">{OptionsItems}</div>
@@ -301,10 +298,10 @@ function App() {
   const EndPage = (
     <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center justify-center">
       <p className="mb-4 text-2xl">你的得分:{score}</p>
-      {/* <p className="mb-4 text-2xl">對手得分: {opponentScore}</p> */}
-      {/* {score > opponentScore && <p className="mb-4 text-2xl">你贏了</p>}
-      {score = opponentScore && <p className="mb-4 text-2xl">平手</p>}
-      {score < opponentScore && <p className="mb-4 text-2xl">你輸了</p>} */}
+      <p className="mb-4 text-2xl">對手得分: {opponentScore}</p>
+      {score > opponentScore && <p className="mb-4 text-2xl">你贏了</p>}
+      {score === opponentScore && <p className="mb-4 text-2xl">平手</p>}
+      {score < opponentScore && <p className="mb-4 text-2xl">你輸了</p>}
       <button
         type="button"
         onClick={leaveGameHandler}

@@ -11,7 +11,9 @@ const fetcher = async (url) => {
 };
 
 const useQuiz = (id) => {
-  const { data, error } = useSWR([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/${id}/detail`], fetcher);
+  const { data, error } = useSWR([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/${id}/detail`], fetcher, {
+    revalidateOnFocus: false,
+  });
   return {
     quiz: data,
     isLoading: !error && !data,
