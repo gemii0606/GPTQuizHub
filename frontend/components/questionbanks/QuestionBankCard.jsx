@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import { mutate } from "swr";
 import useDeleteQuiz from "../../hooks/useDeleteQuiz";
 
 function QuestionsBanksCard({ questionsBank }) {
@@ -49,7 +50,15 @@ function QuestionsBanksCard({ questionsBank }) {
             <Image src="/loading.png" alt="loading" width={30} height={30} className="animate-spin" />
           </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} className="mx-2" />
+            <Image
+              src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"}
+              alt="delete-icon"
+              width={30}
+              height={30}
+              onMouseEnter={() => setIsDeleteHovered(true)}
+              onMouseLeave={() => setIsDeleteHovered(false)}
+              className="mx-2"
+            />
           </button>
         </div>
       )}
@@ -59,7 +68,15 @@ function QuestionsBanksCard({ questionsBank }) {
             <p className="ml-1 mr-1 text-base font-semibold text-white">生成錯誤！</p>
           </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} className="mx-2" />
+            <Image
+              src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"}
+              alt="delete-icon"
+              width={30}
+              height={30}
+              onMouseEnter={() => setIsDeleteHovered(true)}
+              onMouseLeave={() => setIsDeleteHovered(false)}
+              className="mx-2"
+            />
           </button>
         </div>
       )}
@@ -102,7 +119,14 @@ function QuestionsBanksCard({ questionsBank }) {
             )}
           </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} />
+            <Image
+              src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"}
+              alt="delete-icon"
+              width={30}
+              height={30}
+              onMouseEnter={() => setIsDeleteHovered(true)}
+              onMouseLeave={() => setIsDeleteHovered(false)}
+            />
           </button>
         </div>
       )}
