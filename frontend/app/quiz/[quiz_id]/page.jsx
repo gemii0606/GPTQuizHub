@@ -49,7 +49,7 @@ function Page({ params }) {
         `${process.env.NEXT_PUBLIC_API_URL}/quizzes/history`,
         {
           quiz_id: params.quiz_id,
-          accuracy,
+          accuracy: (correctAnswers / quiz?.questions?.length) * 100,
           wrongAnswer,
         },
         {
@@ -89,9 +89,14 @@ function Page({ params }) {
       }
     }
   }
+  useEffect(() => {
+    if (quizStatus === "end") {
+      quizSubmitHandler();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizStatus]);
   const moveToNextQuestion = () => {
     if (questionIndex === quiz.questions.length - 1) {
-      quizSubmitHandler();
       setQuizStatus("end");
     } else {
       setQuestionIndex((prevIndex) => prevIndex + 1);
