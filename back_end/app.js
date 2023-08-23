@@ -30,8 +30,7 @@ io.on('connection', (socket) => {
     socket.on('createroom', (user_id) => {
         socket.join(socket.id);
         console.log(`User ${user_id} created and joined room ${socket.id}`);
-        const roomName = 'room:' + socket.id;
-        roomConnections[roomName] = {
+        roomConnections[socket.id] = {
             creater_id: user_id
         }
         socket.emit('createroom', socket.id);
