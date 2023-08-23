@@ -11,7 +11,7 @@ const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
 function App() {
   //   const [quiz, setQuiz] = useState([]);
   const [testStatus, setTestStatus] = useState("setting");
-  const [roomId, setRoomId] = useState(nookies.get().user_id);
+  const [roomId, setRoomId] = useState("");
   const [startGame, setStartGame] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showShareLink, setShowShareLink] = useState(false);
@@ -30,10 +30,8 @@ function App() {
   // socket state
   const roomRef = useRef();
   useEffect(() => {
-    socket.on("test from backend", () => {
-      console.log("Received message from backend");
-    });
     return () => {
+      socket.close();
       socket.disconnect();
     };
   }, []);
@@ -82,7 +80,10 @@ function App() {
   // socket.io
   function createRoomHandler() {
     socket.emit("createroom", nookies.get().user_id);
-    // socket.on("createroom", () => {});
+    socket.on("createroom", (roomName) => {
+      console.log(roomName);
+      setRoomId(roomName);
+    });
     setTestStatus("waiting");
   }
   function joinRoomHandler(joinRoomId) {
@@ -92,11 +93,14 @@ function App() {
   }
   function startGameHandler() {
     setLoading(true);
-    socket.emit("isReady", roomId, nookies.get().user_id);
+    console.log(roomId);
+    socket.emit("isready", roomId, nookies.get().user_id);
     setStartGame(!startGame);
+    socket.on("isready", (questions) => {
+      console.log(questions);
+    });
     setLoading(false);
   }
-  socket.on("isReady");
   const SettingPage = (
     <>
       <div>
