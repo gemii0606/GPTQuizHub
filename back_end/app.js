@@ -78,12 +78,12 @@ io.on('connection', (socket) => {
                 }},
                 { $sample: { size: 1 } } // 随机选择一个文档
             ]).toArray();
-
+            console.log(allQuiz)
             const randomQuiz = allQuiz[0];
             console.log(randomQuiz)
             const questionsCollection = db.collection('questions');
             const randomQuestion = await questionsCollection.findOne({quiz_id: randomQuiz._id});
-
+            console.log(randomQuestion)
             const questions = randomQuestion.map(obj => {
                 const result = {
                     id: obj._id,
