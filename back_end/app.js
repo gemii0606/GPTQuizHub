@@ -147,11 +147,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('end', (roomName, user_id, users_score) => {
-        socket.join(`room:${socket.id}`);
+        socket.join(socket.id);
         if (!roomConnections[roomName].score)
             roomConnections[roomName].score = [];
         
-        roomConnections[roomName].score.push({user_id, score:user_score})
+        roomConnections[roomName].score.push({user_id, score:users_score})
         
         
         if (roomConnections[roomName].score.length == 2){
