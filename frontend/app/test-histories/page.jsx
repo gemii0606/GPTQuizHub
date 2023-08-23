@@ -11,6 +11,7 @@ import ArticleSidebar from "../../components/articles/article-sidebar";
 function Page() {
   const [listHistories, setListHistories] = useState([]);
   const [noHistory, setNoHistory] = useState(false);
+  const [selectedTag, setSelectedTag] = useState(null);
   const historiesApi = async () => {
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/history`, {
@@ -19,10 +20,11 @@ function Page() {
         }
       });
       setListHistories(response.data.data.quizzes);
-      if (listHistories.length !== 0) {
+      if (response.data.data.length !== 0) {
         setNoHistory(true);
       }
-      console.log(listHistories);
+      console.log(response);
+      console.log(response.data.data.quizzes);
     } catch (error) {
       console.log(error);
     }
@@ -30,21 +32,24 @@ function Page() {
   useEffect(() => {
     historiesApi();
   }, []);
+  const filteredHistories = selectedTag
+    ? listHistories.filter((article) => article.tag === selectedTag)
+    : listHistories;
 
   return (
     <div className="bg-[#F9F9F9] h-full w-full  m-0">
       <Navbar />
       {noHistory ? (
         <div className="flex justify-center p-8">
-          <ArticleSidebar />
+          <ArticleSidebar name="測驗" onTagButtonClick={setSelectedTag} />
           <div>
-            {listHistories.map((article, index) => (
+            {filteredHistories.map((article, index) => (
               <HistoryLink
                 key={article.id}
                 title={article.title}
                 createdAt={article.created_at}
                 articlekey={index}
-                percentage={article.percentage}
+                percentage={article.accuracy}
               />
             ))}
           </div>

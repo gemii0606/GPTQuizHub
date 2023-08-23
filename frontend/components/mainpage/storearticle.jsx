@@ -55,7 +55,6 @@ function Storearticle() {
     }
     // setLoading(false);
   };
-
   function handleInputChange(e, difficulty) {
     const newValue = e.target.value;
     switch (difficulty) {

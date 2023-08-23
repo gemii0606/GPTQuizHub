@@ -31,14 +31,13 @@ function Page() {
   const filteredArticles = selectedTag ? listArticles.filter((article) => article.tag === selectedTag) : listArticles;
   useEffect(() => {
     articlesApi();
-    console.log(showArticles);
   }, []);
   return (
     <div className="bg-[#F9F9F9] h-full w-full  m-0">
       <Navbar />
       {showArticles ? (
         <div className="flex justify-center p-8">
-          <ArticleSidebar onTagButtonClick={setSelectedTag} />
+          <ArticleSidebar onTagButtonClick={setSelectedTag} name="文章" />
           <div>
             {filteredArticles.map((article) => (
               <Articlelink key={article.id} id={article.id} title={article.title} createdAt={article.created_at} />

@@ -22,9 +22,12 @@ function QuizSetting({
   return (
     <Modal>
       <div className="flex flex-col items-center">
-        <p className="pt-6 pb-4 text-3xl text-center text-black">測驗設定</p>
+        <div className="flex items-center">
+          <Image src="/settings.png" alt="setting" width={100} height={100} className="w-8 h-8 mr-4" />
+          <p className="pt-6 pb-4 text-3xl font-semibold text-center text-black">Setting</p>
+        </div>
         <button type="button" onClick={() => modalToggleHandler()} className="absolute top-6 right-6">
-          <Image src={Close} alt="close-button" />
+          <Image src={Close} alt="close-button" width={30} height={30} />
         </button>
         <div>
           {(pathname.includes("/twoplayer") || pathname.includes("/multiplayer")) && (
@@ -32,7 +35,7 @@ function QuizSetting({
               <p className="mr-5 text-3xl">得分倍率</p>
               <button
                 type="button"
-                className="px-[2.125rem] py-4 mr-5 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
+                className="px-[2.125rem] py-4 mr-5 text-white font-outfit font-normal text-xl leading-6 rounded-md bg-primary"
                 onClick={() => {
                   setUseCorrectRatio((prev) => !prev);
                 }}
@@ -70,14 +73,14 @@ function QuizSetting({
             </div>
           )}
           <div className="flex items-center mt-5">
-            <p className="mr-5 text-3xl">題目秒數</p>
+            <p className="mr-5 text-2xl font-semibold">題目秒數</p>
             <input
               type="number"
               max="60"
               min="5"
               defaultValue={questionSeconds}
               ref={questionSecondRef}
-              className="px-2 mr-5 text-3xl border rounded-xl"
+              className="px-2 mr-5 text-xl border rounded-xl"
             />
             <button
               onClick={() => {
@@ -90,22 +93,34 @@ function QuizSetting({
                 });
               }}
               type="button"
-              className="px-[2.125rem] py-4 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
+              className="px-6 py-4 text-xl font-normal leading-6 text-white bg-indigo-500 rounded-md hover:bg-indigo-700"
             >
               更改秒數
             </button>
           </div>
           <div className="flex items-center mt-5">
-            <p className="mr-5 text-3xl">隨機選項排序</p>
-            <button
-              type="button"
-              className="px-[2.125rem] py-4 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
-              onClick={() => {
-                setRandomOptions((prev) => !prev);
-              }}
-            >
-              {randomOptions ? "啟用" : "未啟用"}
-            </button>
+            <p className="mr-5 text-2xl font-semibold">隨機選項模式</p>
+            {randomOptions ? (
+              <button
+                type="button"
+                className="px-6 py-4 text-xl font-normal leading-6 text-white bg-blue-500 rounded-md font-outfit"
+                onClick={() => {
+                  setRandomOptions((prev) => !prev);
+                }}
+              >
+                {randomOptions ? "ON" : "OFF"}
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="px-6 py-4 text-xl font-normal leading-6 text-white rounded-md font-outfit bg-[#8198BF]"
+                onClick={() => {
+                  setRandomOptions((prev) => !prev);
+                }}
+              >
+                {randomOptions ? "ON" : "OFF"}
+              </button>
+            )}
           </div>
         </div>
       </div>

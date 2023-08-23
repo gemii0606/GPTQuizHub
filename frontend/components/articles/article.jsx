@@ -25,7 +25,7 @@ function Article({
           </div>
         </div>
       </div>
-      <p className="p-6">{content}</p>
+      <p className="p-6 leading-7">{content}</p>
     </div>
   );
 }

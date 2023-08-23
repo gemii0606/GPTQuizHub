@@ -2,12 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import { mutate } from "swr";
-import DeleteIcon from "../../public/delete.png";
 import useDeleteQuiz from "../../hooks/useDeleteQuiz";
 
 function QuestionsBanksCard({ questionsBank }) {
   const [showQuizType, setShowQuizType] = useState(false);
+  const [isDeleteHovered, setIsDeleteHovered] = useState(false);
   const showTypeButtonRef = useRef(null);
   const deleteQuiz = useDeleteQuiz(questionsBank.id);
   const handleOutsideClick = (e) => {
@@ -39,23 +38,28 @@ function QuestionsBanksCard({ questionsBank }) {
     });
   }
   return (
-    <div key={questionsBank.id} className="flex items-center justify-between px-4 py-2 mb-3 border rounded-lg">
+    <div key={questionsBank.id} className="flex items-center justify-between h-20 px-4 mb-3 border-b">
       <div>
-        <p className="max-w-6xl mr-6 text-2xl font-bold leading-6 truncate">{questionsBank.title}</p>
+        <p className="max-w-xl mr-6 text-lg font-bold leading-6 truncate">{questionsBank.title}</p>
       </div>
       {questionsBank.status === "pending" && (
         <div className="flex items-center py-2">
-          <p className="mr-3 text-xl">生成題目中，請稍後再試</p>
+          <div className="flex items-center p-1 rounded bg-[#fec681]">
+            <p className="ml-1 mr-2 text-base font-semibold text-white">生成中</p>
+            <Image src="/loading.png" alt="loading" width={30} height={30} className="animate-spin" />
+          </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={DeleteIcon} alt="delete-icon" width={30} height={30} />
+            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} className="mx-2" />
           </button>
         </div>
       )}
       {questionsBank.status === "failed" && (
         <div className="flex items-center py-2">
-          <p className="mr-3 text-xl">生成題目錯誤</p>
+          <div className="flex items-center p-2 bg-red-400 rounded">
+            <p className="ml-1 mr-1 text-base font-semibold text-white">生成錯誤！</p>
+          </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={DeleteIcon} alt="delete-icon" width={30} height={30} />
+            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} className="mx-2" />
           </button>
         </div>
       )}
@@ -69,10 +73,10 @@ function QuestionsBanksCard({ questionsBank }) {
           <div>
             <button
               type="button"
-              className="relative text-base font-bold text-white bg-[#25B857] py-2.5 px-4 rounded-md hover:opacity-50 mr-5"
+              className="relative text-base font-bold text-white bg-primary py-2.5 px-4 rounded-md hover:opacity-50 mr-2"
               onClick={() => setShowQuizType(!showQuizType)}
             >
-              測驗形式
+              開始測驗
             </button>
             {showQuizType && (
               <div className="absolute z-10 bg-white border rounded-lg">
@@ -90,7 +94,7 @@ function QuestionsBanksCard({ questionsBank }) {
                 </Link>
                 <Link
                   href={`/multiplayer/${questionsBank.id}`}
-                  className="block text-base font-bol py-2.5 px-4 rounded-md hover:opacity-50"
+                  className="block text-base font-bold py-2.5 px-4 rounded-md hover:opacity-50"
                 >
                   多人測驗
                 </Link>
@@ -98,7 +102,7 @@ function QuestionsBanksCard({ questionsBank }) {
             )}
           </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={DeleteIcon} alt="delete-icon" width={30} height={30} />
+            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} />
           </button>
         </div>
       )}

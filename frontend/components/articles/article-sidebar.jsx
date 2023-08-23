@@ -1,11 +1,11 @@
 import React from "react";
 import useTagApi from "../../hooks/tagApi";
 
-function ArticleSidebar({ onTagButtonClick }) {
+function ArticleSidebar({ onTagButtonClick, name }) {
   const tags = useTagApi();
   return (
     <div className="w-[15vw]">
-      <p className="mb-2 text-xl font-semibold">文章分類</p>
+      <p className="mb-2 text-xl font-semibold">{name}分類</p>
       <div className="w-full p-4 mr-4 overflow-y-scroll bg-white h-[70vh] no-scrollbar rounded-md">
         {tags.map((tag) => (
           <button
