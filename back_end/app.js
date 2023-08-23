@@ -21,7 +21,7 @@ io.on('connection', (socket) => {
     console.log('A user connected');
 
     socket.on('createroom', (roomName) => {
-        socket.join(roomName);
+        socket.join(`room:${roomName}`);
         console.log(`User ${socket.id} created and joined room ${roomName}`);
         roomConnections[roomName] = {
             creater_id: roomName
