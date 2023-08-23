@@ -84,106 +84,35 @@ io.on('connection', (socket) => {
             const questionsCollection = db.collection('questions');
             const randomQuestion = await questionsCollection.findOne({quiz_id: randomQuiz._id});
 
-            const data = {
-                "article": randomQuiz.content,
-                "quiz":{
-                    "id": 123,
-                    "title": "title",
-                    "tag" : "world",
-                    "created_at": "2023-08-07 03:32:19",
-                    "questions":[
-                          {
-                            "id": 1,
-                            "question": "What is the capital of France?",
-                            "type": "multiple-choice",
-                            "difficulty": "hard",
-                                "options" : [
-                                                    {
-                                                      "id": 1,
-                                                      "content": "London",
-                                                    },
-                                                    {
-                                                      "id": 2,
-                                                      "content": "Paris",
-                                                    },
-                                                    {
-                                                      "id": 3,
-                                                      "content": "Berlin",
-                                                    },
-                                                    {
-                                                      "id": 4,
-                                                        "content": "Madrid",
-                                                    },
-                                                  ],
-                            "correct_answer": 2,
-                            "explanation": "The capital of France is Paris.",
-                          }
-            }
-
-
-            const data = {
-                "article": "test",
-                "quiz":{
-                    "id": 123,
-                    "title": "title",
-                    "tag" : "world",
-                    "created_at": "2023-08-07 03:32:19",
-                    "questions":[
-                          {
-                            "id": 1,
-                            "question": "What is the capital of France?",
-                            "type": "multiple-choice",
-                            "difficulty": "hard",
-                                "options" : [
-                                                    {
-                                                      "id": 1,
-                                                      "content": "London",
-                                                    },
-                                                    {
-                                                      "id": 2,
-                                                      "content": "Paris",
-                                                    },
-                                                    {
-                                                      "id": 3,
-                                                      "content": "Berlin",
-                                                    },
-                                                    {
-                                                      "id": 4,
-                                                        "content": "Madrid",
-                                                    },
-                                                  ],
-                            "correct_answer": 2,
-                            "explanation": "The capital of France is Paris.",
-                          },
-                          {
-                            "id": 2,
-                            "question": "What is the chemical symbol for gold?",
-                            "type": "multiple-choice",
-                            "difficulty": "normal",
-                                "options" : [
-                                                    {
-                                                      "id": 1,
-                                                      "content": "Au",
-                                                    },
-                                                    {
-                                                      "id": 2,
-                                                      "content": "Ag",
-                                                    },
-                                                    {
-                                                      "id": 3,
-                                                      "content": "Cu",
-                                                    },
-                                                    {
-                                                      "id": 4,
-                                                        "content": "Fe",
-                                                    },
-                                                  ],
-                            "correct_answer": 1,
-                            "explanation": "The chemical symbol for gold is Au.",
-                          }
+            const questions = randomQuestion.map(obj => {
+                const result = {
+                    id: obj._id,
+                    question: obj.question,
+                    type: obj.type,
+                    difficulty: obj.difficulty,
+                    correct_answer: obj.correct_answer,
+                    explanation: obj.explanation,
+                    options: [
+                        {id: 1, content: obj.options[0]},
+                        {id: 2, content: obj.options[1]},
+                        {id: 3, content: obj.options[2]},
+                        {id: 4, content: obj.options[3]},
                     ]
+                };
+                return result;
+            })
+
+            const data = {
+                article: randomQuiz.content,
+                quiz:{
+                    id: randomQuiz._id,
+                    title: randomQuiz.title,
+                    tag: randomQuiz.tag,
+                    created_at: randomQuiz.created_at,
+                    questions: questions
+                }
             }
-        }
+
         io.to(roomName).emit('isready', {data});
         }
     });
