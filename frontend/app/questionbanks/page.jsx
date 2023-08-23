@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import QuestionsBanksCard from "../../components/questionbanks/QuestionBankCard";
 import Navbar from "../../components/navbar";
 import ArticleSidebar from "../../components/articles/article-sidebar";
@@ -30,7 +31,13 @@ function Page() {
         </div>
         <div className="flex flex-col min-w-[60rem] rounded-lg bg-white p-4">
           {questionsBankItems}
-          {isLoading && <p>Loading...</p>}
+          {isLoading && (
+            <div className="flex items-center justify-center w-full h-screen bg-white">
+              <div>Loading...</div>
+              <Image src="/walkcat.gif" alt="alpaca" height={150} width={150} />
+              {/* <Image src="/loading.png" alt="loading" height={30} width={30} className="animate-spin" /> */}
+            </div>
+          )}
           {isError && <p>An error occurred while fetching data.</p>}
           {nextCursor && (
             <button type="button" onClick={() => setCursor(nextCursor)}>

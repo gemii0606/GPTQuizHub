@@ -29,11 +29,13 @@ const ProgressSpan = styled.span`
   background-color: #84C1FF;
   animation: ${progressAnimation} 1s linear;
 `;
-
 function AnimatedProgress({ percentage }) {
   return (
     <div>
-      答對率：{percentage}%
+      <div className="flex">
+        <p className="w-24 truncate">答對率：{percentage}</p>
+        <p>%</p>
+      </div>
       <StyledAnimatedProgress className="animated-progress">
         <ProgressSpan percentage={percentage} />
       </StyledAnimatedProgress>
