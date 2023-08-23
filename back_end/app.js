@@ -119,16 +119,16 @@ io.on('connection', (socket) => {
         console.log(`User ${socket.id} disconnected`);
         
         // 从房间关系中删除断开连接的记录
-        for (const room in roomConnections) {
-            const index = roomConnections[room].indexOf(socket.id);
-            if (index !== -1) {
-                roomConnections[room].splice(index, 1);
-                if (roomConnections[room].length === 0) {
-                    delete roomConnections[room]; // 如果房间为空，删除房间关系
-                }
-                break;
-            }
-        }
+        // for (const room in roomConnections) {
+        //     const index = roomConnections[room].indexOf(socket.id);
+        //     if (index !== -1) {
+        //         roomConnections[room].splice(index, 1);
+        //         if (roomConnections[room].length === 0) {
+        //             delete roomConnections[room]; // 如果房间为空，删除房间关系
+        //         }
+        //         break;
+        //     }
+        // }
     });
 });
 
