@@ -15,7 +15,7 @@ const articleDelete = async (req, res) => {
         const db = client.db(dbName);
 
         const quizzesCollection = db.collection('quizzes');
-        const deleteContent = await quizzesCollection.updateOne({ _id: quiz_id }, { $set: { is_deleted: true, content: null } });
+        const deleteContent = await quizzesCollection.updateOne({ _id: quiz_id }, { $set: { is_deleted: true } });
         console.log(deleteContent)
 
         res.status(200).json({
