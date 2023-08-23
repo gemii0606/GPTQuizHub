@@ -218,8 +218,8 @@ function App() {
     const elapsedTime = questionSeconds - seconds + 0.5;
     const questionScore = Math.max(Math.round(100 - (100 * elapsedTime) / questionSeconds), 5);
     function HandleScoreUpdate() {
-      socket.emit("update", roomId, nookies.get().user_id, score);
-      socket.on("update", (data) => {
+      socket.emit("updatescore", roomId, nookies.get().user_id, score);
+      socket.on("updatescore", (data) => {
         const filteredData = data.filter((item) => item.user_id !== nookies.get().user_id);
         console.log(filteredData[0].score);
         setOpponentScore(filteredData[0].score);
@@ -244,7 +244,8 @@ function App() {
     shuffledOptions.map((option) => {
       const isCorrectAnswer = option.id === Number(quiz?.questions[questionIndex].correct_answer);
       const isSelected = hasClickOption && option.id === selectedOptionId;
-      let buttonClassName = "block px-24 py-4 text-2xl text-white rounded-xl mt-20 w-[45rem] leading-8 bg-[#4783EA]";
+      let buttonClassName =
+        "block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9]";
       if (isSelected) {
         buttonClassName += isCorrectAnswer ? " bg-green-500" : " bg-red-500";
       } else if (!isSelected && hasClickOption) {
@@ -272,12 +273,12 @@ function App() {
               <p className="text-3xl">目前分數: {score}</p>
             </div>
             <div className="flex flex-col items-center mt-10">
-              <h1 className="mb-4 text-4xl">剩餘時間 : {seconds}</h1>
-              <p className="text-4xl">{quiz?.questions?.[questionIndex].question}</p>
+              <h1 className="mb-4 text-2xl">剩餘時間 : {seconds}</h1>
+              <p className="text-2xl">{quiz?.questions?.[questionIndex].question}</p>
               <div className="flex my-4">
-                <p className="mr-3 text-3xl">難度 :</p>
-                <p className="mr-6 text-3xl">{quiz?.questions[questionIndex].difficulty}</p>
-                <p className="mr-6 text-3xl">
+                <p className="mr-3 text-xl">難度 :</p>
+                <p className="mr-6 text-xl">{quiz?.questions[questionIndex].difficulty}</p>
+                <p className="mr-6 text-xl">
                   {questionIndex + 1} / {quiz?.questions.length}
                 </p>
               </div>
@@ -297,15 +298,15 @@ function App() {
   }
   const EndPage = (
     <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center justify-center">
-      <p className="mb-4 text-2xl">你的得分:{score}</p>
-      <p className="mb-4 text-2xl">對手得分: {opponentScore}</p>
       {score > opponentScore && <p className="mb-4 text-2xl">你贏了</p>}
       {score === opponentScore && <p className="mb-4 text-2xl">平手</p>}
       {score < opponentScore && <p className="mb-4 text-2xl">你輸了</p>}
+      <p className="mb-4 text-2xl">你的得分:{score}</p>
+      <p className="mb-4 text-2xl">對手得分: {opponentScore}</p>
       <button
         type="button"
         onClick={leaveGameHandler}
-        className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50"
+        className="block px-16 py-4 text-2xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50 hover:bg-[#3c70c9]"
       >
         離開
       </button>
@@ -318,7 +319,6 @@ function App() {
         <div className="mb-5 text-2xl">雙人對戰</div>
         {testStatus === "setting" && SettingPage}
         {testStatus === "waiting" && WaitingPage}
-        {/* {testStatus === "start" && StartPage} */}
         {testStatus === "process" && ProcessPage}
         {testStatus === "end" && EndPage}
       </div>

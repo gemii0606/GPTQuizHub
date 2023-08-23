@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
 import { mutate } from "swr";
 import useTags from "../../hooks/useTags";
 
 function QuestionBankSideBar({ setSelectTag }) {
-  const [taglist, setTagList] = useState([]);
   const { tags, isLoading, isError } = useTags();
-  useEffect(() => {
-    setTagList(tags);
-  }, [tags]);
-  const tagsItems = taglist?.map((tag) => (
+  const tagsItems = tags?.map((tag) => (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
     <p
       key={tag.id}
