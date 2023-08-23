@@ -153,8 +153,7 @@ io.on('connection', (socket) => {
 
         socket.on('disconnect', () => {
             console.log(`User ${socket.id} disconnected`);
-            const keyToDelete = 'room:' + socket.id;
-            delete roomConnections[keyToDelete];
+            delete roomConnections[socket.id];
         });
     });
 })
