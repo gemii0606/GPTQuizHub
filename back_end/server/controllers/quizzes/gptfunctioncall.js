@@ -109,13 +109,15 @@ const gptfunctioncall = async (req, res) => {
                 question: obj.question,
                 type: obj.question_type,
                 difficulty: obj.difficulty,
-                options: obj.question.question_options,
+                options: obj.question_options,
                 correct_answer: obj.correct_answer + 1,
                 explanation: obj.explanation,
                 created_at: getCurrentTime()
             };
             return result;
         });
+
+        console.log(questionsList)
 
         const questionsCollection = db.collection('questions');
         const insertQuestion = await questionsCollection.insertMany(questionsList);
