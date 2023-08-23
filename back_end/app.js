@@ -156,8 +156,7 @@ io.on('connection', (socket) => {
         
         if (roomConnections[roomName].score.length == 2){
             roomConnections[roomName].score.sort((a, b) => b.score - a.score);
-            const winner = roomConnections[roomName].score[0].user_id
-            io.to(roomName).emit('end', roomConnections[roomName].score , winner)
+            io.to(roomName).emit('end', roomConnections[roomName].score)
         }
     })
 })
