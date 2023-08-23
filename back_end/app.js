@@ -28,9 +28,10 @@ io.on('connection', (socket) => {
     console.log('A user connected');
 
     socket.on('createroom', (user_id) => {
-        socket.join(`room:${socket.id}`);
+        socket.join(socket.id);
         console.log(`User ${user_id} created and joined room ${socket.id}`);
-        roomConnections[socket.id] = {
+        const roomName = 'room:' + socket.id;
+        roomConnections[roomName] = {
             creater_id: user_id
         }
         socket.emit('createroom', socket.id);
@@ -141,7 +142,7 @@ io.on('connection', (socket) => {
                     ]
             }
         }
-        io.socket.emit('isready', {data});
+        io.to(roomName).emit('isready', {data});
         }
 
         socket.on('disconnect', () => {
