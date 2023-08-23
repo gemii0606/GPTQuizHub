@@ -1,22 +1,22 @@
 "use client";
 
-// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import QuizSetting from "../../../components/QuizSetting";
-import ShareLink from "../../../components/ShareLink";
+// import ShareLink from "../../../components/ShareLink";
 import useQuiz from "../../../hooks/useQuiz";
 
-// const socket = io(`ws://localhost:3000/twoplayer/${id}`);
+const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
 function Page({ params }) {
   const { quiz } = useQuiz(params.twoplayer_id);
-  const [quizStatus, setQuizStatus] = useState("start");
+  const [quizStatus, setQuizStatus] = useState("setting");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [questionSeconds, setQuestionSeconds] = useState(10);
   const [seconds, setSeconds] = useState(10);
   const [loading, setLoading] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
-  const [showShareLink, setShowShareLink] = useState(false);
+  // const [showShareLink, setShowShareLink] = useState(false);
   const [randomOptions, setRandomOptions] = useState(false);
   const [questionNumber, setQuestionNumber] = useState(quiz?.questions.length);
   const [shuffledOptions, setShuffledOptions] = useState([]);
@@ -27,6 +27,7 @@ function Page({ params }) {
   const [selectedOptionId, setSelectedOptionId] = useState(null);
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const router = useRouter();
+  const [startGame, setStartGame] = useState(false);
   // TODO:websocket雙人對戰
   // const [participants, setParticipants] = useState([]);
   // const [opponentScore, setOpponentScore] = useState(0);
@@ -97,10 +98,10 @@ function Page({ params }) {
     setShowSetting((prev) => !prev);
     document.body.classList.toggle("modal-open");
   };
-  const ShareLinkModalToggleHandler = () => {
-    setShowShareLink((prev) => !prev);
-    document.body.classList.toggle("modal-open");
-  };
+  // const ShareLinkModalToggleHandler = () => {
+  //   setShowShareLink((prev) => !prev);
+  //   document.body.classList.toggle("modal-open");
+  // };
   // TODO:websocket雙人對戰
   // const startGameHandler = () => {
   //   if (participants.length === 2) {
@@ -110,18 +111,27 @@ function Page({ params }) {
   //     Swal.fire("必須人數到齊才能開始遊戲", "", "warning");
   //   }
   // };
-  const StartPage = (
+  function startGameHandler() {
+    console.log("hello");
+    setStartGame(!startGame);
+  }
+  const SettingPage = (
     <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
       <p className="text-center mt-[8rem] font-extrabold text-4xl">{quiz?.title}</p>
       <div className="flex flex-col items-center mt-24">
         <button
           type="button"
           className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
-          onClick={ShareLinkModalToggleHandler}
+          onClick={() => {
+            socket.on("connection", () => {
+              console.log("Connected to the server");
+            });
+            setQuizStatus("waiting");
+          }}
         >
           創建房間
         </button>
-        {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />}
+        {/* {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />} */}
         <button
           type="button"
           className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
@@ -147,18 +157,6 @@ function Page({ params }) {
         <button
           type="button"
           onClick={() => {
-            setQuizStatus("process");
-            setSeconds(questionSeconds);
-          }}
-          // TODO:websocket雙人對戰
-          // onClick={startGameHandler}
-          className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mb-20"
-        >
-          開始測驗
-        </button>
-        <button
-          type="button"
-          onClick={() => {
             router.push("/questionbanks");
           }}
           className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
@@ -166,6 +164,43 @@ function Page({ params }) {
           回到題庫
         </button>
       </div>
+    </div>
+  );
+  const WaitingPage = (
+    <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center justify-center">
+      <p className="mb-20 text-4xl">房號 : 1234</p>
+      <div>
+        <button
+          type="button"
+          onClick={startGameHandler}
+          className="block px-24 py-4 mb-20 text-4xl text-white rounded-xl bg-primary"
+        >
+          {startGame ? "取消" : "點擊開始"}
+        </button>
+        {startGame && <p className="mb-3 text-4xl">正在等待對手...</p>}
+      </div>
+      <button
+        type="button"
+        onClick={() => {
+          // 倒數三秒後才把setQuizStatus("process");
+          setQuizStatus("process");
+          setSeconds(questionSeconds);
+        }}
+        // TODO:websocket雙人對戰
+        // onClick={startGameHandler}
+        className="block px-24 py-4 text-4xl bg-[#4783EA] text-white rounded-xl mb-20"
+      >
+        開始測驗
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          router.push("/questionbanks");
+        }}
+        className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
+      >
+        回到題庫
+      </button>
     </div>
   );
   const handleOptionClick = (optionId) => {
@@ -253,7 +288,7 @@ function Page({ params }) {
   );
   function restartGameHandler() {
     setLoading(true);
-    setQuizStatus("start");
+    setQuizStatus("setting");
     setSeconds(10);
     setQuestionIndex(0);
     setScore(0);
@@ -263,14 +298,9 @@ function Page({ params }) {
   }
   const EndPage = (
     <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center justify-center">
-      <p className="text-4xl">你的得分: {score}</p>
-      {/* <div>
-            <p className="text-4xl">你的分數: {score}</p>
-            <p className="text-4xl">對方的分數: {opponentScore}</p>
-            <p className="text-4xl">结果: {score >opponentScore && "你贏了!"}</p>
-            <p className="text-4xl">结果: {score <opponentScore && "你輸了!"}</p>
-            <p className="text-4xl">结果: {score ===opponentScore && "平局"}</p>
-          </div> */}
+      <p className="mb-4 text-4xl">你的得分: {score}</p>
+      <p className="mb-4 text-4xl">對手得分: {score}</p>
+      <p className="mb-4 text-4xl">你贏了</p>
       <button
         type="button"
         onClick={restartGameHandler}
@@ -293,7 +323,8 @@ function Page({ params }) {
   );
   return (
     <div className="flex justify-center mt-[5rem]">
-      {quizStatus === "start" && StartPage}
+      {quizStatus === "setting" && SettingPage}
+      {quizStatus === "waiting" && WaitingPage}
       {quizStatus === "process" && ProcessPage}
       {quizStatus === "end" && EndPage}
     </div>

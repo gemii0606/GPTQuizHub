@@ -30,9 +30,10 @@ function QuestionsBanksCard({ questionsBank }) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "確定刪除",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        deleteQuiz();
+        await deleteQuiz();
+        mutate([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/search/`]);
       }
     });
   }

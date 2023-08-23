@@ -16,7 +16,7 @@ function QuestionBankSideBar({ setSelectTag }) {
       type="button"
       onClick={() => {
         setSelectTag(tag.name);
-        mutate(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/search/`);
+        mutate([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/search/`]);
       }}
       className="px-4 py-4 text-2xl font-bold border rounded-lg min-w-[15rem] max-w-[20rem] mt-4 hover:bg-[#8198BF] hover:text-white break-words cursor-pointer truncate"
     >
