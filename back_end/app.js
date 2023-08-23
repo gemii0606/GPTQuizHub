@@ -19,6 +19,7 @@ io.on('connection', (socket) => {
     console.log('A user connected');
 
     socket.on('twoplayers', () => {
+        console.log('in twoplayers')
         socket.emit('test from backend');
     });
     socket.on('disconnect', () => {
