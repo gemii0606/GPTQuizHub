@@ -44,11 +44,6 @@ function Page({ params }) {
   const correctAnswers = quiz?.questions?.length - wrongAnswer.length;
   const accuracy = (correctAnswers / quiz?.questions?.length) * 100;
   async function quizSubmitHandler() {
-    console.log({
-      quiz_id: params.quiz_id,
-      accuracy,
-      wrongAnswer,
-    });
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/quizzes/history`,

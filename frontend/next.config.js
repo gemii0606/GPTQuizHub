@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // TODO:之後記得把這個註解解掉
   async redirects() {
     return [
       {

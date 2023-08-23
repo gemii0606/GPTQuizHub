@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import nookies from "nookies";
 import Swal from "sweetalert2";
 import Navbar from "../../components/navbar";
+import ShareLink from "../../components/ShareLink";
 
 const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
 function App() {
@@ -13,6 +14,7 @@ function App() {
   const [roomId, setRoomId] = useState(nookies.get().user_id);
   const [startGame, setStartGame] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showShareLink, setShowShareLink] = useState(false);
   // process state
   //   const [seconds, setSeconds] = useState(10);
   //   const [questionSeconds, setQuestionSeconds] = useState(10);
@@ -130,19 +132,36 @@ function App() {
       timer: 1000,
     });
   }
+  const ShareLinkModalToggleHandler = () => {
+    setShowShareLink((prev) => !prev);
+    document.body.classList.toggle("modal-open");
+  };
   const WaitingPage = (
     <div className="mt-5">
-      <div className="flex items-center mt-6">
-        <p>房號:{roomId}</p>
-        <button type="button" onClick={copyLink} className="px-2 py-1 border rounded-lg dark:text-black">
-          複製
+      <div className="flex flex-col items-center mt-6 mb-4">
+        <p className="text-2xl">房號</p>
+        <p className="mt-3 text-2xl">{roomId}</p>
+        <button
+          type="button"
+          onClick={copyLink}
+          className="px-24 py-4 mt-3 text-2xl text-white border rounded-xl bg-primary"
+        >
+          複製房號
         </button>
       </div>
       <button
         type="button"
+        onClick={ShareLinkModalToggleHandler}
+        className="block px-24 py-4 mb-4 text-2xl text-white rounded-xl bg-primary"
+      >
+        分享連結
+      </button>
+      {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />}
+      <button
+        type="button"
         onClick={startGameHandler}
         disabled={loading === true}
-        className="block px-24 py-4 mb-20 text-2xl text-white rounded-xl bg-primary"
+        className="block px-24 py-4 mb-4 text-2xl text-white rounded-xl bg-primary"
       >
         {startGame ? "取消" : "點擊開始"}
       </button>
