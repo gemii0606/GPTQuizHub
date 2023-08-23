@@ -10,6 +10,7 @@ function Navbar() {
   const router = useRouter();
   function handleLogout() {
     destroyCookie(null, "access_token");
+    destroyCookie(null, "user_id");
     router.push("/login");
   }
   return (

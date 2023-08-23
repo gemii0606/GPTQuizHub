@@ -70,6 +70,13 @@ function App() {
       });
       setTestStatus("end");
     } else {
+      socket.emit("end", roomId, nookies.get().user_id, score);
+      socket.on("end", (data) => {
+        console.log(data);
+        const filteredData = data.filter((item) => item.user_id !== nookies.get().user_id);
+        console.log(filteredData[0].score);
+        setOpponentScore((prevScore) => prevScore + filteredData[0].score);
+      });
       setQuestionIndex((prevIndex) => prevIndex + 1);
       setSeconds(questionSeconds);
       setHasClickedOption(false);
@@ -128,7 +135,7 @@ function App() {
           ref={roomRef}
           placeholder="房間號碼"
           required
-          className="px-4 py-2 text-2xl text-center border max-w-[22.5rem]"
+          className="px-4 py-2 text-2xl text-center border max-w-[12rem] rounded-lg"
         />
         <button
           type="submit"
@@ -206,7 +213,7 @@ function App() {
       >
         {startGame ? "等待中" : "點擊開始"}
       </button>
-      {startGame && <p className="mb-3 text-2xl">正在等待對手...</p>}
+      {startGame && <p className="mt-6 text-2xl">正在等待對手...</p>}
     </div>
   );
   const handleOptionClick = (optionId) => {
@@ -217,25 +224,14 @@ function App() {
       selectedOption && selectedOption.id === Number(quiz?.questions[questionIndex].correct_answer);
     const elapsedTime = questionSeconds - seconds + 0.5;
     const questionScore = Math.max(Math.round(100 - (100 * elapsedTime) / questionSeconds), 5);
-    function HandleScoreUpdate() {
-      socket.emit("updatescore", roomId, nookies.get().user_id, score);
-      socket.on("updatescore", (data) => {
-        const filteredData = data.filter((item) => item.user_id !== nookies.get().user_id);
-        console.log(filteredData[0].score);
-        setOpponentScore(filteredData[0].score);
-      });
-    }
     if (chooseCorrectAnswer) {
       setScore((prevScore) => prevScore + questionScore);
       setConsecutiveCorrectAnswers(true);
-      HandleScoreUpdate();
     } else {
       setConsecutiveCorrectAnswers(false);
-      HandleScoreUpdate();
     }
     if (chooseCorrectAnswer && consecutiveCorrectAnswers && useCorrectRatio) {
       setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
-      HandleScoreUpdate();
     }
   };
   const OptionsItems =
@@ -245,7 +241,7 @@ function App() {
       const isCorrectAnswer = option.id === Number(quiz?.questions[questionIndex].correct_answer);
       const isSelected = hasClickOption && option.id === selectedOptionId;
       let buttonClassName =
-        "block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9]";
+        "block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9] disabled:hover:bg-slate-400";
       if (isSelected) {
         buttonClassName += isCorrectAnswer ? " bg-green-500" : " bg-red-500";
       } else if (!isSelected && hasClickOption) {
@@ -264,7 +260,7 @@ function App() {
       );
     });
   const ProcessPage = (
-    <div className="border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center">
+    <div className="items-center my-4">
       {quiz && quiz?.questions?.length > 0 && (
         <div>
           <div className="flex items-center justify-center">
@@ -297,16 +293,16 @@ function App() {
     router.push("/");
   }
   const EndPage = (
-    <div className="flex flex-col border border-black rounded-xl min-w-[60rem] min-h-[60rem] items-center justify-center">
-      {score > opponentScore && <p className="mb-4 text-2xl">你贏了</p>}
-      {score === opponentScore && <p className="mb-4 text-2xl">平手</p>}
-      {score < opponentScore && <p className="mb-4 text-2xl">你輸了</p>}
-      <p className="mb-4 text-2xl">你的得分:{score}</p>
-      <p className="mb-4 text-2xl">對手得分: {opponentScore}</p>
+    <div className="flex flex-col items-center">
+      {score > opponentScore && <p className="m-2 text-xl">你贏了</p>}
+      {score === opponentScore && <p className="m-2 text-xl">平手</p>}
+      {score < opponentScore && <p className="m-2 text-xl">你輸了</p>}
+      <p className="m-2 text-xl">你的得分:{score}</p>
+      <p className="m-2 text-xl">對手得分: {opponentScore}</p>
       <button
         type="button"
         onClick={leaveGameHandler}
-        className="block px-16 py-4 text-2xl bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50 hover:bg-[#3c70c9]"
+        className="block px-16 py-4 text-2xl mr-8 bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50 hover:bg-[#3c70c9]"
       >
         離開
       </button>

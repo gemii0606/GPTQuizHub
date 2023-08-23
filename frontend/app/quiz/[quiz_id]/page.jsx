@@ -42,7 +42,7 @@ function Page({ params }) {
     };
   });
   const correctAnswers = quiz?.questions?.length - wrongAnswer.length;
-  const accuracy = (correctAnswers / quiz?.questions?.length) * 100;
+  const accuracy = ((correctAnswers / quiz?.questions?.length) * 100).toFixed(2);
   async function quizSubmitHandler() {
     try {
       const response = await axios.post(
@@ -103,7 +103,7 @@ function Page({ params }) {
       setSeconds(questionSeconds);
     }
   };
-  const handleTimeUp = async () => {
+  const handleTimeUp = () => {
     Swal.fire({
       icon: "warning",
       title: "時間到",
@@ -263,7 +263,7 @@ function Page({ params }) {
           </div>
         )}
         <div className="flex flex-col items-center mt-2">
-          <p className="m-2 text-xl">答對率 : {accuracy.toFixed(2)}%</p>
+          <p className="m-2 text-xl">答對率 : {accuracy}%</p>
           <p className="m-2 text-xl">總題數 : {quiz?.questions?.length}</p>
           <p className="m-2 text-xl">未答題數 : {unansweredQuestion.length}</p>
           <p className="m-2 text-xl">正確題數 : {correctAnswers}</p>
