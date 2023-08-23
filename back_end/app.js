@@ -118,20 +118,7 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('end', (roomName, user_id, users_score) => {
-        socket.join(`room:${socket.id}`);
-        if (!roomConnections[roomName].score)
-            roomConnections[roomName].score = [];
-        
-        roomConnections[roomName].score.push({user_id, score:user_score})
-        
-        
-        if (roomConnections[roomName].score.length == 2){
-            roomConnections[roomName].score.sort((a, b) => b.score - a.score);
-            const winner = roomConnections[roomName].score[0].user_id
-            socket.emit('end', roomConnections[roomName].score , winner)
-        }
-    })
+
 })
 /*
 app.listen(3000, () => {
