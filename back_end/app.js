@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
         roomConnections[roomName] = {
             creater_id: roomName
         }
-        
+        console.log(roomConnections)
     });
 
     socket.on('joinroom', (roomName, user_id) => {
@@ -37,6 +37,7 @@ io.on('connection', (socket) => {
         } else {
             socket.emit('joinroom_error', 'Room not found');
         }
+        console.log(roomConnections)
     });
 
     socket.on('isready', (roomName, user_id) => {
