@@ -1,13 +1,13 @@
 "use client";
 
-// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import QuizSetting from "../../../components/QuizSetting";
 // import ShareLink from "../../../components/ShareLink";
 import useQuiz from "../../../hooks/useQuiz";
 
-// const socket = io(`ws://localhost:3000/twoplayer/${id}`);
+const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
 function Page({ params }) {
   const { quiz } = useQuiz(params.twoplayer_id);
   const [quizStatus, setQuizStatus] = useState("setting");
@@ -123,6 +123,9 @@ function Page({ params }) {
           type="button"
           className="block px-24 py-4 text-4xl bg-[#8198BF] text-white rounded-xl mb-20"
           onClick={() => {
+            socket.on("connection", () => {
+              console.log("Connected to the server");
+            });
             setQuizStatus("waiting");
           }}
         >
@@ -298,13 +301,6 @@ function Page({ params }) {
       <p className="mb-4 text-4xl">你的得分: {score}</p>
       <p className="mb-4 text-4xl">對手得分: {score}</p>
       <p className="mb-4 text-4xl">你贏了</p>
-      {/* <div>
-            <p className="text-4xl">你的分數: {score}</p>
-            <p className="text-4xl">對方的分數: {opponentScore}</p>
-            <p className="text-4xl">结果: {score >opponentScore && "你贏了!"}</p>
-            <p className="text-4xl">结果: {score <opponentScore && "你輸了!"}</p>
-            <p className="text-4xl">结果: {score ===opponentScore && "平局"}</p>
-          </div> */}
       <button
         type="button"
         onClick={restartGameHandler}

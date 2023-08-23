@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.4.0",
+    "bufferutil": "^4.0.7",
     "eslint": "8.47.0",
     "eslint-config-next": "^13.4.16",
     "next": "13.4.13",
@@ -21,8 +22,9 @@
     "socket.io-client": "^4.7.2",
     "styled-components": "^6.0.7",
     "sweetalert2": "^11.7.22",
-    "zustand": "^4.4.1",
-    "swr": "^2.2.1"
+    "swr": "^2.2.1",
+    "utf-8-validate": "^6.0.3",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.15",
