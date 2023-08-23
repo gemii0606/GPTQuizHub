@@ -141,7 +141,7 @@ io.on('connection', (socket) => {
                     ]
             }
         }
-        socket.emit('isready', {data});
+        io.socket.emit('isready', {data});
         }
 
         socket.on('disconnect', () => {
