@@ -7,6 +7,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import nookies from "nookies";
+import { mutate } from "swr";
 import useQuiz from "../../hooks/useQuiz";
 import useDeleteQuestion from "../../hooks/useDeleteQuestion";
 import Edit from "../../public/edit.png";
@@ -45,6 +46,7 @@ function QuestionBankCard({ id }) {
         }
       );
       console.log(response);
+      mutate([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/${id}/detail`]);
     } catch (error) {
       if (error?.response?.status === 403) {
         Swal.fire("帳號已過期", "請重新登入", "error");
@@ -69,9 +71,10 @@ function QuestionBankCard({ id }) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "確定刪除",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        deleteQuestion();
+        await deleteQuestion();
+        mutate([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/${id}/detail`]);
         if (questionIndex > 0) {
           setQuestionIndex(questionIndex - 1);
         }

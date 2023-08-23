@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import { mutate } from "swr";
 import DeleteIcon from "../../public/delete.png";
 import useDeleteQuiz from "../../hooks/useDeleteQuiz";
 
@@ -30,9 +31,10 @@ function QuestionsBanksCard({ questionsBank }) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "確定刪除",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        deleteQuiz();
+        await deleteQuiz();
+        mutate([`${process.env.NEXT_PUBLIC_API_URL}/quizzes/search/`]);
       }
     });
   }
