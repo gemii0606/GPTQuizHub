@@ -259,31 +259,32 @@ function App() {
       );
     });
   const ProcessPage = (
-    <div className="items-center my-4">
+    <div className="items-center h-auto p-8 m-8 bg-white rounded-md opacity-70 w-[50rem]">
       {quiz && quiz?.questions?.length > 0 && (
-        <div>
+        <div className="flex flex-col items-center">
           <div className="flex items-center justify-center">
-            <div className="flex flex-col items-center p-4 mr-4 border rounded-lg">
+            <div className="flex flex-col items-center p-4 mr-4 border rounded-lg w-28">
               <p>你</p>
-              <p className="text-3xl">目前分數: {score}</p>
+              <p className="text-xl">Score: {score}</p>
             </div>
-            <div className="flex flex-col items-center mt-10">
-              <h1 className="mb-4 text-2xl">剩餘時間 : {seconds}</h1>
+            <div className="relative flex flex-col items-center mt-10">
+              <div className="flex items-center justify-center w-16 h-16 mb-4 border-4 border-black border-dashed rounded-full animate-spin" />
+              <p className="absolute text-2xl text-center top-4">{seconds}</p>
               <p className="text-2xl">{quiz?.questions?.[questionIndex].question}</p>
               <div className="flex my-4">
                 <p className="mr-3 text-xl">難度 :</p>
                 <p className="mr-6 text-xl">{quiz?.questions[questionIndex].difficulty}</p>
-                <p className="mr-6 text-xl">
+                <p className="text-xl">
                   {questionIndex + 1} / {quiz?.questions.length}
                 </p>
               </div>
             </div>
-            <div className="flex flex-col items-center p-4 ml-4 border rounded-lg">
+            <div className="flex flex-col items-center p-4 ml-4 border rounded-lg w-28">
               <p>對手</p>
-              <p className="text-3xl">目前分數: {opponentScore}</p>
+              <p className="text-xl">Score: {opponentScore}</p>
             </div>
           </div>
-          <div className="flex flex-col items-center mb-10">{OptionsItems}</div>
+          <div className="flex flex-col items-center mb-10 w-[25rem]">{OptionsItems}</div>
         </div>
       )}
     </div>
@@ -309,7 +310,7 @@ function App() {
   );
   return (
     <>
-      <div className="flex flex-col items-center justify-center w-full h-screen bg-center bg-no-repeat bg-cover bg-fire">
+      <div className="flex flex-col items-center justify-center w-full min-h-screen bg-center bg-no-repeat bg-cover bg-fire">
         {testStatus === "setting" && SettingPage}
         {testStatus === "waiting" && WaitingPage}
         {testStatus === "process" && ProcessPage}
