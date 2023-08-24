@@ -1,8 +1,9 @@
 import { useState, useRef } from "react";
+// eslint-disable-next-line no-unused-vars
+import { mutate } from "swr";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import { mutate } from "swr";
 import useDeleteQuiz from "../../hooks/useDeleteQuiz";
 
 function QuestionsBanksCard({ questionsBank }) {

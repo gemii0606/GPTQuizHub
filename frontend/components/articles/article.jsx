@@ -25,7 +25,9 @@ function Article({
           </div>
         </div>
       </div>
-      <p className="p-6 leading-7">{content}</p>
+      <div className="max-w-full p-6 leading-7 break-words" style={{ whiteSpace: "pre-wrap" }}>
+        {content}
+      </div>
     </div>
   );
 }

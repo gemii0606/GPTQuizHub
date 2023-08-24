@@ -50,6 +50,7 @@ function Page() {
                 createdAt={article.created_at}
                 articlekey={index}
                 percentage={article.accuracy}
+                quizId={article.quiz_id}
               />
             ))}
           </div>

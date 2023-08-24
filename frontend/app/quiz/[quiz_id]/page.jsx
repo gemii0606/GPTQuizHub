@@ -135,20 +135,21 @@ function Page({ params }) {
     document.body.classList.toggle("modal-open");
   };
   const StartPage = (
-    <div className="items-center justify-center rounded-xl h-3/5">
-      <p className="text-center mt-[2rem] font-extrabold text-4xl text-primary">GPTQuizHub</p>
-      <div className="flex justify-center">
-        <p className="mt-[4rem] font-extrabold text-xl w-4/5">{quiz?.title}</p>
-      </div>
-      <div className="flex flex-col items-center mt-4">
-        <button
-          type="button"
-          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
-          onClick={ModalToggleHandler}
-        >
-          測驗設定
-        </button>
-        {showSetting && (
+    <div className="w-full flex flex-col items-center justify-center bg-gradient-to-r from-[#faf760] to-primary">
+      <div className="flex flex-col items-center justify-center border-2 rounded-xl mt-[2rem] p-10 m-8 bg-white w-[35rem]">
+        <p className="text-4xl font-extrabold text-center text-primary">GPTQuizHub</p>
+        <div className="flex justify-center">
+          <p className="mt-[4rem] font-extrabold text-xl w-4/5">{quiz?.title}</p>
+        </div>
+        <div className="flex flex-col items-center justify-center mt-4">
+          <button
+            type="button"
+            className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+            onClick={ModalToggleHandler}
+          >
+            測驗設定
+          </button>
+          {showSetting && (
           <QuizSetting
             modalToggleHandler={ModalToggleHandler}
             setQuestionSeconds={setQuestionSeconds}
@@ -156,26 +157,27 @@ function Page({ params }) {
             randomOptions={randomOptions}
             setRandomOptions={setRandomOptions}
           />
-        )}
-        <button
-          type="button"
-          onClick={() => {
-            setQuizStatus("process");
-            setSeconds(questionSeconds);
-          }}
-          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
-        >
-          開始測驗
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            router.push("/questionbanks");
-          }}
-          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
-        >
-          回到題庫
-        </button>
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              setQuizStatus("process");
+              setSeconds(questionSeconds);
+            }}
+            className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+          >
+            開始測驗
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              router.push("/questionbanks");
+            }}
+            className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+          >
+            回到題庫
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -230,37 +232,38 @@ function Page({ params }) {
       );
     });
   const ProcessPage = (
-    <div className="items-center my-4">
-      {quiz && quiz?.questions?.length > 0 && (
+    <div className="flex flex-col items-center justify-center bg-gradient-to-r from-primary to-[#f0f194] w-full">
+      <div className="flex flex-col items-center justify-center w-[38rem] p-8 my-4 bg-white border-2 rounded-xl">
+        {quiz && quiz?.questions?.length > 0 && (
         <div>
           <div className="flex flex-col items-center mt-4">
             <div className="flex">
               <p className="h-auto text-2xl w-7/8">{quiz?.questions?.[questionIndex].question}</p>
-              <h1 className="w-4 mb-4 ml-6 text-2xl">{seconds}</h1>
-              <p className="mb-4 ml-6 text-2xl ">seconds</p>
+              <h1 className="flex justify-center w-12 h-8 mb-4 ml-6 text-2xl rounded-full bg-primary">{seconds}</h1>
             </div>
             <div className="flex my-4">
               <p className="mr-3 text-xl">難度 :</p>
               <p className="mr-6 text-xl">{quiz?.questions?.[questionIndex].difficulty}</p>
-              <p className="text-lg">
+              <p className="text-lg border-b-2">
                 {questionIndex + 1} of {quiz?.questions?.length}
               </p>
             </div>
           </div>
           <div className="flex flex-col items-center mb-10">{OptionsItems}</div>
         </div>
-      )}
+        )}
+      </div>
     </div>
   );
   const EndPage = (
-    <div className="flex flex-col items-center">
-      <div className="mt-[4rem]">
+    <div className="flex flex-col items-center justify-center w-full bg-gradient-to-r from-[#e48fe4] to-primary">
+      <div className="p-4 bg-white border-2 rounded-lg">
         {accuracy === 100 && (
           <div>
             <div className="flex justify-center border-b-4 border-slate-300 w-[16rem]">
               <p className="mb-2 text-4xl">Bravo!</p>
             </div>
-            <Image src="/bravo.gif" alt="bravo" width={200} height={200} className="absolute right-20" />
+            <Image src="/bravo.gif" alt="bravo" width={300} height={300} className="absolute right-28" />
           </div>
         )}
         {accuracy > 60 && accuracy < 100 && (
@@ -268,7 +271,7 @@ function Page({ params }) {
             <div className="flex justify-center border-b-4 border-slate-300 w-[16rem]">
               <p className="mb-2 text-4xl">Sweet~</p>
             </div>
-            <Image src="/sweet.gif" alt="bravo" width={200} height={200} className="absolute right-20" />
+            <Image src="/sweet.gif" alt="sweet" width={300} height={300} className="absolute right-28" />
           </div>
         )}
         {accuracy < 60 && (
@@ -276,7 +279,7 @@ function Page({ params }) {
             <div className="flex justify-center border-b-4 border-slate-300 w-[16rem]">
               <p className="mb-2 text-4xl">Keep Going...</p>
             </div>
-            <Image src="/keepgoing.gif" alt="bravo" width={200} height={200} className="absolute right-20" />
+            <Image src="/keepgoing.gif" alt="bravo" width={200} height={200} className="absolute right-28" />
           </div>
         )}
         <div className="flex flex-col items-center mt-2">

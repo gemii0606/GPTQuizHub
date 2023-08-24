@@ -5,7 +5,7 @@ function Page({ params }) {
   return (
     <div>
       <Navbar />
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center">
         <QuestionBankCard id={params.questionbank_id} />
       </div>
     </div>
