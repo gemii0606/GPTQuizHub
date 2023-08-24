@@ -13,13 +13,19 @@ function Storearticle() {
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // State to hold error message
   const [showMenu, setShowMenu] = useState(false);
-  const [tag, setTag] = useState("");
+  const [tag, setTag] = useState("未分類");
   const tagRef = useRef(null);
   const tags = useTagApi();
   const router = useRouter();
   // const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const totalQuestion = parseInt(easy || 0, 10) + parseInt(normal || 0, 10) + parseInt(hard || 0, 10);
+    if (totalQuestion > 10) {
+      setErrorMessage("題數不可超過10題");
+      return; // 不继续提交表单
+    }
+    setErrorMessage("");
     // setLoading(true);
     console.log(nookies.get().access_token);
     try {
@@ -117,12 +123,12 @@ function Storearticle() {
             ref={tagRef}
             onFocus={() => {
               if (tag === "") {
-                setTag(""); // 清空默认文本，允许用户编辑
+                setTag("");
               }
             }}
             onBlur={() => {
               if (tag === "") {
-                setTag("未分類"); // 恢复默认文本，如果输入框为空
+                setTag("未分類");
               }
             }}
             className="block px-3 py-2 mb-2 rounded-md shadow-sm outline-none w-60 drop-shadow-md hover:bg-slate-50 focus:drop-shadow-2xl"
@@ -134,7 +140,7 @@ function Storearticle() {
                 <button
                   type="button"
                   key={taggie.id}
-                  onClick={() => handleTagClick(taggie.name)} // Pass the clicked tag to the function
+                  onClick={() => handleTagClick(taggie.name)}
                   className="block w-full p-2 bg-white border-2 top-12 hover:bg-[#D2E9FF] h-10 truncate"
                 >
                   {taggie.name}
@@ -162,6 +168,7 @@ function Storearticle() {
             required
             type="number"
             name="easy"
+            defaultValue="0"
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "easy")}
@@ -172,6 +179,7 @@ function Storearticle() {
             required
             type="number"
             name="middle"
+            defaultValue="0"
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "normal")}
@@ -182,6 +190,7 @@ function Storearticle() {
             required
             type="number"
             name="hard"
+            defaultValue="0"
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "hard")}
