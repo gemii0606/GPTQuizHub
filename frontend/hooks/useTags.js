@@ -10,7 +10,9 @@ const fetcher = async (url) => {
   return response.data.data.tags;
 };
 const useTags = () => {
-  const { data, error } = useSWR([`${process.env.NEXT_PUBLIC_API_URL}/users/tags`], fetcher);
+  const { data, error } = useSWR([`${process.env.NEXT_PUBLIC_API_URL}/users/tags`], fetcher, {
+    revalidateOnFocus: false,
+  });
   return {
     tags: data,
     isLoading: !error && !data,

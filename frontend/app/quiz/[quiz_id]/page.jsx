@@ -42,19 +42,14 @@ function Page({ params }) {
     };
   });
   const correctAnswers = quiz?.questions?.length - wrongAnswer.length;
-  const accuracy = (correctAnswers / quiz?.questions?.length) * 100;
+  const accuracy = ((correctAnswers / quiz?.questions?.length) * 100).toFixed(2);
   async function quizSubmitHandler() {
-    console.log({
-      quiz_id: params.quiz_id,
-      accuracy,
-      wrongAnswer,
-    });
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/quizzes/history`,
         {
           quiz_id: params.quiz_id,
-          accuracy,
+          accuracy: (correctAnswers / quiz?.questions?.length) * 100,
           wrongAnswer,
         },
         {
@@ -94,16 +89,21 @@ function Page({ params }) {
       }
     }
   }
+  useEffect(() => {
+    if (quizStatus === "end") {
+      quizSubmitHandler();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizStatus]);
   const moveToNextQuestion = () => {
     if (questionIndex === quiz.questions.length - 1) {
-      quizSubmitHandler();
       setQuizStatus("end");
     } else {
       setQuestionIndex((prevIndex) => prevIndex + 1);
       setSeconds(questionSeconds);
     }
   };
-  const handleTimeUp = async () => {
+  const handleTimeUp = () => {
     Swal.fire({
       icon: "warning",
       title: "時間到",
@@ -266,7 +266,7 @@ function Page({ params }) {
           </div>
         )}
         <div className="flex flex-col items-center mt-2">
-          <p className="m-2 text-xl">答對率 : {accuracy.toFixed(2)}%</p>
+          <p className="m-2 text-xl">答對率 : {accuracy}%</p>
           <p className="m-2 text-xl">總題數 : {quiz?.questions?.length}</p>
           <p className="m-2 text-xl">未答題數 : {unansweredQuestion.length}</p>
           <p className="m-2 text-xl">正確題數 : {correctAnswers}</p>

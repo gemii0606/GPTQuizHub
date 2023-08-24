@@ -9,16 +9,9 @@ import useQuizList from "../../hooks/useQuizList";
 
 function Page() {
   const [cursor, setCursor] = useState(null);
-  const [quizList, setQuizList] = useState([]);
   const [selectTag, setSelectTag] = useState("");
   const { quizzes, nextCursor, isLoading, isError } = useQuizList(selectTag);
-  useEffect(() => {
-    setQuizList(quizzes);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quizzes]);
-  const filteredQuizzes = selectTag
-    ? quizList.filter((quiz) => quiz.tag === selectTag)
-    : quizList;
+  const filteredQuizzes = selectTag ? quizzes.filter((quiz) => quiz.tag === selectTag) : quizzes;
   const questionsBankItems = filteredQuizzes.map((questionsBank) => (
     <QuestionsBanksCard questionsBank={questionsBank} key={questionsBank.id} />
   ));

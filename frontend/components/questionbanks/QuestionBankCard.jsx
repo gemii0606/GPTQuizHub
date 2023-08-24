@@ -4,25 +4,13 @@ import { mutate } from "swr";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import { mutate } from "swr";
 import useDeleteQuiz from "../../hooks/useDeleteQuiz";
 
 function QuestionsBanksCard({ questionsBank }) {
-  const [showQuizType, setShowQuizType] = useState(false);
   const [isDeleteHovered, setIsDeleteHovered] = useState(false);
   const showTypeButtonRef = useRef(null);
   const deleteQuiz = useDeleteQuiz(questionsBank.id);
-  const handleOutsideClick = (e) => {
-    const clickedElement = e.target;
-    if (showTypeButtonRef.current && !showTypeButtonRef.current.contains(clickedElement)) {
-      setShowQuizType(false);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  });
   function deleteQuestionBankHandler() {
     Swal.fire({
       title: "確定刪除?",
@@ -51,7 +39,15 @@ function QuestionsBanksCard({ questionsBank }) {
             <Image src="/loading.png" alt="loading" width={30} height={30} className="animate-spin" />
           </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} className="mx-2" />
+            <Image
+              src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"}
+              alt="delete-icon"
+              width={30}
+              height={30}
+              onMouseEnter={() => setIsDeleteHovered(true)}
+              onMouseLeave={() => setIsDeleteHovered(false)}
+              className="mx-2"
+            />
           </button>
         </div>
       )}
@@ -61,7 +57,15 @@ function QuestionsBanksCard({ questionsBank }) {
             <p className="ml-1 mr-1 text-base font-semibold text-white">生成錯誤！</p>
           </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} className="mx-2" />
+            <Image
+              src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"}
+              alt="delete-icon"
+              width={30}
+              height={30}
+              onMouseEnter={() => setIsDeleteHovered(true)}
+              onMouseLeave={() => setIsDeleteHovered(false)}
+              className="mx-2"
+            />
           </button>
         </div>
       )}
@@ -73,38 +77,22 @@ function QuestionsBanksCard({ questionsBank }) {
             </Link>
           </div>
           <div>
-            <button
-              type="button"
-              className="relative text-base font-bold text-white bg-primary py-2.5 px-4 rounded-md hover:opacity-50 mr-2"
-              onClick={() => setShowQuizType(!showQuizType)}
+            <Link
+              href={`/quiz/${questionsBank.id}`}
+              className="block text-base font-bold text-white bg-primary py-2.5 px-4 rounded-md hover:opacity-50 mr-2"
             >
-              開始測驗
-            </button>
-            {showQuizType && (
-              <div className="absolute z-10 bg-white border rounded-lg">
-                <Link
-                  href={`/quiz/${questionsBank.id}`}
-                  className="block text-base font-bold py-2.5 px-4 rounded-md hover:opacity-50 border-b"
-                >
-                  單人測驗
-                </Link>
-                <Link
-                  href={`/twoplayer/${questionsBank.id}`}
-                  className="block text-base font-bold py-2.5 px-4 rounded-md hover:opacity-50 border-b"
-                >
-                  雙人測驗
-                </Link>
-                <Link
-                  href={`/multiplayer/${questionsBank.id}`}
-                  className="block text-base font-bold py-2.5 px-4 rounded-md hover:opacity-50"
-                >
-                  多人測驗
-                </Link>
-              </div>
-            )}
+              單人測驗
+            </Link>
           </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
-            <Image src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"} alt="delete-icon" width={30} height={30} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} />
+            <Image
+              src={isDeleteHovered ? "/delete-open.jpg" : "/delete.jpg"}
+              alt="delete-icon"
+              width={30}
+              height={30}
+              onMouseEnter={() => setIsDeleteHovered(true)}
+              onMouseLeave={() => setIsDeleteHovered(false)}
+            />
           </button>
         </div>
       )}

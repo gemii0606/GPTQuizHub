@@ -23,14 +23,19 @@ function ShareLink({ modalToggleHandler }) {
   return (
     <Modal>
       <div className="flex flex-col items-center">
-        <p className="pt-6 pb-4 text-2xl text-center text-black font-outfit">分享個人連結</p>
+        <p className="pt-6 pb-4 text-2xl text-center text-black font-outfit">分享連結</p>
         <button type="button" onClick={() => modalToggleHandler()} className="absolute top-6 right-6">
-          <Image src={Close} alt="close-button" />
+          <Image src={Close} alt="close-button" width={30} height={30} />
         </button>
         <div className="flex flex-col items-center mx-2 mb-4">
-          <QRCodeSVG value={currentUrl} size={600} />
+          <QRCodeSVG value={currentUrl} size={300} />
           <div className="flex items-center mt-6">
-            <input className="py-1 mr-2 w-[16rem] border rounded-lg" defaultValue={currentUrl} ref={inputRef} />
+            <input
+              className="py-1 mr-2 w-[16rem] border rounded-lg"
+              defaultValue={currentUrl}
+              ref={inputRef}
+              disabled
+            />
             <button type="button" onClick={copyLink} className="px-2 py-1 border rounded-lg dark:text-black">
               複製
             </button>
