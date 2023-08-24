@@ -33,8 +33,7 @@ function AnimatedProgress({ percentage }) {
   return (
     <div>
       <div className="flex">
-        <p className="w-24 truncate">答對率：{percentage}</p>
-        <p>%</p>
+        <p className="w-24">答對率：{percentage.toFixed(2)}%</p>
       </div>
       <StyledAnimatedProgress className="animated-progress">
         <ProgressSpan percentage={percentage} />
