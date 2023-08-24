@@ -25,13 +25,13 @@ function Page() {
         <div className="flex flex-col min-w-[60rem] rounded-lg bg-white p-4">
           {questionsBankItems}
           {isLoading && (
-            <div className="flex items-center justify-center w-full h-screen bg-white">
+            <div className="flex items-center justify-center pt-10 bg-white">
               <div>Loading...</div>
               <Image src="/walker.gif" alt="alpaca" height={150} width={150} />
               {/* <Image src="/loading.png" alt="loading" height={30} width={30} className="animate-spin" /> */}
             </div>
           )}
-          {isError && <p>An error occurred while fetching data.</p>}
+          {isError && <p className="flex justify-center pt-10">An error occurred while fetching data.</p>}
           {nextCursor && (
             <button type="button" onClick={() => setCursor(nextCursor)}>
               {cursor}
