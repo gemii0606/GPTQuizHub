@@ -89,20 +89,20 @@ function QuestionBankCard({ id }) {
     <p key={option.id} className="mt-3 text-lg font-bold">{`(${option.id}) ${option.content}`}</p>
   ));
   const QuestionContent = (
-    <>
+    <div className="">
       <h1 className="mb-5 text-2xl font-bold rounded-lg">{quiz?.questions?.[questionIndex]?.question}</h1>
       <div className="flex items-center">
         <p className="mr-3 text-lg font-bold">難度 :</p>
         <p className="text-lg font-bold">{quiz?.questions?.[questionIndex]?.difficulty}</p>
       </div>
       {OptionsItems}
-      <div className="flex items-center h-12 p-6 mt-2 mb-2">
+      <div className="flex items-center h-12 p-4 mt-2 mb-2">
         <button
           type="button"
           onClick={() => {
             setShowAnswer(!showAnswer);
           }}
-          className="absolute px-4 py-1 text-base font-bold text-white rounded-md left-5 bg-primary disabled:opacity-50 hover:bg-indigo-500"
+          className="absolute w-[6.5rem] px-4 py-1 text-base font-bold text-white rounded-md left-5 bg-primary disabled:opacity-50 hover:bg-indigo-500"
         >
           {showAnswer ? "隱藏答案" : "顯示答案"}
         </button>
@@ -114,7 +114,7 @@ function QuestionBankCard({ id }) {
           onClick={() => {
             setShowExplanation(!showExplanation);
           }}
-          className="px-4 py-1 mr-2 text-base font-bold text-white rounded-md bg-primary disabled:opacity-50 hover:bg-indigo-500"
+          className="w-32 px-4 py-1 mr-2 text-base font-bold text-white rounded-md bg-primary disabled:opacity-50 hover:bg-indigo-500"
         >
           {showExplanation ? "隱藏說明" : "顯示說明"}
         </button>
@@ -130,19 +130,19 @@ function QuestionBankCard({ id }) {
       >
         刪除題目
       </button>
-    </>
+    </div>
   );
   const OptionsEditItems = quiz?.questions?.[questionIndex]?.options.map((option, index) => (
-    <div className="flex items-center mt-3" key={option.id}>
-      <p key={option.id} className="mt-3 mr-3 text-2xl font-bold">
-        ({option.id})
+    <div className="flex items-center mt-4" key={option.id}>
+      <p key={option.id} className="mr-3 text-base font-bold ">
+        {option.id}.
       </p>
       <input
         type="text"
         defaultValue={option.content}
         required
         ref={(ref) => (optionsRefs.current[index] = ref)}
-        className="border rounded-md focus:outline-none py-2 px-3.5 min-w-[30rem] text-2xl font-bold"
+        className="border rounded-md py-2 px-3.5 min-w-[30rem] text-base outline-none  drop-shadow-md hover:bg-slate-50 focus:drop-shadow-2xl"
       />
     </div>
   ));
@@ -153,15 +153,15 @@ function QuestionBankCard({ id }) {
         ref={questionRef}
         required
         defaultValue={quiz?.questions?.[questionIndex]?.question}
-        className="min-w-[30rem] border px-4 py-3 text-2xl font-bold rounded-lg mb-5"
+        className="min-w-[30rem] border px-4 py-3 text-base rounded-lg mb-5"
       />
       <div className="flex items-center">
-        <p className="mr-3">難度 :</p>
+        <p className="mr-3 font-bold">難度 :</p>
         <select
           defaultValue={quiz?.questions?.[questionIndex]?.difficulty}
           ref={difficultyRef}
           required
-          className="px-2 py-1 border rounded-lg"
+          className="px-2 py-1 border rounded-lg outline-none"
         >
           <option value="easy" className="rounded-lg">
             簡單
@@ -181,7 +181,7 @@ function QuestionBankCard({ id }) {
           defaultValue={quiz?.questions?.[questionIndex]?.correct_answer}
           ref={correctAnswerRef}
           required
-          className="px-2 py-1 border rounded-lg"
+          className="px-2 py-1 border rounded-lg outline-none"
         >
           <option value="1" className="rounded-lg">
             1
@@ -198,12 +198,12 @@ function QuestionBankCard({ id }) {
         </select>
       </div>
       <div className="mb-4">
-        <p className="mb-2">說明 :</p>
+        <p className="mb-2 font-bold">說明 :</p>
         <textarea
           ref={explanationRef}
           defaultValue={quiz?.questions?.[questionIndex]?.explanation || ""}
           required
-          className="resize-none min-w-[60rem] min-h-[5.25rem] mt-2.5 p-2 dark:text-black bg-[#F0F2F5] border border-neutral-400 rounded-[0.625rem] focus:outline-none"
+          className="resize-none min-w-[60rem] min-h-[5.25rem] mt-2.5 p-2 dark:text-black outline-none rounded-[0.625rem]  drop-shadow-md hover:bg-slate-50 focus:drop-shadow-2xl"
         />
       </div>
       <div>
@@ -211,7 +211,7 @@ function QuestionBankCard({ id }) {
           <button
             type="submit"
             disabled={loading}
-            className="text-base font-bold text-white bg-[#8198BF] font-outfit py-2.5 bg-berry-blue px-[1.875rem] rounded-md mr-[1.125rem] disabled:opacity-50"
+            className="text-base font-bold text-white bg-primary font-outfit py-2.5 bg-berry-blue px-[1.875rem] rounded-md mr-[1.125rem] disabled:opacity-50 hover:bg-indigo-500"
           >
             確認
           </button>
@@ -220,7 +220,7 @@ function QuestionBankCard({ id }) {
             onClick={() => {
               setEditQuestion(false);
             }}
-            className="text-base font-bold text-white font-outfit py-2.5 bg-neutral-300 px-[1.875rem] rounded-md"
+            className="text-base font-bold text-white font-outfit py-2.5 bg-neutral-300 px-[1.875rem] rounded-md hover:bg-neutral-400"
           >
             取消
           </button>
@@ -229,7 +229,7 @@ function QuestionBankCard({ id }) {
           type="button"
           onClick={() => deleteQuestionHandler(quiz?.questions?.[questionIndex]?.id)}
           disabled={loading}
-          className="absolute bottom-3 right-3 text-base font-bold mt-4 text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+          className="absolute bottom-3 right-3 text-base font-bold mt-4 text-white bg-primary py-2.5 px-4 rounded-md disabled:opacity-50 hover:bg-red-500"
         >
           刪除題目
         </button>
@@ -243,9 +243,9 @@ function QuestionBankCard({ id }) {
     return <div>Error loading data</div>;
   }
   return (
-    <div className="bg-white border p-5 min-w-[80rem] rounded-lg relative" key={1}>
+    <div className="relative min-w-full p-5 bg-[#f9f9f9] border rounded-lg" key={1}>
       <div className="flex mb-4">
-        <p className="mr-3 text-xl">{`第 ${questionIndex + 1} 題`}</p>
+        <p className="mr-3 text-xl font-bold">{`第 ${questionIndex + 1} 題`}</p>
         <button
           type="button"
           hidden={editQuestion === true}
@@ -257,7 +257,7 @@ function QuestionBankCard({ id }) {
         </button>
       </div>
       {editQuestion ? QuestionEditArea : QuestionContent}
-      <div className="mt-6">
+      <div className="">
         <button
           type="button"
           disabled={questionIndex === 0}
@@ -284,7 +284,7 @@ function QuestionBankCard({ id }) {
           <Link
             href="/questionbanks"
             hidden={editQuestion}
-            className="text-base font-bold text-white bg-[#8198BF] py-2.5 px-4 rounded-md disabled:opacity-50"
+            className="text-base font-bold text-white bg-primary py-2.5 px-4 rounded-md disabled:opacity-50 hover:bg-indigo-500"
           >
             回到題庫
           </Link>

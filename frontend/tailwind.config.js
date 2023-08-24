@@ -9,7 +9,10 @@ module.exports = {
     extend: {
       colors: {
         primary: "#84C1FF",
-      }
+      },
+      backgroundImage: {
+        firework: "url('/firework-bg.jpg')"
+      },
     },
   },
   plugins: [],
