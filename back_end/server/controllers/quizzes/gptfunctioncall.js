@@ -40,8 +40,8 @@ const openaiFunctionCalling = {
                                 type: "string"
                             }, description: "options of the questions, mostly 4"
                         },
-                        explanation: { type: "string", description: "The explanation of the correct answer." },
-                        correct_answer: { type: "number", description: "The currect option of the  question." }
+                        explanation: { type: "string",description: "The explanation of the correct answer." },
+                        correct_answer: { type: "number",  enum: [1,2,3,4], description: "The currect option of the  question." }
                     }
                 }
             }
@@ -110,7 +110,7 @@ const gptfunctioncall = async (req, res) => {
                 type: obj.question_type,
                 difficulty: obj.difficulty,
                 options: obj.question_options,
-                correct_answer: obj.correct_answer + 1,
+                correct_answer: obj.correct_answer,
                 explanation: obj.explanation,
                 created_at: getCurrentTime()
             };
