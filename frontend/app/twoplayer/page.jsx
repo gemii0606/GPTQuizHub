@@ -29,8 +29,10 @@ function App() {
   const [showSetting, setShowSetting] = useState(false);
   const roomRef = useRef();
   useEffect(() => {
+    socket.connect();
     return () => {
       socket.disconnect();
+      socket.off();
     };
   }, []);
   // 對戰過程相關
