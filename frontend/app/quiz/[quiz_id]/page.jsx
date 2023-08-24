@@ -237,10 +237,11 @@ function Page({ params }) {
         {quiz && quiz?.questions?.length > 0 && (
         <div>
           <div className="flex flex-col items-center mt-4">
-            <div className="flex">
-              <p className="h-auto text-2xl w-7/8">{quiz?.questions?.[questionIndex].question}</p>
-              <h1 className="flex justify-center w-12 h-8 mb-4 ml-6 text-2xl rounded-full bg-primary">{seconds}</h1>
+            <div className="relative flex items-center justify-center ">
+              <div className="flex items-center justify-center w-16 h-16 mb-4 border-4 border-black border-dashed rounded-full animate-spin" />
+              <h1 className="absolute top-0 flex justify-center mt-4 mb-4 text-2xl">{seconds}</h1>
             </div>
+            <p className="h-auto mt-8 text-2xl w-7/8">{quiz?.questions?.[questionIndex].question}</p>
             <div className="flex my-4">
               <p className="mr-3 text-xl">難度 :</p>
               <p className="mr-6 text-xl">{quiz?.questions?.[questionIndex].difficulty}</p>
@@ -257,7 +258,7 @@ function Page({ params }) {
   );
   const EndPage = (
     <div className="flex flex-col items-center justify-center w-full bg-gradient-to-r from-[#e48fe4] to-primary">
-      <div className="p-4 bg-white border-2 rounded-lg">
+      <div className="p-8 bg-white border-2 rounded-lg">
         {accuracy === 100 && (
           <div>
             <div className="flex justify-center border-b-4 border-slate-300 w-[16rem]">

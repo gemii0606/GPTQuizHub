@@ -116,21 +116,10 @@ function Storearticle() {
         <div className="relative h-auto w-60">
           <input
             required
-            placeholder="未分類"
             id="123"
             value={tag}
             onChange={(e) => setTag(e.target.value)}
             ref={tagRef}
-            onFocus={() => {
-              if (tag === "") {
-                setTag("");
-              }
-            }}
-            onBlur={() => {
-              if (tag === "") {
-                setTag("未分類");
-              }
-            }}
             className="block px-3 py-2 mb-2 rounded-md shadow-sm outline-none w-60 drop-shadow-md hover:bg-slate-50 focus:drop-shadow-2xl"
             onClick={handleShowMenu}
           />
