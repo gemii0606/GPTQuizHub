@@ -17,7 +17,7 @@ function ShareLink({ modalToggleHandler }) {
       title: "已複製到剪貼簿",
       text: "分享給其他朋友",
       showConfirmButton: false,
-      timer: 1000,
+      timer: 800,
     });
   };
   return (

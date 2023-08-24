@@ -17,7 +17,7 @@ function Page() {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/history`, {
         headers: {
           Authorization: `Bearer ${nookies.get().access_token}`,
-        }
+        },
       });
       setListHistories(response.data.data.quizzes);
       if (response.data.data.length !== 0) {
@@ -55,14 +55,12 @@ function Page() {
             ))}
           </div>
         </div>
-      )
-        : (
-
-          <div className="flex items-center justify-center w-full h-screen bg-white">
-            <div>No test, go create an article!</div>
-            <Image src="/walker.gif" alt="alpaca" height={150} width={150} />
-          </div>
-        )}
+      ) : (
+        <div className="flex items-center justify-center w-full h-screen bg-white">
+          <div>No test, go create an article!</div>
+          <Image src="/walker.gif" alt="alpaca" height={150} width={150} />
+        </div>
+      )}
     </div>
   );
 }
