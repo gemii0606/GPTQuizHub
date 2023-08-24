@@ -19,6 +19,8 @@ function Page({ params }) {
   const [showSetting, setShowSetting] = useState(false);
   const [randomOptions, setRandomOptions] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState([]);
+  const [hasClickOption, setHasClickedOption] = useState(false);
+  const [selectedOptionId, setSelectedOptionId] = useState(null);
   const [wrongAnswer, setWrongAnswer] = useState([]);
   const [unansweredQuestion, setUnansweredQuestion] = useState([]);
   const router = useRouter();
@@ -101,6 +103,7 @@ function Page({ params }) {
     } else {
       setQuestionIndex((prevIndex) => prevIndex + 1);
       setSeconds(questionSeconds);
+      setHasClickedOption(false);
     }
   };
   const handleTimeUp = () => {
@@ -177,6 +180,8 @@ function Page({ params }) {
     </div>
   );
   const handleOptionClick = (optionId) => {
+    setSelectedOptionId(optionId);
+    setHasClickedOption(true);
     const selectedOption = shuffledOptions.find((option) => option.id === optionId);
     if (selectedOption.id === Number(quiz.questions[questionIndex].correct_answer)) {
       Swal.fire({
@@ -202,16 +207,28 @@ function Page({ params }) {
   const OptionsItems =
     shuffledOptions &&
     shuffledOptions.length > 0 &&
-    shuffledOptions.map((option) => (
-      <button
-        type="button"
-        onClick={() => handleOptionClick(option.id)}
-        key={option.id}
-        className="block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9]"
-      >
-        {option.content}
-      </button>
-    ));
+    shuffledOptions.map((option) => {
+      const isCorrectAnswer = option.id === Number(quiz?.questions[questionIndex].correct_answer);
+      const isSelected = hasClickOption && option.id === selectedOptionId;
+      let buttonClassName =
+        "block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9] disabled:hover:bg-slate-400";
+      if (isSelected) {
+        buttonClassName += isCorrectAnswer ? " bg-green-500" : " bg-red-500";
+      } else if (!isSelected && hasClickOption) {
+        buttonClassName += " bg-slate-400";
+      }
+      return (
+        <button
+          type="button"
+          onClick={() => handleOptionClick(option.id)}
+          disabled={hasClickOption === true}
+          key={option.id}
+          className={buttonClassName}
+        >
+          {option.content}
+        </button>
+      );
+    });
   const ProcessPage = (
     <div className="items-center my-4">
       {quiz && quiz?.questions?.length > 0 && (

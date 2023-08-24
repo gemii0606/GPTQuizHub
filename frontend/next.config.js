@@ -3,7 +3,7 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: "/:path((?!login$)(?!api/)(?!twoplayer/).*)",
+        source: "/:path((?!login$)(?!api/).*)",
         permanent: false,
         missing: [
           {
