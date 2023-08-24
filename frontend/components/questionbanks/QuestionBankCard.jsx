@@ -32,7 +32,7 @@ function QuestionsBanksCard({ questionsBank }) {
       </div>
       {questionsBank.status === "pending" && (
         <div className="flex items-center py-2">
-          <div className="flex items-center p-1 rounded bg-[#fec681]">
+          <div className="flex items-center rounded bg-[#fec681]">
             <p className="ml-1 mr-2 text-base font-semibold text-white">生成中</p>
             <Image src="/loading.png" alt="loading" width={30} height={30} className="animate-spin" />
           </div>
@@ -51,8 +51,8 @@ function QuestionsBanksCard({ questionsBank }) {
       )}
       {questionsBank.status === "failed" && (
         <div className="flex items-center py-2">
-          <div className="flex items-center p-2 bg-red-400 rounded">
-            <p className="ml-1 mr-1 text-base font-semibold text-white">生成錯誤！</p>
+          <div className="flex items-center bg-red-400 rounded">
+            <p className="ml-1 mr-2 text-base font-semibold text-white">生成錯誤！</p>
           </div>
           <button type="button" onClick={deleteQuestionBankHandler} ref={showTypeButtonRef}>
             <Image
