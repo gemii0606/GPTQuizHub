@@ -169,7 +169,7 @@ function App() {
       <Link href="/questionbanks" className="absolute p-2 text-black bg-white border rounded-md right-6 top-2">回到題庫頁面</Link>
       <div className="flex flex-col items-center mt-6">
         <p className="text-2xl font-semibold text-white">房號</p>
-        <p className="mt-3 text-2xl">{roomId}</p>
+        <p className="p-2 mt-3 text-2xl bg-white opacity-70">{roomId}</p>
         <button
           type="button"
           onClick={copyLink}
@@ -212,7 +212,6 @@ function App() {
       >
         {startGame ? "等待中" : "點擊開始"}
       </button>
-      {startGame && <p className="mt-6 text-2xl font-semibold">正在等待對手...</p>}
     </div>
   );
   const handleOptionClick = (optionId) => {
@@ -240,7 +239,7 @@ function App() {
       const isCorrectAnswer = option.id === Number(quiz?.questions[questionIndex].correct_answer);
       const isSelected = hasClickOption && option.id === selectedOptionId;
       let buttonClassName =
-        "block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9] disabled:hover:bg-slate-400";
+        "block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8";
       if (isSelected) {
         buttonClassName += isCorrectAnswer ? " bg-green-500" : " bg-red-500";
       } else if (!isSelected && hasClickOption) {
@@ -293,16 +292,18 @@ function App() {
     router.push("/");
   }
   const EndPage = (
-    <div className="flex flex-col items-center">
-      {score > opponentScore && <p className="m-2 text-xl">你贏了</p>}
-      {score === opponentScore && <p className="m-2 text-xl">平手</p>}
-      {score < opponentScore && <p className="m-2 text-xl">你輸了</p>}
-      <p className="m-2 text-xl">你的得分:{score}</p>
-      <p className="m-2 text-xl">對手得分: {opponentScore}</p>
+    <div className="flex flex-col items-center w-[25rem] h-[25rem] bg-white justify-center rounded-lg opacity-80">
+      {score > opponentScore && <p className="m-2 text-2xl">You win!</p>}
+      {score === opponentScore && <p className="m-2 text-2xl">平手</p>}
+      {score < opponentScore &&
+      // eslint-disable-next-line react/no-unescaped-entities
+      <p className="m-2 text-2xl">You're a loser...</p>}
+      <p className="mt-8 text-xl">你的得分:{score}</p>
+      <p className="mt-4 text-xl">對手得分: {opponentScore}</p>
       <button
         type="button"
         onClick={leaveGameHandler}
-        className="block px-16 py-4 text-2xl mr-8 bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50 hover:bg-[#3c70c9]"
+        className="block px-12 py-3 text-2xl  bg-[#4783EA] text-white rounded-xl mt-20 disabled:opacity-50 hover:bg-[#3c70c9]"
       >
         離開
       </button>

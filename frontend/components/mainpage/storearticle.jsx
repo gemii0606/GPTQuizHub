@@ -13,7 +13,7 @@ function Storearticle() {
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // State to hold error message
   const [showMenu, setShowMenu] = useState(false);
-  const [tag, setTag] = useState("");
+  const [tag, setTag] = useState("未分類");
   const tagRef = useRef(null);
   const tags = useTagApi();
   const router = useRouter();
@@ -110,21 +110,10 @@ function Storearticle() {
         <div className="relative h-auto w-60">
           <input
             required
-            placeholder="未分類"
             id="123"
             value={tag}
             onChange={(e) => setTag(e.target.value)}
             ref={tagRef}
-            onFocus={() => {
-              if (tag === "") {
-                setTag(""); // 清空默认文本，允许用户编辑
-              }
-            }}
-            onBlur={() => {
-              if (tag === "") {
-                setTag("未分類"); // 恢复默认文本，如果输入框为空
-              }
-            }}
             className="block px-3 py-2 mb-2 rounded-md shadow-sm outline-none w-60 drop-shadow-md hover:bg-slate-50 focus:drop-shadow-2xl"
             onClick={handleShowMenu}
           />
