@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import QuestionsBanksCard from "../../components/questionbanks/QuestionBankCard";
 import Navbar from "../../components/navbar";
 import ArticleSidebar from "../../components/articles/article-sidebar";
@@ -23,8 +24,13 @@ function Page() {
         </div>
         <div className="flex flex-col min-w-[60rem] rounded-lg bg-white p-4">
           {questionsBankItems}
-          {isLoading && <p>Loading...</p>}
-          {isError && <p>An error occurred while fetching data.</p>}
+          {isLoading && (
+            <div className="flex items-center justify-center pt-10">
+              <p>Loading...</p>
+              <Image src="/walker.gif" alt="walker" height={150} width={150} />
+            </div>
+          )}
+          {isError && <p className="flex justify-center pt-10">An error occurred while fetching data.</p>}
           {nextCursor && (
             <button type="button" onClick={() => setCursor(nextCursor)}>
               {cursor}

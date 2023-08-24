@@ -320,7 +320,12 @@ function Page({ params }) {
   );
   return (
     <div className="flex justify-center min-h-screen bg-white">
-      {isLoading && <p>正在載入測驗資料...</p>}
+      {isLoading && (
+        <div className="flex items-center justify-center pt-10">
+          <p>正在載入測驗資料...</p>
+          <Image src="/walker.gif" alt="walker" height={150} width={150} />
+        </div>
+      )}
       {!isLoading && quizStatus === "start" && StartPage}
       {!isLoading && quizStatus === "process" && ProcessPage}
       {!isLoading && quizStatus === "end" && EndPage}
