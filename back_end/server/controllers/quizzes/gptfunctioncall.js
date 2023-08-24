@@ -41,7 +41,7 @@ const openaiFunctionCalling = {
                             }, description: "options of the questions, mostly 4"
                         },
                         explanation: { type: "string",description: "The explanation of the correct answer." },
-                        correct_answer: { type: "number",  enum: [1,2,3,4], description: "The currect option of the  question." }
+                        correct_answer: { type: "number",  enum: [1,2,3,4], description: "The correct option of the question, start from 1 and end at 4" }
                     }
                 }
             }
