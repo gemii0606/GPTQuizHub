@@ -17,7 +17,6 @@ function App() {
   const [roomId, setRoomId] = useState("");
   const [startGame, setStartGame] = useState(false);
   const [showShareLink, setShowShareLink] = useState(false);
-  // process state
   const [seconds, setSeconds] = useState(10);
   const [questionSeconds, setQuestionSeconds] = useState(10);
   const [randomOptions, setRandomOptions] = useState(false);
