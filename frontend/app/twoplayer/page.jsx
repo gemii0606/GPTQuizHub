@@ -73,7 +73,7 @@ function App() {
         console.log(data);
         const filteredData = data.filter((item) => item.user_id !== nookies.get().user_id);
         console.log(filteredData[0].score);
-        setOpponentScore((prevScore) => prevScore + filteredData[0].score);
+        setOpponentScore(filteredData[0].score);
       });
       setQuestionIndex((prevIndex) => prevIndex + 1);
       setSeconds(questionSeconds);
@@ -118,7 +118,9 @@ function App() {
   }
   const SettingPage = (
     <div className="w-[25rem] h-auto m-8 p-8 flex flex-col items-center">
-      <Link href="/questionbanks" className="absolute p-2 text-black bg-white border rounded-md right-6 top-2">回到題庫頁面</Link>
+      <Link href="/questionbanks" className="absolute p-2 text-black bg-white border rounded-md right-6 top-2">
+        回到題庫頁面
+      </Link>
       <div className="flex flex-col items-center">
         <div className="mb-5 text-2xl font-semibold text-white">雙人對戰</div>
         <button
@@ -166,7 +168,9 @@ function App() {
   };
   const WaitingPage = (
     <div className="flex flex-col items-center mt-5">
-      <Link href="/questionbanks" className="absolute p-2 text-black bg-white border rounded-md right-6 top-2">回到題庫頁面</Link>
+      <Link href="/questionbanks" className="absolute p-2 text-black bg-white border rounded-md right-6 top-2">
+        回到題庫頁面
+      </Link>
       <div className="flex flex-col items-center mt-6">
         <p className="text-2xl font-semibold text-white">房號</p>
         <p className="mt-3 text-2xl">{roomId}</p>
@@ -240,7 +244,7 @@ function App() {
       const isCorrectAnswer = option.id === Number(quiz?.questions[questionIndex].correct_answer);
       const isSelected = hasClickOption && option.id === selectedOptionId;
       let buttonClassName =
-        "block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9] disabled:hover:bg-slate-400";
+        "block px-8 py-4 text-lg bg-[#4783EA] text-white rounded-xl mt-6 w-3/5 leading-8 hover:bg-[#3c70c9]";
       if (isSelected) {
         buttonClassName += isCorrectAnswer ? " bg-green-500" : " bg-red-500";
       } else if (!isSelected && hasClickOption) {
