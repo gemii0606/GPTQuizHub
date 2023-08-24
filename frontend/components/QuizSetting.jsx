@@ -30,31 +30,35 @@ function QuizSetting({
         <div>
           {(pathname.includes("/twoplayer") || pathname.includes("/multiplayer")) && (
             <div className="flex items-center mt-5">
-              <p className="mr-5 text-3xl">得分倍率</p>
-              <input
-                type="number"
-                min="1.01"
-                max="2"
-                step="0.01"
-                defaultValue={correctRatio}
-                ref={correctRatioRef}
-                className="px-2 mr-5 text-3xl border rounded-xl"
-              />
-              <button
-                onClick={() => {
-                  setCorrectRatio(correctRatioRef.current.value);
-                  Swal.fire({
-                    icon: "success",
-                    title: "得分倍率修改成功",
-                    showConfirmButton: false,
-                    timer: 1000,
-                  });
-                }}
-                type="button"
-                className="px-[2.125rem] py-4 text-white font-outfit font-normal text-3xl leading-6 rounded-md bg-sky-500"
-              >
-                更改得分倍率
-              </button>
+              <p className="mr-5 text-2xl font-semibold">得分倍率</p>
+
+              <>
+                <input
+                  type="number"
+                  min="1.01"
+                  max="2"
+                  step="0.01"
+                  defaultValue={correctRatio}
+                  ref={correctRatioRef}
+                  className="px-2 mr-5 text-xl border outline-none rounded-xl"
+                />
+                <button
+                  onClick={() => {
+                    setCorrectRatio(correctRatioRef.current.value);
+                    Swal.fire({
+                      icon: "success",
+                      title: "得分倍率修改成功",
+                      showConfirmButton: false,
+                      timer: 1000,
+                    });
+                  }}
+                  type="button"
+                  className="px-4 py-4 text-xl font-normal leading-6 text-white bg-indigo-500 rounded-md font-outfit hover:bg-indigo-700"
+                >
+                  點擊修改
+                </button>
+              </>
+
             </div>
           )}
           <div className="flex items-center mt-5">
@@ -78,9 +82,9 @@ function QuizSetting({
                 });
               }}
               type="button"
-              className="px-6 py-4 text-xl font-normal leading-6 text-white bg-indigo-500 rounded-md hover:bg-indigo-700"
+              className="px-4 py-4 text-xl font-normal leading-6 text-white bg-indigo-500 rounded-md hover:bg-indigo-700"
             >
-              更改秒數
+              點擊修改
             </button>
           </div>
           <div className="flex items-center mt-5">
