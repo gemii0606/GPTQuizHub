@@ -22,8 +22,7 @@ function App() {
   const [questionSeconds, setQuestionSeconds] = useState(10);
   const [randomOptions, setRandomOptions] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState([]);
-  const [useCorrectRatio, setUseCorrectRatio] = useState(false);
-  const [correctRatio, setCorrectRatio] = useState(1.05);
+  const [correctRatio, setCorrectRatio] = useState(1);
   const [score, setScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
   const [hasClickOption, setHasClickedOption] = useState(false);
@@ -198,8 +197,6 @@ function App() {
           setQuestionSeconds={setQuestionSeconds}
           randomOptions={randomOptions}
           setRandomOptions={setRandomOptions}
-          useCorrectRatio={useCorrectRatio}
-          setUseCorrectRatio={setUseCorrectRatio}
           correctRatio={correctRatio}
           setCorrectRatio={setCorrectRatio}
         />
@@ -229,7 +226,7 @@ function App() {
     } else {
       setConsecutiveCorrectAnswers(false);
     }
-    if (chooseCorrectAnswer && consecutiveCorrectAnswers && useCorrectRatio) {
+    if (chooseCorrectAnswer && consecutiveCorrectAnswers) {
       setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
     }
   };
