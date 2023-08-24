@@ -11,7 +11,7 @@ function Storearticle() {
   const [hard, setHard] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // State to hold error message
+  const [errorMessage, setErrorMessage] = useState("");
   const [showMenu, setShowMenu] = useState(false);
   const [tag, setTag] = useState("未分類");
   const tagRef = useRef(null);
@@ -23,7 +23,7 @@ function Storearticle() {
     const totalQuestion = parseInt(easy || 0, 10) + parseInt(normal || 0, 10) + parseInt(hard || 0, 10);
     if (totalQuestion > 10) {
       setErrorMessage("題數不可超過10題");
-      return; // 不继续提交表单
+      return;
     }
     setErrorMessage("");
     // setLoading(true);
