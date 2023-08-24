@@ -31,7 +31,6 @@ function App() {
   const [consecutiveCorrectAnswers, setConsecutiveCorrectAnswers] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [showSetting, setShowSetting] = useState(false);
-  // socket state
   const roomRef = useRef();
   useEffect(() => {
     return () => {

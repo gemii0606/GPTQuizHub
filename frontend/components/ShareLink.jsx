@@ -28,7 +28,7 @@ function ShareLink({ modalToggleHandler }) {
           <Image src={Close} alt="close-button" width={30} height={30} />
         </button>
         <div className="flex flex-col items-center mx-2 mb-4">
-          <QRCodeSVG value={currentUrl} size={600} />
+          <QRCodeSVG value={currentUrl} size={300} />
           <div className="flex items-center mt-6">
             <input
               className="py-1 mr-2 w-[16rem] border rounded-lg"
