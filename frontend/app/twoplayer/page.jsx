@@ -31,7 +31,6 @@ function App() {
   const [showSetting, setShowSetting] = useState(false);
   const roomRef = useRef();
   useEffect(() => {
-    io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
     return () => {
       socket.disconnect();
     };
