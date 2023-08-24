@@ -58,7 +58,6 @@ function QuizSetting({
                   點擊修改
                 </button>
               </>
-
             </div>
           )}
           <div className="flex items-center mt-5">
@@ -87,30 +86,32 @@ function QuizSetting({
               點擊修改
             </button>
           </div>
-          <div className="flex items-center mt-5">
-            <p className="mr-5 text-2xl font-semibold">隨機選項模式</p>
-            {randomOptions ? (
-              <button
-                type="button"
-                className="px-6 py-4 text-xl font-normal leading-6 text-white bg-blue-500 rounded-md font-outfit"
-                onClick={() => {
-                  setRandomOptions((prev) => !prev);
-                }}
-              >
-                {randomOptions ? "ON" : "OFF"}
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="px-6 py-4 text-xl font-normal leading-6 text-white rounded-md font-outfit bg-[#8198BF]"
-                onClick={() => {
-                  setRandomOptions((prev) => !prev);
-                }}
-              >
-                {randomOptions ? "ON" : "OFF"}
-              </button>
-            )}
-          </div>
+          {pathname.includes("/quiz") && (
+            <div className="flex items-center mt-5">
+              <p className="mr-5 text-2xl font-semibold">隨機選項模式</p>
+              {randomOptions ? (
+                <button
+                  type="button"
+                  className="px-6 py-4 text-xl font-normal leading-6 text-white bg-blue-500 rounded-md font-outfit"
+                  onClick={() => {
+                    setRandomOptions((prev) => !prev);
+                  }}
+                >
+                  {randomOptions ? "ON" : "OFF"}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="px-6 py-4 text-xl font-normal leading-6 text-white rounded-md font-outfit bg-[#8198BF]"
+                  onClick={() => {
+                    setRandomOptions((prev) => !prev);
+                  }}
+                >
+                  {randomOptions ? "ON" : "OFF"}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </Modal>

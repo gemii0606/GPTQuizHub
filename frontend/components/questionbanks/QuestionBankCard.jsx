@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";
-import { mutate } from "zustand";
+import { mutate } from "swr";
 import useDeleteQuiz from "../../hooks/useDeleteQuiz";
 
 function QuestionsBanksCard({ questionsBank }) {

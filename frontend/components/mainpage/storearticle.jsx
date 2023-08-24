@@ -20,6 +20,12 @@ function Storearticle() {
   // const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const totalQuestion = parseInt(easy || 0, 10) + parseInt(normal || 0, 10) + parseInt(hard || 0, 10);
+    if (totalQuestion > 10) {
+      setErrorMessage("題數不可超過10題");
+      return; // 不继续提交表单
+    }
+    setErrorMessage("");
     // setLoading(true);
     console.log(nookies.get().access_token);
     try {
@@ -123,7 +129,7 @@ function Storearticle() {
                 <button
                   type="button"
                   key={taggie.id}
-                  onClick={() => handleTagClick(taggie.name)} // Pass the clicked tag to the function
+                  onClick={() => handleTagClick(taggie.name)}
                   className="block w-full p-2 bg-white border-2 top-12 hover:bg-[#D2E9FF] h-10 truncate"
                 >
                   {taggie.name}
@@ -151,6 +157,7 @@ function Storearticle() {
             required
             type="number"
             name="easy"
+            defaultValue="0"
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "easy")}
@@ -161,6 +168,7 @@ function Storearticle() {
             required
             type="number"
             name="middle"
+            defaultValue="0"
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "normal")}
@@ -171,6 +179,7 @@ function Storearticle() {
             required
             type="number"
             name="hard"
+            defaultValue="0"
             min="0"
             max="10"
             onChange={(e) => handleInputChange(e, "hard")}
