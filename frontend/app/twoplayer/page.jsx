@@ -19,8 +19,6 @@ function App() {
   const [showShareLink, setShowShareLink] = useState(false);
   const [seconds, setSeconds] = useState(10);
   const [questionSeconds, setQuestionSeconds] = useState(10);
-  const [randomOptions, setRandomOptions] = useState(false);
-  const [shuffledOptions, setShuffledOptions] = useState([]);
   const [correctRatio, setCorrectRatio] = useState(1.0);
   const [score, setScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
@@ -36,13 +34,6 @@ function App() {
     };
   }, []);
   // 對戰過程相關
-  useEffect(() => {
-    let currentOptions = quiz?.questions?.[questionIndex].options;
-    if (randomOptions) {
-      currentOptions = [...currentOptions].sort(() => Math.random() - 0.5);
-    }
-    setShuffledOptions(currentOptions);
-  }, [questionIndex, randomOptions, quiz]);
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       e.preventDefault();
@@ -200,8 +191,6 @@ function App() {
           modalToggleHandler={ShowSettingModalToggleHandler}
           questionSeconds={questionSeconds}
           setQuestionSeconds={setQuestionSeconds}
-          randomOptions={randomOptions}
-          setRandomOptions={setRandomOptions}
           correctRatio={correctRatio}
           setCorrectRatio={setCorrectRatio}
         />
@@ -220,7 +209,7 @@ function App() {
   const handleOptionClick = (optionId) => {
     setSelectedOptionId(optionId);
     setHasClickedOption(true);
-    const selectedOption = shuffledOptions.find((option) => option.id === optionId);
+    const selectedOption = quiz?.questions?.[questionIndex].options.find((option) => option.id === optionId);
     const chooseCorrectAnswer =
       selectedOption && selectedOption.id === Number(quiz?.questions[questionIndex].correct_answer);
     const elapsedTime = questionSeconds - seconds + 0.5;
@@ -236,9 +225,8 @@ function App() {
     }
   };
   const OptionsItems =
-    shuffledOptions &&
-    shuffledOptions.length > 0 &&
-    shuffledOptions.map((option) => {
+    quiz?.questions?.[questionIndex].options.length > 0 &&
+    quiz?.questions?.[questionIndex].options.map((option) => {
       const isCorrectAnswer = option.id === Number(quiz?.questions[questionIndex].correct_answer);
       const isSelected = hasClickOption && option.id === selectedOptionId;
       let buttonClassName =
