@@ -132,7 +132,7 @@ function Page({ params }) {
     document.body.classList.toggle("modal-open");
   };
   const StartPage = (
-    <div className="w-full flex flex-col items-center justify-center bg-gradient-to-r from-[#8198bf] to-primary">
+    <div className="w-full flex flex-col items-center justify-center bg-gradient-to-r from-[#faf760] to-primary">
       <div className="flex flex-col items-center justify-center border-2 rounded-xl mt-[2rem] p-10 m-8 bg-white w-[35rem]">
         <p className="text-4xl font-extrabold text-center text-primary">GPTQuizHub</p>
         <div className="flex justify-center">
@@ -215,15 +215,14 @@ function Page({ params }) {
       </button>
     ));
   const ProcessPage = (
-    <div className="flex flex-col items-center justify-center bg-gradient-to-r from-primary to-[#8198bf] w-full">
+    <div className="flex flex-col items-center justify-center bg-gradient-to-r from-primary to-[#f0f194] w-full">
       <div className="flex flex-col items-center justify-center w-[38rem] p-8 my-4 bg-white border-2 rounded-xl">
         {quiz && quiz?.questions?.length > 0 && (
         <div>
           <div className="flex flex-col items-center mt-4">
             <div className="flex">
               <p className="h-auto text-2xl w-7/8">{quiz?.questions?.[questionIndex].question}</p>
-              <h1 className="w-4 mb-4 ml-6 text-2xl">{seconds}</h1>
-              <p className="mb-4 ml-6 text-2xl ">seconds</p>
+              <h1 className="flex justify-center w-12 h-8 mb-4 ml-6 text-2xl rounded-full bg-primary">{seconds}</h1>
             </div>
             <div className="flex my-4">
               <p className="mr-3 text-xl">難度 :</p>
@@ -240,7 +239,7 @@ function Page({ params }) {
     </div>
   );
   const EndPage = (
-    <div className="flex flex-col items-center justify-center w-full bg-gradient-to-r from-[#8198bf] to-primary">
+    <div className="flex flex-col items-center justify-center w-full bg-gradient-to-r from-[#e48fe4] to-primary">
       <div className="p-4 bg-white border-2 rounded-lg">
         {accuracy === 100 && (
           <div>
