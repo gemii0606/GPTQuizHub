@@ -129,11 +129,12 @@ io.on('connection', (socket) => {
             roomConnections[roomName].score.push ([]);
 
         roomConnections[roomName].score[round].push({user_id, score:users_score})
+        console.log(roomConnections[roomName].score[round])
         
         if (roomConnections[roomName].score[round].length == 2){
             roomConnections[roomName].score.sort((a, b) => b.score - a.score);
+            io.to(roomName).emit('end', roomConnections[roomName].score[round])
             roomConnections[roomName].round++;
-            io.to(roomName).emit('end', roomConnections[roomName].score)
         }
     })
 
