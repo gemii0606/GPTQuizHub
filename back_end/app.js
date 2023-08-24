@@ -17,6 +17,13 @@ const io = require("socket.io")(server, {
     },
 });
 
+const { MongoClient, ObjectId } = require('mongodb');
+require('dotenv').config({ path: __dirname + `/.env` });
+
+const url = process.env.MONGOURL;
+const dbName = 'GPTQuizHub';
+
+
 const roomConnections = {}; // 用于存储房间和连接的关系
 
 io.on('connection', (socket) => {
@@ -55,8 +62,8 @@ io.on('connection', (socket) => {
             console.log('in double status')
             console.log(roomName)
             console.log(user_id)
-            // const creater_id = new ObjectId(roomConnections[roomName].creater_id);
-            // const opponent_id = new ObjectId(roomConnections[roomName].opponent_id);
+            const creater_id = new ObjectId(roomConnections[roomName].creater_id);
+            const opponent_id = new ObjectId(roomConnections[roomName].opponent_id);
 
             const client = new MongoClient(url, { useUnifiedTopology: true });
             await client.connect();
@@ -71,11 +78,29 @@ io.on('connection', (socket) => {
                 }},
                 { $sample: { size: 1 } } // 随机选择一个文档
             ]).toArray();
-
+            console.log(allQuiz)
             const randomQuiz = allQuiz[0];
             console.log(randomQuiz)
             const questionsCollection = db.collection('questions');
-            const randomQuestion = await questionsCollection.findOne({quiz_id: randomQuiz._id});
+            const randomQuestion = await questionsCollection.find({quiz_id: randomQuiz._id}).toArray();
+            console.log(randomQuestion)
+            const questions = randomQuestion.map(obj => {
+                const result = {
+                    id: obj._id,
+                    question: obj.question,
+                    type: obj.type,
+                    difficulty: obj.difficulty,
+                    correct_answer: obj.correct_answer,
+                    explanation: obj.explanation,
+                    options: [
+                        {id: 1, content: obj.options[0]},
+                        {id: 2, content: obj.options[1]},
+                        {id: 3, content: obj.options[2]},
+                        {id: 4, content: obj.options[3]},
+                    ]
+                };
+                return result;
+            });
 
             const data = {
                 article: randomQuiz.content,
@@ -85,37 +110,29 @@ io.on('connection', (socket) => {
                     tag: randomQuiz.tag,
                     created_at: randomQuiz.created_at,
                     questions: questions
-                }
             }
-
+        }
         io.to(roomName).emit('isready', {data});
         }
     });
-    
-    socket.on('updatescore', (roomName, user_id, users_score) => {
-        socket.join(socket.id);
-        if (!roomConnections[roomName].score)
-            roomConnections[roomName].score = [];
-        
-        roomConnections[roomName].score.push({user_id, score:users_score})
-        
-        
-        if (roomConnections[roomName].score.length == 2){
-            roomConnections[roomName].score.sort((a, b) => b.score - a.score);
-            io.to(roomName).emit('updatescore', roomConnections[roomName].score)
-        }
-    })
 
     socket.on('end', (roomName, user_id, users_score) => {
         socket.join(socket.id);
-        if (!roomConnections[roomName].score)
+        if (!roomConnections[roomName].score){
             roomConnections[roomName].score = [];
+            roomConnections[roomName].round = 0
+        } 
         
-        roomConnections[roomName].score.push({user_id, score:users_score})
+        const round = roomConnections[roomName].round;
+
+        if (!roomConnections[roomName].score[round])
+            roomConnections[roomName].score.push ([]);
+
+        roomConnections[roomName].score[round].push({user_id, score:users_score})
         
-        
-        if (roomConnections[roomName].score.length == 2){
+        if (roomConnections[roomName].score[round].length == 2){
             roomConnections[roomName].score.sort((a, b) => b.score - a.score);
+            roomConnections[roomName].round++;
             io.to(roomName).emit('end', roomConnections[roomName].score)
         }
     })
