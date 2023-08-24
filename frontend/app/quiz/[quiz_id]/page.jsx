@@ -108,7 +108,7 @@ function Page({ params }) {
       icon: "warning",
       title: "時間到",
       showConfirmButton: false,
-      timer: 1000,
+      timer: 600,
     }).then(() => {
       setUnansweredQuestion((prevUnansweredQuestion) => [...prevUnansweredQuestion, questionIndex]);
       setWrongAnswer((prevWrongAnswer) => [...prevWrongAnswer, questionIndex]);
