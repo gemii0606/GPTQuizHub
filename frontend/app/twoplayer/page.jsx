@@ -31,8 +31,8 @@ function App() {
   const [showSetting, setShowSetting] = useState(false);
   const roomRef = useRef();
   useEffect(() => {
+    io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
     return () => {
-      socket.close();
       socket.disconnect();
     };
   }, []);
@@ -49,7 +49,7 @@ function App() {
       e.preventDefault();
       e.returnValue = "";
     };
-    if (testStatus !== "setting") {
+    if (testStatus !== "setting" || testStatus !== "end") {
       window.addEventListener("beforeunload", handleBeforeUnload);
     }
     return () => {
