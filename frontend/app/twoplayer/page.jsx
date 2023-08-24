@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import nookies from "nookies";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-import Navbar from "../../components/navbar";
+import Link from "next/link";
 import ShareLink from "../../components/ShareLink";
 import QuizSetting from "../../components/QuizSetting";
 
@@ -22,8 +22,7 @@ function App() {
   const [questionSeconds, setQuestionSeconds] = useState(10);
   const [randomOptions, setRandomOptions] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState([]);
-  const [useCorrectRatio, setUseCorrectRatio] = useState(false);
-  const [correctRatio, setCorrectRatio] = useState(1.05);
+  const [correctRatio, setCorrectRatio] = useState(1.0);
   const [score, setScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
   const [hasClickOption, setHasClickedOption] = useState(false);
@@ -118,12 +117,14 @@ function App() {
     });
   }
   const SettingPage = (
-    <>
-      <div>
+    <div className="w-[25rem] h-auto m-8 p-8 flex flex-col items-center">
+      <Link href="/questionbanks" className="absolute p-2 text-black bg-white border rounded-md right-6 top-2">回到題庫頁面</Link>
+      <div className="flex flex-col items-center">
+        <div className="mb-5 text-2xl font-semibold text-white">雙人對戰</div>
         <button
           type="button"
           onClick={createRoomHandler}
-          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+          className="block py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-black px-14 rounded-xl hover:scale-110 hover:btn3"
         >
           創建房間
         </button>
@@ -134,16 +135,16 @@ function App() {
           ref={roomRef}
           placeholder="房間號碼"
           required
-          className="px-4 py-2 text-2xl text-center border max-w-[12rem] rounded-lg"
+          className="px-4 py-2 text-2xl text-center border max-w-[12rem] rounded-lg outline-none"
         />
         <button
           type="submit"
-          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-black rounded-xl hover:scale-110 hover:btn3"
         >
           加入房間
         </button>
       </form>
-    </>
+    </div>
   );
   function copyLink() {
     navigator.clipboard.writeText(roomId);
@@ -165,13 +166,14 @@ function App() {
   };
   const WaitingPage = (
     <div className="flex flex-col items-center mt-5">
+      <Link href="/questionbanks" className="absolute p-2 text-black bg-white border rounded-md right-6 top-2">回到題庫頁面</Link>
       <div className="flex flex-col items-center mt-6">
-        <p className="text-2xl">房號</p>
+        <p className="text-2xl font-semibold text-white">房號</p>
         <p className="mt-3 text-2xl">{roomId}</p>
         <button
           type="button"
           onClick={copyLink}
-          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+          className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-black rounded-xl hover:scale-110 hover:btn3"
         >
           複製房號
         </button>
@@ -179,14 +181,14 @@ function App() {
       <button
         type="button"
         onClick={ShareLinkModalToggleHandler}
-        className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+        className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-black rounded-xl hover:scale-110 hover:btn3"
       >
         分享連結
       </button>
       {showShareLink && <ShareLink modalToggleHandler={ShareLinkModalToggleHandler} />}
       <button
         type="button"
-        className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+        className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-black rounded-xl hover:scale-110 hover:btn3"
         onClick={ShowSettingModalToggleHandler}
       >
         測驗設定
@@ -198,8 +200,6 @@ function App() {
           setQuestionSeconds={setQuestionSeconds}
           randomOptions={randomOptions}
           setRandomOptions={setRandomOptions}
-          useCorrectRatio={useCorrectRatio}
-          setUseCorrectRatio={setUseCorrectRatio}
           correctRatio={correctRatio}
           setCorrectRatio={setCorrectRatio}
         />
@@ -208,11 +208,11 @@ function App() {
         type="button"
         onClick={startGameHandler}
         disabled={startGame === true}
-        className="block px-10 py-3 mt-6 text-xl text-white transition duration-300 ease-in-out delay-150 bg-blue-500 rounded-xl hover:-translate-y-1 hover:scale-110 hover:bg-primary"
+        className="block px-10 py-3 mt-6 text-xl text-black transition duration-300 ease-in-out delay-150 bg-white rounded-xl hover:scale-110 hover:btn2"
       >
         {startGame ? "等待中" : "點擊開始"}
       </button>
-      {startGame && <p className="mt-6 text-2xl">正在等待對手...</p>}
+      {startGame && <p className="mt-6 text-2xl font-semibold">正在等待對手...</p>}
     </div>
   );
   const handleOptionClick = (optionId) => {
@@ -229,7 +229,7 @@ function App() {
     } else {
       setConsecutiveCorrectAnswers(false);
     }
-    if (chooseCorrectAnswer && consecutiveCorrectAnswers && useCorrectRatio) {
+    if (chooseCorrectAnswer && consecutiveCorrectAnswers) {
       setScore((prevScore) => prevScore + Math.round(questionScore * correctRatio));
     }
   };
@@ -309,9 +309,7 @@ function App() {
   );
   return (
     <>
-      <Navbar />
-      <div className="flex flex-col items-center mt-7">
-        <div className="mb-5 text-2xl">雙人對戰</div>
+      <div className="flex flex-col items-center justify-center w-full h-screen bg-center bg-no-repeat bg-cover bg-fire">
         {testStatus === "setting" && SettingPage}
         {testStatus === "waiting" && WaitingPage}
         {testStatus === "process" && ProcessPage}

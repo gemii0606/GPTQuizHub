@@ -1,6 +1,4 @@
-import { useState, useRef, useEffect } from "react";
-// eslint-disable-next-line no-unused-vars
-import { mutate } from "swr";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Swal from "sweetalert2";

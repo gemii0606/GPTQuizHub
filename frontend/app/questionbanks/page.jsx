@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import QuestionsBanksCard from "../../components/questionbanks/QuestionBankCard";
 import Navbar from "../../components/navbar";
@@ -27,7 +27,7 @@ function Page() {
           {isLoading && (
             <div className="flex items-center justify-center w-full h-screen bg-white">
               <div>Loading...</div>
-              <Image src="/walkcat.gif" alt="alpaca" height={150} width={150} />
+              <Image src="/walker.gif" alt="alpaca" height={150} width={150} />
               {/* <Image src="/loading.png" alt="loading" height={30} width={30} className="animate-spin" /> */}
             </div>
           )}
