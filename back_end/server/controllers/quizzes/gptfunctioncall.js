@@ -13,7 +13,7 @@ const dbName = 'GPTQuizHub';
 
 const systemPrompt = `You are a professional question teacher, 
     and you generate questions in the same language based on the primary language of the marked article above.
-    Do not make up the questions`
+    Do not make up the questions, you will generate question and corresponding questions_options array, and if the answer is questions_options[0], please return the correct answer as 0, `
 
 const openaiFunctionCalling = {
     name: 'generate_questions',
@@ -41,7 +41,7 @@ const openaiFunctionCalling = {
                             }, description: "options of the questions, mostly 4"
                         },
                         explanation: { type: "string",description: "The explanation of the correct answer." },
-                        correct_answer: { type: "number",  enum: [0,1,2,3], description: "The correct question_options of the question, start from 0 and end at 3" }
+                        correct_answer: { type: "string",  enum: ['0','1','2','3'], description: "The correct question_options of the question, start from 0 and end at 3" }
                     }
                 }
             }
@@ -110,7 +110,7 @@ const gptfunctioncall = async (req, res) => {
                 type: obj.question_type,
                 difficulty: obj.difficulty,
                 options: obj.question_options,
-                correct_answer: obj.correct_answer+1,
+                correct_answer: parseInt(obj.correct_answer)+1,
                 explanation: obj.explanation,
                 created_at: getCurrentTime()
             };
