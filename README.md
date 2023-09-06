@@ -24,7 +24,6 @@
     - Call GPT Function\(using function call method\)
 
 ## Additional Technical Skills and Services:
-- AWS Server Setup and Related Services
 - MongoDB Database Operations
 - WebSocket Application
 - Rapid Deployment with Docker
